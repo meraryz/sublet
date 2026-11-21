@@ -1,28 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sunny 2-room in Florentin · Dec 5–20</title>
+<title>דירת 2 חדרים בצפון הישן · 01/03–15/04</title>
 
-<!-- LINK PREVIEW TAGS: these are what WhatsApp / Telegram / iMessage read.
-     Change them per listing. og:image must be a full https URL to a JPG or PNG (1200x630).
-     WhatsApp does not accept SVG. -->
-<meta name="description" content="Dec 5–20 · ₪350/night · 2 rooms, balcony, A/C. Shared by Dana, friend of Noa.">
+<!-- תגיות תצוגה מקדימה: אלה התגיות ש-WhatsApp / Telegram קוראים. כתובת התמונה חייבת להיות מלאה (https) ולהצביע על JPG או PNG בגודל 1200x630. -->
+<meta name="description" content="4,200 ₪ לכל התקופה · 2 חדרים · 60 מ״ר · משותף על ידי מיכל כהן, חברה של דנה">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sunny 2-room in Florentin · Dec 5–20">
-<meta property="og:description" content="₪350/night · 2 rooms, balcony, A/C · Shared by Dana, friend of Noa">
+<meta property="og:locale" content="he_IL">
+<meta property="og:title" content="דירת 2 חדרים בצפון הישן · 01/03–15/04">
+<meta property="og:description" content="4,200 ₪ לכל התקופה · 2 חדרים · 60 מ״ר · משותף על ידי מיכל כהן, חברה של דנה">
 <meta property="og:image" content="https://meraryz.github.io/sublet/preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://meraryz.github.io/sublet/">
+<meta property="og:url" content="https://meraryz.github.io/sublet/index.html">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-/* Layout: one column, 480px max. Hero image, key facts, calendar, sticky action bar. */
+/* Layout: one column, 480px max, right-to-left. Hero image, key facts, two-month calendar, sticky action bar. */
 :root{
   --ink:#12262e;
   --sea:#1b6a86;
@@ -31,30 +30,33 @@
   --paper:#f7f9f9;
   --line:#d5e0e4;
   --muted:#5b707a;
-  --f-display:'Bricolage Grotesque',system-ui,sans-serif;
-  --f-body:'DM Sans',system-ui,sans-serif;
+  --f-display:'Heebo',system-ui,sans-serif;
+  --f-body:'Heebo',system-ui,sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--f-body);-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.55 var(--f-body);-webkit-text-size-adjust:100%}
 .wrap{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:96px;box-shadow:0 0 0 1px var(--line)}
 .hero{position:relative;aspect-ratio:1200/630;background:var(--sea-soft);overflow:hidden}
 .hero svg{display:block;width:100%;height:100%}
-.badge{position:absolute;left:16px;bottom:16px;background:var(--ink);color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px}
-.badge b{color:var(--sun)}
+.badge{position:absolute;inset-inline-start:16px;bottom:16px;background:var(--ink);color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px}
+.badge b{color:var(--sun);font-weight:700}
 .body{padding:20px 16px;display:flex;flex-direction:column;gap:22px}
-h1{font:700 28px/1.1 var(--f-display);margin:0;text-wrap:balance}
+h1{font:800 28px/1.15 var(--f-display);margin:0;text-wrap:balance}
 .where{color:var(--muted);margin:6px 0 0}
-.circle{display:inline-flex;align-items:center;gap:10px;background:var(--sea-soft);color:var(--sea);border-radius:999px;padding:6px 14px 6px 8px;font-weight:700;font-size:14px;align-self:flex-start}
+.circle{display:inline-flex;align-items:center;gap:10px;background:var(--sea-soft);color:var(--sea);border-radius:999px;padding:6px 8px 6px 14px;font-weight:700;font-size:14px;align-self:flex-start}
 .dots{display:inline-flex}
 .dots i{width:18px;height:18px;border-radius:50%;border:2px solid var(--sea);background:#fff}
-.dots i+i{margin-left:-7px;background:var(--sea)}
+.dots i+i{margin-inline-start:-7px;background:var(--sea)}
 .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .fact{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .fact span{display:block;color:var(--muted);font-size:12px}
-.fact strong{font:700 18px/1.2 var(--f-display);font-variant-numeric:tabular-nums}
-h2{font:700 18px/1.2 var(--f-display);margin:0 0 10px}
+.fact strong{display:block;font:800 18px/1.25 var(--f-display);font-variant-numeric:tabular-nums}
+.fact small{display:block;color:var(--muted);font-size:12px}
+h2{font:800 18px/1.2 var(--f-display);margin:0 0 10px}
+h3{font:700 15px/1.2 var(--f-display);margin:0 0 8px}
+.months{display:flex;flex-direction:column;gap:16px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-variant-numeric:tabular-nums}
 .cal .h{color:var(--muted);font-size:12px;padding-bottom:2px}
 .cal .d{padding:8px 0;border-radius:8px;font-size:14px;color:var(--muted)}
@@ -63,7 +65,7 @@ h2{font:700 18px/1.2 var(--f-display);margin:0 0 10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips span{border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px}
 .host{display:flex;align-items:center;gap:12px}
-.av{width:44px;height:44px;border-radius:50%;background:var(--sun);color:var(--ink);display:grid;place-items:center;font:700 18px var(--f-display)}
+.av{width:44px;height:44px;border-radius:50%;background:var(--sun);color:var(--ink);display:grid;place-items:center;font:800 18px var(--f-display)}
 .host p{margin:0}
 .host small{color:var(--muted)}
 .sample{color:var(--muted);font-size:13px;margin:0}
@@ -107,68 +109,72 @@ h2{font:700 18px/1.2 var(--f-display);margin:0 0 10px}
 
 <div class="wrap">
   <div class="hero">
-    <svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of the building (sample, replace with your photo)"><use href="#scene"/></svg>
-    <div class="badge">₪350 <b>/ night</b></div>
+    <svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="איור של הבניין (לדוגמה, יש להחליף בתמונה אמיתית)"><use href="#scene"/></svg>
+    <div class="badge"><bdi>4,200</bdi> ₪ <b>לכל התקופה</b></div>
   </div>
 
   <div class="body">
     <div>
-      <h1>Sunny 2-room in Florentin</h1>
-      <p class="where">Florentin, Tel Aviv · Dec 5–20, 2026</p>
+      <h1>דירת 2 חדרים בצפון הישן</h1>
+      <p class="where">הצפון הישן, תל אביב · <bdi>01/03/2027</bdi> עד <bdi>15/04/2027</bdi></p>
     </div>
 
-    <div class="circle"><span class="dots" aria-hidden="true"><i></i><i></i></span>Shared by Dana · friend of Noa</div>
+    <div class="circle"><span class="dots" aria-hidden="true"><i></i><i></i></span>משותף על ידי מיכל כהן · חברה של דנה</div>
 
     <div class="facts">
-      <div class="fact"><span>Nights</span><strong>15</strong></div>
-      <div class="fact"><span>Total</span><strong>₪5,250</strong></div>
-      <div class="fact"><span>Size</span><strong>45 m²</strong></div>
+      <div class="fact"><span>סה״כ לתקופה</span><strong><bdi>4,200</bdi> ₪</strong><small>כ־<bdi>93</bdi> ₪ ללילה</small></div>
+      <div class="fact"><span>לילות</span><strong>45</strong></div>
+      <div class="fact"><span>גודל</span><strong><bdi>60</bdi> מ״ר</strong></div>
     </div>
 
     <section>
-      <h2>Available</h2>
-      <div class="cal" id="cal" aria-label="December 2026 availability"></div>
-      <p class="cal-note">Free from Dec 5 to Dec 20. Dates are flexible by a day or two.</p>
+      <h2>תאריכים פנויים</h2>
+      <div class="months" id="months" aria-label="זמינות במרץ ואפריל 2027"></div>
+      <p class="cal-note">פנויה מ־<bdi>01/03/2027</bdi> עד <bdi>15/04/2027</bdi>. המחיר הוא לכל התקופה.</p>
     </section>
 
     <section>
-      <h2>What's inside</h2>
-      <div class="chips"><span>2 rooms</span><span>Sleeps 2–3</span><span>3rd floor, no elevator</span><span>A/C</span><span>Balcony</span><span>Fast Wi-Fi</span><span>Washing machine</span><span>Desk</span></div>
+      <h2>על הדירה</h2>
+      <div class="chips"><span>2 חדרים</span><span>מתאימה ל־2–3</span><span>קומה 3, ללא מעלית</span><span>מרפסת</span><span>מזגן</span><span>אינטרנט מהיר</span><span>מכונת כביסה</span><span>מרוהטת</span></div>
     </section>
 
     <section class="host">
-      <div class="av" aria-hidden="true">D</div>
-      <p><strong>Dana L.</strong><br><small>Away on a work trip, wants someone she can trust.</small></p>
+      <div class="av" aria-hidden="true">מ</div>
+      <p><strong>מיכל כהן</strong><br><small>עוברת לחו״ל לתקופה ומחפשת מישהו אמין מהמעגל.</small></p>
     </section>
 
-    <p class="sample">Sample listing for the MVP preview. Photos are illustrations.</p>
+    <p class="sample">דף לדוגמה. הפרטים והאיור הם לצורך הדגמה בלבד.</p>
   </div>
 </div>
 
 <div class="bar">
   <div>
-    <a class="btn main" id="wa" href="https://wa.me/972500000000?text=Hi%20Dana%2C%20I%20saw%20your%20Florentin%20place%20for%20Dec%205-20.">Message Dana on WhatsApp</a>
-    <button class="btn alt" id="share" type="button">Share</button>
+    <a class="btn main" id="wa" href="https://wa.me/972549202054?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%93%D7%99%D7%A8%D7%94%20%D7%91%D7%A6%D7%A4%D7%95%D7%9F%20%D7%94%D7%99%D7%A9%D7%9F%20%D7%9C-01/03/2027%20%D7%A2%D7%93%2015/04/2027">שלחו הודעה למיכל בוואטסאפ</a>
+    <button class="btn alt" id="share" type="button">שתפו</button>
   </div>
 </div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
 (function(){
-  var cal=document.getElementById('cal'),html='';
-  'SMTWTFS'.split('').forEach(function(l){html+='<div class="h">'+l+'</div>';});
-  var first=new Date(2026,11,1).getDay();
-  for(var i=0;i<first;i++){html+='<div></div>';}
-  for(var d=1;d<=31;d++){html+='<div class="d'+(d>=5&&d<=20?' on':'')+'">'+d+'</div>';}
-  cal.innerHTML=html;
+  var letters=['א','ב','ג','ד','ה','ו','ש'];
+  function month(y,m,name,from,to){
+    var h='<div><h3>'+name+' '+y+'</h3><div class="cal">';
+    letters.forEach(function(l){h+='<div class="h">'+l+'</div>';});
+    var first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();
+    for(var i=0;i<first;i++){h+='<div></div>';}
+    for(var d=1;d<=days;d++){h+='<div class="d'+(d>=from&&d<=to?' on':'')+'">'+d+'</div>';}
+    return h+'</div></div>';
+  }
+  document.getElementById('months').innerHTML=month(2027,2,'מרץ',1,31)+month(2027,3,'אפריל',1,15);
 
   var toast=document.getElementById('toast');
   function say(t){toast.textContent=t;toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},2200);}
   document.getElementById('share').addEventListener('click',function(){
     var url=location.href;
     try{
-      navigator.clipboard.writeText(url).then(function(){say('Link copied');},function(){say('Copy the link from the address bar');});
-    }catch(e){say('Copy the link from the address bar');}
+      navigator.clipboard.writeText(url).then(function(){say('הקישור הועתק');},function(){say('העתיקו את הקישור משורת הכתובת');});
+    }catch(e){say('העתיקו את הקישור משורת הכתובת');}
   });
 })();
 </script>
