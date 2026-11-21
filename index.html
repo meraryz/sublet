@@ -41,15 +41,34 @@
 html,body{margin:0}
 body{background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--f-body);-webkit-text-size-adjust:100%}
 .wrap{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:96px;box-shadow:0 0 0 1px var(--line)}
-.hero{aspect-ratio:1200/630;background:var(--sea-soft);overflow:hidden}
+.hero{position:relative;aspect-ratio:1200/630;background:var(--sea-soft);overflow:hidden}
+.gal{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.gal::-webkit-scrollbar{display:none}
+.gal:focus-visible{outline:3px solid var(--sun);outline-offset:-3px}
+.slide{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:center}
+.slide svg,.slide img{display:block;width:100%;height:100%;object-fit:cover}
+.cap{position:absolute;left:12px;bottom:12px;background:rgba(18,38,46,.82);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
+.count{position:absolute;right:12px;top:12px;background:rgba(18,38,46,.82);color:#fff;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.dots{position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.65);transition:width .2s}
+.dots i.on{width:18px;border-radius:4px;background:#fff}
+.contact{margin:8px 0 0;font-weight:700;font-size:16px}
 .hero svg{display:block;width:100%;height:100%}
 .body{padding:20px 16px;display:flex;flex-direction:column;gap:20px}
 h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
 .meta{margin:8px 0 0;display:flex;flex-direction:column;gap:2px;color:var(--muted)}
 .meta strong{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+.desc{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
+.desc p{margin:0}
+.desc p+p{margin-top:8px}
 .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .fact{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .fact span{display:block;color:var(--muted);font-size:13px}
+.fact.wide{grid-column:1/-1}
+.fact small{display:block;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.fact small.incl{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;font-weight:700;color:var(--yes)}
+.fact small.incl.no{color:var(--no)}
+.fact small.incl svg{width:18px;height:18px;flex:none}
 .fact strong{display:block;font:700 22px/1.2 var(--f-display);font-variant-numeric:tabular-nums}
 .badges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .b{display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:12px;padding:10px 12px;font-size:15px;border:1px solid var(--line)}
@@ -64,6 +83,7 @@ h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
 .b svg{flex:none;width:22px;height:22px}
 .yes svg{color:var(--yes)}
 .no svg{color:var(--no)}
+.em{font-style:normal}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .sample{color:var(--muted);font-size:13px;margin:0}
 .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:5}
@@ -107,47 +127,58 @@ h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
 </svg>
 
 <div class="wrap">
+  <!-- To use real photos: replace each <svg> inside a .slide with <img src="photo1.jpg" alt="Living room">. Add or remove .slide blocks freely. -->
   <div class="hero">
-    <svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of the building (sample, replace with your photo)"><use href="#scene"/></svg>
+    <div class="gal" id="gal" tabindex="0" aria-label="Photo gallery, swipe for more photos">
+      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Building (sample illustration, replace with a photo)"><use href="#scene"/></svg><span class="cap">Building</span></div>
+      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Living room (sample illustration, replace with a photo)"><rect width="1200" height="630" fill="#eef3f2"/><rect y="470" width="1200" height="160" fill="#d8e3e6"/><rect x="760" y="110" width="300" height="230" fill="#bfe0ee" stroke="#fff" stroke-width="12"/><path d="M910 110v230M760 225h300" stroke="#fff" stroke-width="10"/><ellipse cx="400" cy="545" rx="330" ry="42" fill="#f4b63d" opacity=".55"/><rect x="140" y="250" width="520" height="100" rx="30" fill="#1f7a99"/><rect x="120" y="320" width="560" height="150" rx="30" fill="#1b6a86"/><rect x="190" y="300" width="130" height="80" rx="20" fill="#f4b63d"/><rect x="1000" y="400" width="76" height="86" rx="10" fill="#12262e"/><circle cx="1038" cy="360" r="46" fill="#2f8f5b"/><circle cx="1000" cy="385" r="34" fill="#38a068"/><circle cx="1076" cy="385" r="34" fill="#38a068"/></svg><span class="cap">Living room</span></div>
+      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Bedroom (sample illustration, replace with a photo)"><rect width="1200" height="630" fill="#eef3f2"/><rect y="470" width="1200" height="160" fill="#d8e3e6"/><rect x="90" y="120" width="170" height="230" fill="#bfe0ee" stroke="#fff" stroke-width="10"/><rect x="300" y="240" width="620" height="120" rx="18" fill="#1b6a86"/><rect x="300" y="330" width="620" height="150" rx="18" fill="#fff" stroke="#d5e0e4" stroke-width="4"/><rect x="345" y="285" width="210" height="64" rx="22" fill="#fff"/><rect x="665" y="285" width="210" height="64" rx="22" fill="#fff"/><rect x="300" y="395" width="620" height="85" rx="14" fill="#f4b63d" opacity=".9"/><rect x="975" y="410" width="110" height="76" fill="#12262e"/><circle cx="1030" cy="370" r="32" fill="#f4b63d"/></svg><span class="cap">Bedroom</span></div>
+      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Balcony (sample illustration, replace with a photo)"><rect width="1200" height="630" fill="url(#sky)"/><circle cx="930" cy="140" r="64" fill="#f4b63d"/><rect y="260" width="1200" height="140" fill="#1b6a86"/><rect y="260" width="1200" height="8" fill="#14566d"/><rect y="480" width="1200" height="150" fill="#d8e3e6"/><g stroke="#12262e" stroke-width="6"><line x1="60" y1="410" x2="60" y2="480"/><line x1="120" y1="410" x2="120" y2="480"/><line x1="180" y1="410" x2="180" y2="480"/><line x1="240" y1="410" x2="240" y2="480"/><line x1="300" y1="410" x2="300" y2="480"/><line x1="360" y1="410" x2="360" y2="480"/><line x1="420" y1="410" x2="420" y2="480"/><line x1="480" y1="410" x2="480" y2="480"/><line x1="540" y1="410" x2="540" y2="480"/><line x1="600" y1="410" x2="600" y2="480"/><line x1="660" y1="410" x2="660" y2="480"/><line x1="720" y1="410" x2="720" y2="480"/><line x1="780" y1="410" x2="780" y2="480"/><line x1="840" y1="410" x2="840" y2="480"/><line x1="900" y1="410" x2="900" y2="480"/><line x1="960" y1="410" x2="960" y2="480"/><line x1="1020" y1="410" x2="1020" y2="480"/><line x1="1080" y1="410" x2="1080" y2="480"/><line x1="1140" y1="410" x2="1140" y2="480"/></g><rect y="396" width="1200" height="16" fill="#12262e"/><rect x="520" y="520" width="170" height="16" rx="8" fill="#12262e"/><rect x="598" y="536" width="14" height="70" fill="#12262e"/><rect x="290" y="545" width="120" height="26" rx="10" fill="#f4b63d"/><rect x="298" y="480" width="26" height="90" rx="10" fill="#f4b63d"/><rect x="800" y="545" width="120" height="26" rx="10" fill="#f4b63d"/><rect x="896" y="480" width="26" height="90" rx="10" fill="#f4b63d"/></svg><span class="cap">Balcony</span></div>
+    </div>
+    <span class="count" id="count">1 / 4</span>
+    <div class="dots" id="dots" aria-hidden="true"></div>
   </div>
 
   <div class="body">
     <div>
-      <h1>Sunny 2-room apartment in the Old North</h1>
+      <h1>🏠 Sunny 2-room apartment in the Old North</h1>
+      <p class="contact"><i class="em" aria-hidden="true">👤</i> Michal Cohen<span class="sr"> (contact person)</span></p>
       <p class="meta">
-        <span>Ben Yehuda St, Old North, Tel Aviv</span>
-        <strong>01/03/2027 – 15/04/2027</strong>
+        <span>📍 Ben Yehuda St, Old North, Tel Aviv</span>
+        <strong>📅 01/03/2027 – 15/04/2027</strong>
       </p>
     </div>
 
+    <div class="desc">
+      <p>Bright, quiet 2-room apartment on the 3rd floor (no elevator), a few minutes' walk from the beach and Dizengoff Square. Fully furnished, with a sunny balcony and a spacious living room.</p>
+      <p>The owner is abroad for the period and is looking for someone reliable from the circle to take care of the place.</p>
+    </div>
+
     <div class="facts">
-      <div class="fact"><span>Total price</span><strong>₪4,200</strong></div>
-      <div class="fact"><span>Price per night</span><strong>₪93</strong></div>
-      <div class="fact"><span>Size</span><strong>60 m²</strong></div>
-      <div class="fact"><span>Partners</span><strong>2</strong></div>
+      <div class="fact wide"><span>Total price</span><strong>₪4,200</strong><small>₪93 per night</small><small class="incl yes"><svg aria-hidden="true"><use href="#ok"/></svg>Bills included<i class="sr"> Yes</i></small></div>
+      <div class="fact"><span>Size</span><strong>60 m²</strong><small>2 rooms</small></div>
+      <div class="fact"><span><i class="em" aria-hidden="true">👥</i> Suitable for</span><strong>2 partners</strong></div>
     </div>
 
     <ul class="badges">
-      <li class="b info"><span>Rooms</span><strong>2</strong></li>
-      <li class="b info"><span>Area</span><strong>Old North</strong></li>
-      <li class="b yes"><span>Single</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span>Couple</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b info"><span>Partners</span><strong>Up to 2</strong></li>
-      <li class="b yes"><span>Balcony</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span>Living room</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span>Fast Wi-Fi</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span>TV</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b no"><span>Animals</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
-      <li class="b no"><span>Smoking</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
+      <li class="b info"><span><i class="em" aria-hidden="true">📍</i> Area</span><strong>Old North</strong></li>
+      <li class="b yes"><span><i class="em" aria-hidden="true">🌿</i> Balcony</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
+      <li class="b yes"><span><i class="em" aria-hidden="true">🛋️</i> Living room</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
+      <li class="b yes"><span><i class="em" aria-hidden="true">📶</i> Fast Wi-Fi</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
+      <li class="b yes"><span><i class="em" aria-hidden="true">📺</i> TV</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
+      <li class="b yes"><span><i class="em" aria-hidden="true">🧺</i> Washing machine</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
+      <li class="b yes"><span><i class="em" aria-hidden="true">🛡️</i> Bomb shelter</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
+      <li class="b no"><span><i class="em" aria-hidden="true">🐾</i> Animals</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
+      <li class="b no"><span><i class="em" aria-hidden="true">🚬</i> Smoking</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
     </ul>
 
-    <p class="sample">Sample listing. The details, phone number and illustration are for demonstration only.</p>
+    <p class="sample">Sample listing. The details, phone number and illustrations are for demonstration only.</p>
   </div>
 </div>
 
 <div class="bar">
   <div>
-    <a class="btn main" id="wa" href="https://wa.me/972500000000?text=Hi%2C%20I%20saw%20your%20apartment%20in%20the%20Old%20North%20for%2001%2F03%2F2027-15%2F04%2F2027">Message on WhatsApp</a>
+    <a class="btn main" id="wa" href="https://wa.me/972500000000?text=Hi%2C%20I%20saw%20your%20apartment%20in%20the%20Old%20North%20for%2001%2F03%2F2027-15%2F04%2F2027">Message Michal on WhatsApp</a>
     <button class="btn alt" id="share" type="button">Share</button>
   </div>
 </div>
@@ -163,6 +194,19 @@ h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
       navigator.clipboard.writeText(url).then(function(){say('Link copied');},function(){say('Copy the link from the address bar');});
     }catch(e){say('Copy the link from the address bar');}
   });
+  var gal=document.getElementById('gal'),dots=document.getElementById('dots'),count=document.getElementById('count'),n=gal.children.length;
+  for(var k=0;k<n;k++){dots.appendChild(document.createElement('i'));}
+  function sync(){
+    var i=Math.min(n-1,Math.max(0,Math.round(gal.scrollLeft/gal.clientWidth)));
+    for(var j=0;j<n;j++){dots.children[j].className=(j===i?'on':'');}
+    count.textContent=(i+1)+' / '+n;
+  }
+  gal.addEventListener('scroll',function(){requestAnimationFrame(sync);});
+  gal.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){gal.scrollBy({left:gal.clientWidth,behavior:'smooth'});}
+    if(e.key==='ArrowLeft'){gal.scrollBy({left:-gal.clientWidth,behavior:'smooth'});}
+  });
+  sync();
 })();
 </script>
 </body>
