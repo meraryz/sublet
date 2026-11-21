@@ -69,6 +69,7 @@ h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
 @media (max-width:380px){.head{grid-template-columns:1fr}.side{min-width:0}}
 .tf{margin:8px 0 0;display:flex;flex-direction:column;gap:2px;color:var(--muted)}
 .tf strong{color:var(--ink)}
+.tf.who{color:var(--ink);font-weight:700}
 .fact.type strong{font-size:17px;line-height:1.25}
 .fact{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .fact span{display:block;color:var(--muted);font-size:13px}
@@ -192,7 +193,8 @@ table.spaces{width:100%;border-collapse:separate;border-spacing:0;border:1px sol
     <div class="head">
       <h1>🏠 Private room in a shared apartment in the Old North</h1>
       <div class="info">
-        <p class="tf"><span>🔑 Type: <strong>Shared apartment</strong></span><span>🏡 Renting: <strong>1 private bedroom</strong></span><span>👥 For: <strong>Single or couple</strong></span></p>
+        <p class="tf who"><span>👥 For: <strong>Single or couple</strong></span><span>🚻 Gender preference: <strong>Women</strong></span><span>🎂 Age preference: <strong>25–35</strong></span></p>
+        <p class="tf"><span>🔑 Type: <strong>Shared apartment</strong></span><span>🏡 Renting: <strong>1 private bedroom</strong></span><span>🧑‍🤝‍🧑 Others staying: <strong>1 person</strong></span></p>
         <p class="contact"><i class="em" aria-hidden="true">👤</i> Michal Cohen<span class="sr"> (contact person)</span></p>
         <p class="meta">
           <span>📍 Ben Yehuda St, Old North, Tel Aviv</span>
@@ -218,6 +220,7 @@ table.spaces{width:100%;border-collapse:separate;border-spacing:0;border:1px sol
           <div class="col"><h4>Private</h4>
             <ul>
             <li><i class="em" aria-hidden="true">🛏️</i> Bedroom</li>
+            <li><i class="em" aria-hidden="true">📺</i> TV</li>
             </ul>
           </div>
           <div class="col"><h4>Shared</h4>
@@ -228,6 +231,8 @@ table.spaces{width:100%;border-collapse:separate;border-spacing:0;border:1px sol
             <li><i class="em" aria-hidden="true">🛋️</i> Living room</li>
             <li><i class="em" aria-hidden="true">🌿</i> Balcony</li>
             <li><i class="em" aria-hidden="true">🧺</i> Washing machine</li>
+            <li><i class="em" aria-hidden="true">📶</i> Fast Wi-Fi</li>
+            <li><i class="em" aria-hidden="true">📺</i> TV</li>
             </ul>
           </div>
         </div>
@@ -241,8 +246,6 @@ table.spaces{width:100%;border-collapse:separate;border-spacing:0;border:1px sol
     </div>
 
     <ul class="badges">
-      <li class="b yes"><span><i class="em" aria-hidden="true">📶</i> Fast Wi-Fi</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span><i class="em" aria-hidden="true">📺</i> TV</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
       <li class="b no"><span><i class="em" aria-hidden="true">🐾</i> Animals</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
       <li class="b no"><span><i class="em" aria-hidden="true">🚬</i> Smoking</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
     </ul>
