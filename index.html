@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2-room apartment in the Old North · 01/03–15/04</title>
+<title>Private room in the Old North · 01/03–15/04</title>
 
 <!-- LINK PREVIEW TAGS: WhatsApp / Telegram read these. og:image must be a full https URL to a 1200x630 JPG or PNG. -->
-<meta name="description" content="₪4,200 total (₪93/night) · 60 m² · 2 rooms · Old North, Tel Aviv">
+<meta name="description" content="₪2,400 total (₪1,600/month) · Private room · Shared apartment · Old North, Tel Aviv">
 <meta property="og:type" content="website">
-<meta property="og:title" content="2-room apartment in the Old North · 01/03–15/04">
-<meta property="og:description" content="₪4,200 total (₪93/night) · 60 m² · 2 rooms · Old North, Tel Aviv">
-<meta property="og:image" content="https://meraryz.github.io/sublet/old-north-en.png">
+<meta property="og:title" content="Private room in the Old North · 01/03–15/04">
+<meta property="og:description" content="₪2,400 total (₪1,600/month) · Private room · Shared apartment · Old North, Tel Aviv">
+<meta property="og:image" content="https://meraryz.github.io/sublet/old-north-shared-en.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://meraryz.github.io/sublet/old-north-en.html">
+<meta property="og:url" content="https://meraryz.github.io/sublet/old-north-shared-en.html">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,7 +61,15 @@ h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
 .desc{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
 .desc p{margin:0}
 .desc p+p{margin-top:8px}
-.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.facts{display:grid;grid-template-columns:1fr;gap:8px}
+.head{display:grid;grid-template-columns:1fr auto;gap:10px 14px;align-items:start}
+.head h1{grid-column:1/-1}
+.side{display:flex;flex-direction:column;gap:8px;min-width:150px}
+
+@media (max-width:380px){.head{grid-template-columns:1fr}.side{min-width:0}}
+.tf{margin:8px 0 0;display:flex;flex-direction:column;gap:2px;color:var(--muted)}
+.tf strong{color:var(--ink)}
+.fact.type strong{font-size:17px;line-height:1.25}
 .fact{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .fact span{display:block;color:var(--muted);font-size:13px}
 .fact.wide{grid-column:1/-1}
@@ -76,14 +84,55 @@ h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
 .b strong{font-weight:700}
 .b.info{background:var(--sea-soft);border-color:transparent}
 .b.info span{color:var(--sea)}
-.b.yes{background:var(--yes-soft);border-color:transparent}
+.b.yes{background:#fff;border-color:var(--line)}
 .b.yes span{color:var(--ink)}
-.b.no{background:var(--no-soft);border-color:transparent}
+.b.no{background:#fff;border-color:var(--line)}
 .b.no span{color:var(--ink)}
 .b svg{flex:none;width:22px;height:22px}
 .yes svg{color:var(--yes)}
 .no svg{color:var(--no)}
 .em{font-style:normal}
+.fact small.rates{display:flex;flex-wrap:wrap;gap:2px 16px}
+.fact small.rates span{white-space:nowrap}
+.stay{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stay dl{margin:0;display:flex;flex-direction:column;gap:8px}
+.stay dl div{display:flex;justify-content:space-between;gap:16px;font-size:15px}
+.stay dt{color:var(--muted);flex:none}
+.stay dd{margin:0;font-weight:700;text-align:right}
+.stay .ok{display:flex;align-items:center;gap:8px;margin:12px 0 0;color:var(--yes);font-weight:700;font-size:14px}
+.stay .ok svg{width:18px;height:18px;flex:none}
+.stay h2{font:700 18px/1.2 var(--f-display);margin:0 0 10px}
+.stay h3{font:700 15px/1.2 var(--f-display);margin:16px 0 8px}
+.sharing{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sharing li{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px}
+.tag{border-radius:999px;font-size:12px;font-weight:700;padding:2px 8px;white-space:nowrap}
+.tag.sh{background:var(--yes-soft);color:var(--yes)}
+.tag.pv{background:var(--yes-soft);color:var(--yes)}
+.b.space{background:#fff}
+.b.space>span:first-child{color:var(--ink)}
+.b.wide{grid-column:1/-1}
+table.spaces{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:15px}
+.spaces th,.spaces td{padding:9px 12px}
+.spaces thead th{background:var(--paper);color:var(--muted);font-size:13px;font-weight:700;text-align:center;width:26%}
+.spaces tbody th{text-align:left;font-weight:400}
+.spaces td{text-align:center;vertical-align:middle}
+.spaces tbody tr+tr th,.spaces tbody tr+tr td{border-top:1px solid var(--line)}
+.spaces td svg{width:22px;height:22px;display:inline-block;vertical-align:middle}
+.spaces td.y svg{color:var(--yes)}
+.spaces td.n svg{color:var(--no)}
+.zones{display:flex;flex-direction:column;gap:8px}
+.inc{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.zones h3{display:flex;align-items:center;gap:6px;margin:0;font:700 15px/1.2 var(--f-display)}
+.zones h3 svg{width:20px;height:20px;flex:none}
+.inc h3{color:var(--yes)}
+.cols{display:grid;grid-template-columns:1fr 1fr;margin-top:10px}
+.col h4{margin:0 0 6px;font:700 13px/1.2 var(--f-body);color:var(--muted)}
+.col+.col{border-left:1px solid var(--line);padding-left:14px}
+.zones ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.zones li.none{color:var(--muted)}
+.out{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.out h3{color:var(--no)}
+.out ul{margin-top:10px;flex-direction:row;flex-wrap:wrap;gap:6px 16px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .sample{color:var(--muted);font-size:13px;margin:0}
 .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:5}
@@ -140,34 +189,60 @@ h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
   </div>
 
   <div class="body">
-    <div>
-      <h1>🏠 Sunny 2-room apartment in the Old North</h1>
-      <p class="contact"><i class="em" aria-hidden="true">👤</i> Michal Cohen<span class="sr"> (contact person)</span></p>
-      <p class="meta">
-        <span>📍 Ben Yehuda St, Old North, Tel Aviv</span>
-        <strong>📅 01/03/2027 – 15/04/2027</strong>
-      </p>
+    <div class="head">
+      <h1>🏠 Private room in a shared apartment in the Old North</h1>
+      <div class="info">
+        <p class="tf"><span>🔑 Type: <strong>Shared apartment</strong></span><span>🏡 Renting: <strong>1 private bedroom</strong></span><span>👥 For: <strong>Single or couple</strong></span></p>
+        <p class="contact"><i class="em" aria-hidden="true">👤</i> Michal Cohen<span class="sr"> (contact person)</span></p>
+        <p class="meta">
+          <span>📍 Ben Yehuda St, Old North, Tel Aviv</span>
+          <strong>📅 01/03/2027 – 15/04/2027</strong>
+        </p>
+      </div>
+      <div class="side">
+        <div class="fact price"><span>Total price</span><strong>₪2,400</strong><small class="rates"><span>₪1,600 per month</span></small><small class="incl yes"><svg aria-hidden="true"><use href="#ok"/></svg>Bills included<i class="sr"> Yes</i></small></div>
+        <div class="fact"><span>Size</span><strong>60 m²</strong></div>
+      </div>
     </div>
 
     <div class="desc">
-      <p>Bright, quiet 2-room apartment on the 3rd floor (no elevator), a few minutes' walk from the beach and Dizengoff Square. Fully furnished, with a sunny balcony and a spacious living room.</p>
-      <p>The owner is abroad for the period and is looking for someone reliable from the circle to take care of the place.</p>
+      <p>A quiet private room with a double bed in a bright 2-bedroom apartment, a few minutes' walk from the beach and Dizengoff Square. Fully furnished, with a sunny balcony and a spacious living room.</p>
+      <p>You will share the apartment with one other person who lives there during the same period. The kitchen, bathroom and living areas are shared.</p>
     </div>
 
-    <div class="facts">
-      <div class="fact wide"><span>Total price</span><strong>₪4,200</strong><small>₪93 per night</small><small class="incl yes"><svg aria-hidden="true"><use href="#ok"/></svg>Bills included<i class="sr"> Yes</i></small></div>
-      <div class="fact"><span>Size</span><strong>60 m²</strong><small>2 rooms</small></div>
-      <div class="fact"><span><i class="em" aria-hidden="true">👥</i> Suitable for</span><strong>2 partners</strong></div>
+
+    <div class="zones">
+      <section class="inc">
+        <h3><svg aria-hidden="true"><use href="#ok"/></svg> Included</h3>
+        <div class="cols">
+          <div class="col"><h4>Private</h4>
+            <ul>
+            <li><i class="em" aria-hidden="true">🛏️</i> Bedroom</li>
+            </ul>
+          </div>
+          <div class="col"><h4>Shared</h4>
+            <ul>
+            <li><i class="em" aria-hidden="true">🍳</i> Kitchen</li>
+            <li><i class="em" aria-hidden="true">🚿</i> Bathroom</li>
+            <li><i class="em" aria-hidden="true">🚽</i> Toilet</li>
+            <li><i class="em" aria-hidden="true">🛋️</i> Living room</li>
+            <li><i class="em" aria-hidden="true">🌿</i> Balcony</li>
+            <li><i class="em" aria-hidden="true">🧺</i> Washing machine</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section class="out">
+        <h3><svg aria-hidden="true"><use href="#nope"/></svg> Not included</h3>
+        <ul>
+            <li><i class="em" aria-hidden="true">🛡️</i> Bomb shelter</li>
+        </ul>
+      </section>
     </div>
 
     <ul class="badges">
-      <li class="b info"><span><i class="em" aria-hidden="true">📍</i> Area</span><strong>Old North</strong></li>
-      <li class="b yes"><span><i class="em" aria-hidden="true">🌿</i> Balcony</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span><i class="em" aria-hidden="true">🛋️</i> Living room</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
       <li class="b yes"><span><i class="em" aria-hidden="true">📶</i> Fast Wi-Fi</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
       <li class="b yes"><span><i class="em" aria-hidden="true">📺</i> TV</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span><i class="em" aria-hidden="true">🧺</i> Washing machine</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
-      <li class="b yes"><span><i class="em" aria-hidden="true">🛡️</i> Bomb shelter</span><svg aria-hidden="true"><use href="#ok"/></svg><i class="sr">Yes</i></li>
       <li class="b no"><span><i class="em" aria-hidden="true">🐾</i> Animals</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
       <li class="b no"><span><i class="em" aria-hidden="true">🚬</i> Smoking</span><svg aria-hidden="true"><use href="#nope"/></svg><i class="sr">No</i></li>
     </ul>
