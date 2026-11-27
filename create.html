@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Create a listing · Sublet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="create">
+  <header class="top">
+    <a class="brand" href="./">🏠 Sublet</a>
+    <a class="btn alt small" href="./">← All listings</a>
+  </header>
+
+  <div>
+    <form id="form" novalidate>
+      <fieldset>
+        <legend>The basics</legend>
+        <label class="f full">Title<input name="title" required placeholder="Private room in a shared apartment in the Old North"></label>
+        <label class="f">Type
+          <select name="type">
+            <option>Shared apartment</option>
+            <option>Entire apartment</option>
+            <option>Studio</option>
+          </select>
+        </label>
+        <label class="f">Neighborhood<input name="neighborhood" required placeholder="Old North"></label>
+        <label class="f full">Address<input name="address" placeholder="Ben Yehuda St, Old North, Tel Aviv"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dates and price</legend>
+        <label class="f">From<input name="from" type="date" required></label>
+        <label class="f">To<input name="to" type="date" required></label>
+        <label class="f">Total price (₪)<input name="total" type="number" min="0" inputmode="numeric" required placeholder="2400"></label>
+        <label class="check"><input name="bills" type="checkbox" checked> Bills included</label>
+        <label class="f">Per month (₪) <small>optional</small><input name="perMonth" type="number" min="0" inputmode="numeric" placeholder="1600"></label>
+        <label class="f">Per night (₪) <small>optional</small><input name="perNight" type="number" min="0" inputmode="numeric"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Who and what</legend>
+        <label class="f">Looking for <small>one per line</small><textarea name="lookingFor" placeholder="👥 Single or couple&#10;🚭 No smoking"></textarea></label>
+        <label class="f">The place <small>one per line</small><textarea name="place" placeholder="1 private bedroom&#10;📐 60 m²"></textarea></label>
+        <label class="f full">Description <small>leave an empty line between paragraphs</small><textarea name="description" rows="5" placeholder="A quiet private room with a double bed…"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>What's included</legend>
+        <label class="f">Private <small>one per line</small><textarea name="private" placeholder="🛏️ Bedroom"></textarea></label>
+        <label class="f">Shared <small>one per line</small><textarea name="shared" placeholder="🍳 Kitchen&#10;🚿 Bathroom"></textarea></label>
+        <label class="f full">Not included <small>one per line</small><textarea name="notIncluded" placeholder="🛡️ Bomb shelter"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Photos</legend>
+        <label class="f full">Add photos <small>landscape photos look best; the first one is the cover</small><input id="pick" type="file" accept="image/*" multiple></label>
+        <ul class="pics" id="pics"></ul>
+      </fieldset>
+
+      <fieldset>
+        <legend>Contact</legend>
+        <label class="f">Your name<input name="name" required placeholder="Michal Cohen" autocomplete="name"></label>
+        <label class="f">WhatsApp number<input name="phone" type="tel" required placeholder="972501234567" autocomplete="tel"></label>
+      </fieldset>
+
+      <div class="actions">
+        <button class="btn main" type="submit">Create listing</button>
+        <button class="btn alt" type="button" id="reset">Clear form</button>
+      </div>
+    </form>
+
+    <!-- Shown after "Create listing". For now, publishing = adding the data to listings.json. -->
+    <section class="done" id="done" hidden>
+      <h2>Your listing is ready 🎉</h2>
+      <ol>
+        <li>Copy the listing data below.</li>
+        <li>Paste it into <code>listings.json</code>, inside the <code>[ ]</code>, with a comma after the listing before it.</li>
+        <li id="photoStep">Put your photos in <code></code>.</li>
+        <li>Commit and push. It goes live at <code id="liveUrl"></code>.</li>
+      </ol>
+      <div class="actions" style="margin-bottom:12px"><button class="btn dark small" type="button" id="copy">Copy listing data</button></div>
+      <pre id="json"></pre>
+    </section>
+  </div>
+
+  <aside class="pv">
+    <h3 class="gl">Live preview</h3>
+    <div class="frame" id="preview"></div>
+  </aside>
+</div>
+
+<script src="listing.js"></script>
+<script>
+  const form = document.getElementById('form');
+  const preview = document.getElementById('preview');
+  const picsList = document.getElementById('pics');
+  const done = document.getElementById('done');
+  const SAVE_KEY = 'sublet-draft';
+
+  // Photos picked from this device: { file, url (temporary, for the preview), caption }
+  let photos = [];
+
+  // ---- Small helpers for turning form text into data ----
+  const lines = text => text.split('\n').map(s => s.trim()).filter(Boolean);
+  const paragraphs = text => text.split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, ' ').trim()).filter(Boolean);
+  const slug = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const number = v => v === '' ? undefined : Number(v);
+
+  // Read the whole form into a listing object, in the same shape as listings.json.
+  function readForm() {
+    const f = form.elements;
+    const id = slug(`${f.neighborhood.value || 'listing'} ${f.from.value}`);
+    return {
+      id,
+      title: f.title.value.trim(),
+      type: f.type.value,
+      address: f.address.value.trim(),
+      neighborhood: f.neighborhood.value.trim(),
+      from: f.from.value,
+      to: f.to.value,
+      price: {
+        total: number(f.total.value),
+        perMonth: number(f.perMonth.value),
+        perNight: number(f.perNight.value),
+        billsIncluded: f.bills.checked,
+      },
+      lookingFor: lines(f.lookingFor.value),
+      place: lines(f.place.value),
+      description: paragraphs(f.description.value),
+      included: { private: lines(f.private.value), shared: lines(f.shared.value) },
+      notIncluded: lines(f.notIncluded.value),
+      contact: { name: f.name.value.trim(), phone: f.phone.value.replace(/\D/g, '') },
+      photos: photos.map(p => ({ src: `photos/${id}/${p.file.name}`, caption: p.caption })),
+    };
+  }
+
+  // ---- Live preview: redraw the real listing design on every change ----
+  function updatePreview() {
+    const listing = readForm();
+    // In the preview, show the photos straight from this device.
+    listing.photos = photos.map(p => ({ src: p.url, caption: p.caption }));
+    preview.innerHTML = Sublet.render(listing, { preview: true });
+    Sublet.activate(preview, { preview: true });
+  }
+
+  // ---- Photos ----
+  function captionFromName(name) {
+    const base = name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim();
+    return base.charAt(0).toUpperCase() + base.slice(1);
+  }
+  function drawPhotos() {
+    picsList.innerHTML = photos.map((p, i) => `
+      <li>
+        <img src="${p.url}" alt="">
+        <input value="${Sublet.esc(p.caption)}" data-i="${i}" aria-label="Caption for photo ${i + 1}" placeholder="Caption">
+        <button type="button" data-remove="${i}">Remove</button>
+      </li>`).join('');
+  }
+  document.getElementById('pick').addEventListener('change', e => {
+    for (const file of e.target.files) {
+      photos.push({ file, url: URL.createObjectURL(file), caption: captionFromName(file.name) });
+    }
+    e.target.value = '';
+    drawPhotos();
+    updatePreview();
+  });
+  picsList.addEventListener('input', e => {
+    if (e.target.dataset.i) { photos[e.target.dataset.i].caption = e.target.value; updatePreview(); }
+  });
+  picsList.addEventListener('click', e => {
+    const i = e.target.dataset.remove;
+    if (i === undefined) return;
+    URL.revokeObjectURL(photos[i].url);
+    photos.splice(i, 1);
+    drawPhotos();
+    updatePreview();
+  });
+
+  // ---- Keep a draft in this browser, so a refresh doesn't lose your work (photos aren't saved) ----
+  function saveDraft() {
+    const data = {};
+    for (const el of form.elements) if (el.name) data[el.name] = el.type === 'checkbox' ? el.checked : el.value;
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  function loadDraft() {
+    let data;
+    try { data = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) {}
+    if (!data) return;
+    for (const el of form.elements) {
+      if (!el.name || !(el.name in data)) continue;
+      if (el.type === 'checkbox') el.checked = data[el.name]; else el.value = data[el.name];
+    }
+  }
+
+  form.addEventListener('input', () => { saveDraft(); updatePreview(); done.hidden = true; });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    form.reset();
+    photos.forEach(p => URL.revokeObjectURL(p.url));
+    photos = [];
+    drawPhotos();
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    done.hidden = true;
+    updatePreview();
+  });
+
+  // ---- "Create listing": check the form, then show the data to add to listings.json ----
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    if (form.elements.to.value < form.elements.from.value) {
+      form.elements.to.setCustomValidity('The end date must be after the start date');
+      form.reportValidity();
+      form.elements.to.setCustomValidity('');
+      return;
+    }
+    const listing = readForm();
+    document.getElementById('json').textContent = JSON.stringify(listing, null, 2);
+    document.getElementById('liveUrl').textContent = `meraryz.github.io/sublet/${listing.id}/`;
+    const photoStep = document.getElementById('photoStep');
+    photoStep.hidden = photos.length === 0;
+    photoStep.querySelector('code').textContent = `photos/${listing.id}/`;
+    done.hidden = false;
+    done.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document.getElementById('copy').addEventListener('click', async e => {
+    try {
+      await navigator.clipboard.writeText(document.getElementById('json').textContent);
+      e.target.textContent = 'Copied ✓';
+    } catch (err) {
+      e.target.textContent = 'Select the text below and copy it';
+    }
+    setTimeout(() => e.target.textContent = 'Copy listing data', 2500);
+  });
+
+  loadDraft();
+  updatePreview();
+</script>
+</body>
+</html>

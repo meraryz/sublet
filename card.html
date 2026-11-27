@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Preview image</title>
+<!-- The WhatsApp preview image (1200x630). build.js takes a screenshot of this page for every listing.
+     Open card.html?id=florentin to see one; card.html with no id is the image for the home page. -->
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=DM+Sans:wght@700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#12262e}
+  .card{position:relative;width:1200px;height:630px;display:flex;flex-direction:column}
+  .photo{flex:1;min-height:0;background:#e4f0f4 center/cover no-repeat}
+  .band{height:190px;background:#12262e;color:#fff;padding:0 60px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:12px}
+  /* Text is centered so it still reads when WhatsApp crops the image to a center square. */
+  .big{max-width:100%;font:700 66px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .small{max-width:100%;font:700 38px/1.1 'DM Sans',system-ui,sans-serif;color:#f4b63d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tag{position:absolute;top:36px;left:50%;transform:translateX(-50%);background:rgba(18,38,46,.85);color:#fff;border-radius:999px;padding:10px 24px;font:700 30px/1 'DM Sans',system-ui,sans-serif}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="photo" id="photo"></div>
+  <span class="tag" id="tag" hidden></span>
+  <div class="band"><div class="big" id="big"></div><div class="small" id="small"></div></div>
+</div>
+<script src="listing.js"></script>
+<script>
+  const id = new URLSearchParams(location.search).get('id');
+  const $ = s => document.getElementById(s);
+
+  Sublet.loadListings().then(listings => {
+    const l = listings.find(x => x.id === id);
+    if (l) {
+      // Listing image: cover photo, type tag, then dates and price on the dark band.
+      $('photo').style.backgroundImage = `url("${l.photos?.[0]?.src || 'photos/building.svg'}")`;
+      $('tag').textContent = l.type;
+      $('tag').hidden = !l.type;
+      // Short dates: 05/12 – 20/12/2026 (the year once, when both dates are in the same year)
+      const [from, to] = [l.from, l.to].map(d => d.split('-').reverse());
+      $('big').textContent = from[2] === to[2]
+        ? `${from[0]}/${from[1]} – ${to.join('/')}` : `${from.join('/')} – ${to.join('/')}`;
+      $('small').textContent = [`${Sublet.money(l.price.total)} total`, l.neighborhood].filter(Boolean).join('  ·  ');
+    } else {
+      // Home page image
+      $('photo').style.backgroundImage = 'url("photos/building.svg")';
+      $('big').textContent = 'Sublets in Tel Aviv';
+      $('small').textContent = `${listings.length} rooms and apartments, short-term`;
+    }
+  });
+</script>
+</body>
+</html>

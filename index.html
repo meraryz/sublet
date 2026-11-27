@@ -2,291 +2,64 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Private room in the Old North · 01/03–15/04</title>
-
-<!-- LINK PREVIEW TAGS: WhatsApp / Telegram read these. og:image must be a full https URL to a 1200x630 JPG or PNG. -->
-<meta name="description" content="₪2,400 total (₪1,600/month) · Private room · Shared apartment · Old North, Tel Aviv">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sublet · Short-term rentals in Tel Aviv</title>
+<meta name="description" content="Sublets and short-term rooms in Tel Aviv.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Private room in the Old North · 01/03–15/04">
-<meta property="og:description" content="₪2,400 total (₪1,600/month) · Private room · Shared apartment · Old North, Tel Aviv">
-<meta property="og:image" content="https://meraryz.github.io/sublet/old-north-shared-en.png">
+<meta property="og:title" content="Sublet · Short-term rentals in Tel Aviv">
+<meta property="og:description" content="Sublets and short-term rooms in Tel Aviv.">
+<meta property="og:url" content="https://meraryz.github.io/sublet/">
+<meta property="og:site_name" content="Sublet">
+<meta property="og:image" content="https://meraryz.github.io/sublet/og/home.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://meraryz.github.io/sublet/old-north-shared-en.html">
 <meta name="twitter:card" content="summary_large_image">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-/* Layout: one column, 480px max. Image, subject, address and dates, four key facts, badge grid, sticky action bar. */
-:root{
-  --ink:#12262e;
-  --sea:#1b6a86;
-  --sea-soft:#e4f0f4;
-  --sun:#f4b63d;
-  --paper:#f7f9f9;
-  --line:#d5e0e4;
-  --muted:#5b707a;
-  --yes:#1c7d4c;
-  --yes-soft:#e3f4ea;
-  --no:#b03a2a;
-  --no-soft:#fbe8e4;
-  --f-display:'Bricolage Grotesque',system-ui,sans-serif;
-  --f-body:'DM Sans',system-ui,sans-serif;
-  color-scheme:light;
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--paper);color:var(--ink);font:400 16px/1.5 var(--f-body);-webkit-text-size-adjust:100%}
-.wrap{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:96px;box-shadow:0 0 0 1px var(--line)}
-.hero{position:relative;aspect-ratio:1200/630;background:var(--sea-soft);overflow:hidden}
-.gal{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.gal::-webkit-scrollbar{display:none}
-.gal:focus-visible{outline:3px solid var(--sun);outline-offset:-3px}
-.slide{position:relative;flex:0 0 100%;height:100%;scroll-snap-align:center}
-.slide svg,.slide img{display:block;width:100%;height:100%;object-fit:cover}
-.cap{position:absolute;left:12px;bottom:12px;background:rgba(18,38,46,.82);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
-.count{position:absolute;right:12px;top:12px;background:rgba(18,38,46,.82);color:#fff;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
-.dots{position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:6px;pointer-events:none}
-.dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.65);transition:width .2s}
-.dots i.on{width:18px;border-radius:4px;background:#fff}
-.contact{margin:8px 0 0;font-weight:700;font-size:16px}
-.hero svg{display:block;width:100%;height:100%}
-.body{padding:20px 16px;display:flex;flex-direction:column;gap:20px}
-h1{font:700 28px/1.12 var(--f-display);margin:0;text-wrap:balance}
-.meta{margin:8px 0 0;display:flex;flex-direction:column;gap:2px;color:var(--muted)}
-.meta strong{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
-.desc{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
-.desc p{margin:0}
-.desc p+p{margin-top:8px}
-.facts{display:grid;grid-template-columns:1fr;gap:8px}
-.head{display:grid;grid-template-columns:1fr auto;gap:10px 14px;align-items:start}
-.head h1{grid-column:1/-1}
-.side{display:flex;flex-direction:column;gap:8px;min-width:150px}
-
-@media (max-width:380px){.head{grid-template-columns:1fr}.side{min-width:0}}
-.tf{margin:8px 0 0;display:flex;flex-direction:column;gap:2px;color:var(--muted)}
-.tf strong{color:var(--ink)}
-.tf.who{color:var(--ink);font-weight:700}
-.fact.type strong{font-size:17px;line-height:1.25}
-.fact{border:1px solid var(--line);border-radius:12px;padding:10px 14px}
-.fact span{display:block;color:var(--muted);font-size:13px}
-.fact.wide{grid-column:1/-1}
-.fact small{display:block;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
-.fact small.incl{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;font-weight:700;color:var(--yes)}
-.fact small.incl.no{color:var(--no)}
-.fact small.incl svg{width:18px;height:18px;flex:none}
-.fact strong{display:block;font:700 22px/1.2 var(--f-display);font-variant-numeric:tabular-nums}
-.badges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.b{display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:12px;padding:10px 12px;font-size:15px;border:1px solid var(--line)}
-.b span{color:var(--muted)}
-.b strong{font-weight:700}
-.b.info{background:var(--sea-soft);border-color:transparent}
-.b.info span{color:var(--sea)}
-.b.yes{background:#fff;border-color:var(--line)}
-.b.yes span{color:var(--ink)}
-.b.no{background:#fff;border-color:var(--line)}
-.b.no span{color:var(--ink)}
-.b svg{flex:none;width:22px;height:22px}
-.yes svg{color:var(--yes)}
-.no svg{color:var(--no)}
-.em{font-style:normal}
-.fact small.rates{display:flex;flex-wrap:wrap;gap:2px 16px}
-.fact small.rates span{white-space:nowrap}
-.stay{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-.stay dl{margin:0;display:flex;flex-direction:column;gap:8px}
-.stay dl div{display:flex;justify-content:space-between;gap:16px;font-size:15px}
-.stay dt{color:var(--muted);flex:none}
-.stay dd{margin:0;font-weight:700;text-align:right}
-.stay .ok{display:flex;align-items:center;gap:8px;margin:12px 0 0;color:var(--yes);font-weight:700;font-size:14px}
-.stay .ok svg{width:18px;height:18px;flex:none}
-.stay h2{font:700 18px/1.2 var(--f-display);margin:0 0 10px}
-.stay h3{font:700 15px/1.2 var(--f-display);margin:16px 0 8px}
-.sharing{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.sharing li{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px}
-.tag{border-radius:999px;font-size:12px;font-weight:700;padding:2px 8px;white-space:nowrap}
-.tag.sh{background:var(--yes-soft);color:var(--yes)}
-.tag.pv{background:var(--yes-soft);color:var(--yes)}
-.b.space{background:#fff}
-.b.space>span:first-child{color:var(--ink)}
-.b.wide{grid-column:1/-1}
-table.spaces{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:15px}
-.spaces th,.spaces td{padding:9px 12px}
-.spaces thead th{background:var(--paper);color:var(--muted);font-size:13px;font-weight:700;text-align:center;width:26%}
-.spaces tbody th{text-align:left;font-weight:400}
-.spaces td{text-align:center;vertical-align:middle}
-.spaces tbody tr+tr th,.spaces tbody tr+tr td{border-top:1px solid var(--line)}
-.spaces td svg{width:22px;height:22px;display:inline-block;vertical-align:middle}
-.spaces td.y svg{color:var(--yes)}
-.spaces td.n svg{color:var(--no)}
-.zones{display:flex;flex-direction:column;gap:8px}
-.inc{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.zones h3{display:flex;align-items:center;gap:6px;margin:0;font:700 15px/1.2 var(--f-display)}
-.zones h3 svg{width:20px;height:20px;flex:none}
-.inc h3{color:var(--yes)}
-.cols{display:grid;grid-template-columns:1fr 1fr;margin-top:10px}
-.col h4{margin:0 0 6px;font:700 13px/1.2 var(--f-body);color:var(--muted)}
-.col+.col{border-left:1px solid var(--line);padding-left:14px}
-.zones ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px}
-.zones li.none{color:var(--muted)}
-.out{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.out h3{color:var(--no)}
-.out ul{margin-top:10px;flex-direction:row;flex-wrap:wrap;gap:6px 16px}
-.info{display:flex;flex-direction:column;gap:12px}
-.info>*{margin:0}
-.gl{margin:0 0 6px;font:700 11px/1 var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
-.cl{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border-radius:999px;padding:5px 11px;font-size:14px;font-weight:700;line-height:1.25;background:var(--sea-soft);color:var(--sea)}
-.chip.dark{background:var(--ink);color:#fff}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.sample{color:var(--muted);font-size:13px;margin:0}
-.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:5}
-.bar div{max-width:480px;margin:0 auto;display:flex;gap:8px}
-.btn{font:700 16px var(--f-body);border-radius:12px;padding:14px 16px;text-align:center;text-decoration:none;cursor:pointer;border:0}
-.btn.main{flex:1;background:#1f9d55;color:#fff}
-.btn.alt{background:var(--sea-soft);color:var(--sea)}
-.btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:6}
-.toast.show{opacity:1}
-@media (prefers-reduced-motion:reduce){.toast{transition:none}}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="site">
+  <header class="top">
+    <a class="brand" href="./">🏠 Sublet</a>
+    <a class="btn dark small" href="create.html">+ Create a listing</a>
+  </header>
+  <p class="lead">Short-term rooms and apartments in Tel Aviv.</p>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe0ee"/><stop offset="1" stop-color="#f1f7f4"/></linearGradient>
-    <g id="scene">
-      <rect width="1200" height="630" fill="url(#sky)"/>
-      <circle cx="960" cy="150" r="70" fill="#f4b63d"/>
-      <rect y="470" width="1200" height="160" fill="#1b6a86"/>
-      <rect y="470" width="1200" height="10" fill="#14566d"/>
-      <g fill="#ffffff" stroke="#d5e0e4" stroke-width="3">
-        <rect x="90" y="190" width="300" height="290"/>
-        <rect x="420" y="120" width="330" height="360"/>
-        <rect x="780" y="250" width="280" height="230"/>
-      </g>
-      <g fill="#1b6a86" opacity=".85">
-        <rect x="120" y="225" width="50" height="60"/><rect x="200" y="225" width="50" height="60"/><rect x="280" y="225" width="50" height="60"/>
-        <rect x="120" y="330" width="50" height="60"/><rect x="200" y="330" width="50" height="60"/><rect x="280" y="330" width="50" height="60"/>
-        <rect x="455" y="160" width="60" height="70"/><rect x="545" y="160" width="60" height="70"/><rect x="635" y="160" width="60" height="70"/>
-        <rect x="455" y="280" width="60" height="70"/><rect x="545" y="280" width="60" height="70"/><rect x="635" y="280" width="60" height="70"/>
-        <rect x="810" y="285" width="50" height="55"/><rect x="890" y="285" width="50" height="55"/><rect x="970" y="285" width="50" height="55"/>
-      </g>
-      <g fill="#12262e"><rect x="440" y="400" width="290" height="10"/><rect x="100" y="410" width="280" height="8"/><rect x="790" y="400" width="260" height="8"/></g>
-    </g>
-    <symbol id="ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="nope" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M8 8l8 8M16 8l-8 8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></symbol>
-  </defs>
-</svg>
+  <div class="grid" id="grid"></div>
 
-<div class="wrap">
-  <!-- To use real photos: replace each <svg> inside a .slide with <img src="photo1.jpg" alt="Living room">. Add or remove .slide blocks freely. -->
-  <div class="hero">
-    <div class="gal" id="gal" tabindex="0" aria-label="Photo gallery, swipe for more photos">
-      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Building (sample illustration, replace with a photo)"><use href="#scene"/></svg><span class="cap">Building</span></div>
-      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Living room (sample illustration, replace with a photo)"><rect width="1200" height="630" fill="#eef3f2"/><rect y="470" width="1200" height="160" fill="#d8e3e6"/><rect x="760" y="110" width="300" height="230" fill="#bfe0ee" stroke="#fff" stroke-width="12"/><path d="M910 110v230M760 225h300" stroke="#fff" stroke-width="10"/><ellipse cx="400" cy="545" rx="330" ry="42" fill="#f4b63d" opacity=".55"/><rect x="140" y="250" width="520" height="100" rx="30" fill="#1f7a99"/><rect x="120" y="320" width="560" height="150" rx="30" fill="#1b6a86"/><rect x="190" y="300" width="130" height="80" rx="20" fill="#f4b63d"/><rect x="1000" y="400" width="76" height="86" rx="10" fill="#12262e"/><circle cx="1038" cy="360" r="46" fill="#2f8f5b"/><circle cx="1000" cy="385" r="34" fill="#38a068"/><circle cx="1076" cy="385" r="34" fill="#38a068"/></svg><span class="cap">Living room</span></div>
-      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Bedroom (sample illustration, replace with a photo)"><rect width="1200" height="630" fill="#eef3f2"/><rect y="470" width="1200" height="160" fill="#d8e3e6"/><rect x="90" y="120" width="170" height="230" fill="#bfe0ee" stroke="#fff" stroke-width="10"/><rect x="300" y="240" width="620" height="120" rx="18" fill="#1b6a86"/><rect x="300" y="330" width="620" height="150" rx="18" fill="#fff" stroke="#d5e0e4" stroke-width="4"/><rect x="345" y="285" width="210" height="64" rx="22" fill="#fff"/><rect x="665" y="285" width="210" height="64" rx="22" fill="#fff"/><rect x="300" y="395" width="620" height="85" rx="14" fill="#f4b63d" opacity=".9"/><rect x="975" y="410" width="110" height="76" fill="#12262e"/><circle cx="1030" cy="370" r="32" fill="#f4b63d"/></svg><span class="cap">Bedroom</span></div>
-      <div class="slide"><svg viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Balcony (sample illustration, replace with a photo)"><rect width="1200" height="630" fill="url(#sky)"/><circle cx="930" cy="140" r="64" fill="#f4b63d"/><rect y="260" width="1200" height="140" fill="#1b6a86"/><rect y="260" width="1200" height="8" fill="#14566d"/><rect y="480" width="1200" height="150" fill="#d8e3e6"/><g stroke="#12262e" stroke-width="6"><line x1="60" y1="410" x2="60" y2="480"/><line x1="120" y1="410" x2="120" y2="480"/><line x1="180" y1="410" x2="180" y2="480"/><line x1="240" y1="410" x2="240" y2="480"/><line x1="300" y1="410" x2="300" y2="480"/><line x1="360" y1="410" x2="360" y2="480"/><line x1="420" y1="410" x2="420" y2="480"/><line x1="480" y1="410" x2="480" y2="480"/><line x1="540" y1="410" x2="540" y2="480"/><line x1="600" y1="410" x2="600" y2="480"/><line x1="660" y1="410" x2="660" y2="480"/><line x1="720" y1="410" x2="720" y2="480"/><line x1="780" y1="410" x2="780" y2="480"/><line x1="840" y1="410" x2="840" y2="480"/><line x1="900" y1="410" x2="900" y2="480"/><line x1="960" y1="410" x2="960" y2="480"/><line x1="1020" y1="410" x2="1020" y2="480"/><line x1="1080" y1="410" x2="1080" y2="480"/><line x1="1140" y1="410" x2="1140" y2="480"/></g><rect y="396" width="1200" height="16" fill="#12262e"/><rect x="520" y="520" width="170" height="16" rx="8" fill="#12262e"/><rect x="598" y="536" width="14" height="70" fill="#12262e"/><rect x="290" y="545" width="120" height="26" rx="10" fill="#f4b63d"/><rect x="298" y="480" width="26" height="90" rx="10" fill="#f4b63d"/><rect x="800" y="545" width="120" height="26" rx="10" fill="#f4b63d"/><rect x="896" y="480" width="26" height="90" rx="10" fill="#f4b63d"/></svg><span class="cap">Balcony</span></div>
-    </div>
-    <span class="count" id="count">1 / 4</span>
-    <div class="dots" id="dots" aria-hidden="true"></div>
-  </div>
+  <p class="foot">Sample listings. Names, phone numbers and illustrations are for demonstration only.</p>
+</div>
 
-  <div class="body">
-    <div class="head">
-      <h1>🏠 Private room in a shared apartment in the Old North</h1>
-      <div class="info">
-        <p class="meta">
-          <span>📍 Ben Yehuda St, Old North, Tel Aviv</span>
-          <strong>📅 01/03/2027 – 15/04/2027</strong>
-        </p>
-        <div><h3 class="gl">Looking for</h3><div class="cl"><span class="chip">👥 Single or couple</span><span class="chip">🚻 Women</span><span class="chip">🎂 Age 25–35</span><span class="chip">🚭 No smoking</span><span class="chip">🚫 No animals</span></div></div>
-        <div><h3 class="gl">The place</h3><div class="cl"><span class="chip dark">Shared apartment</span><span class="chip">1 private bedroom</span><span class="chip">1 other resident</span><span class="chip">📐 60 m²</span><span class="chip">🛏️ 2 bedrooms in total</span></div></div>
-        <p class="contact"><i class="em" aria-hidden="true">👤</i> Michal Cohen<span class="sr"> (contact person)</span></p>
-      </div>
-      <div class="side">
-        <div class="fact price"><span>Total price</span><strong>₪2,400</strong><small class="rates"><span>₪1,600 per month</span></small><small class="incl yes"><svg aria-hidden="true"><use href="#ok"/></svg>Bills included<i class="sr"> Yes</i></small></div>
-      </div>
-    </div>
+<script src="listing.js"></script>
+<script>
+  const grid = document.getElementById('grid');
+  const { esc, money, dates } = Sublet;
 
-    <div class="desc">
-      <p>A quiet private room with a double bed in a bright 2-bedroom apartment, a few minutes' walk from the beach and Dizengoff Square. Fully furnished, with a sunny balcony and a spacious living room.</p>
-      <p>You will share the apartment with one other person who lives there during the same period. The kitchen, bathroom and living areas are shared.</p>
-    </div>
-
-
-    <div class="zones">
-      <section class="inc">
-        <h3><svg aria-hidden="true"><use href="#ok"/></svg> Included</h3>
-        <div class="cols">
-          <div class="col"><h4>Private</h4>
-            <ul>
-            <li><i class="em" aria-hidden="true">🛏️</i> Bedroom</li>
-            <li><i class="em" aria-hidden="true">📺</i> TV</li>
-            </ul>
-          </div>
-          <div class="col"><h4>Shared</h4>
-            <ul>
-            <li><i class="em" aria-hidden="true">🍳</i> Kitchen</li>
-            <li><i class="em" aria-hidden="true">🚿</i> Bathroom</li>
-            <li><i class="em" aria-hidden="true">🚽</i> Toilet</li>
-            <li><i class="em" aria-hidden="true">🛋️</i> Living room</li>
-            <li><i class="em" aria-hidden="true">🌿</i> Balcony</li>
-            <li><i class="em" aria-hidden="true">🧺</i> Washing machine</li>
-            <li><i class="em" aria-hidden="true">📶</i> Fast Wi-Fi</li>
-            <li><i class="em" aria-hidden="true">📺</i> TV</li>
-            </ul>
+  // One card per listing, soonest move-in first.
+  function card(l) {
+    const photo = l.photos?.[0]?.src || 'photos/building.svg';
+    return `
+      <a class="card" href="${encodeURIComponent(l.id)}/">
+        <img src="${esc(photo)}" alt="" loading="lazy">
+        <div class="cb">
+          <div class="cl"><span class="chip dark">${esc(l.type)}</span></div>
+          <h2>${esc(l.title)}</h2>
+          <span class="where">📍 ${esc(l.neighborhood)}</span>
+          <div class="row">
+            <span class="when">📅 ${dates(l)}</span>
+            <strong>${money(l.price.total)}</strong>
           </div>
         </div>
-      </section>
-      <section class="out">
-        <h3><svg aria-hidden="true"><use href="#nope"/></svg> Not included</h3>
-        <ul>
-            <li><i class="em" aria-hidden="true">🛡️</i> Bomb shelter</li>
-        </ul>
-      </section>
-    </div>
-
-
-    <p class="sample">Sample listing. The details, phone number and illustrations are for demonstration only.</p>
-  </div>
-</div>
-
-<div class="bar">
-  <div>
-    <a class="btn main" id="wa" href="https://wa.me/972500000000?text=Hi%2C%20I%20saw%20your%20apartment%20in%20the%20Old%20North%20for%2001%2F03%2F2027-15%2F04%2F2027">Message Michal on WhatsApp</a>
-    <button class="btn alt" id="share" type="button">Share</button>
-  </div>
-</div>
-<div class="toast" id="toast" role="status"></div>
-
-<script>
-(function(){
-  var toast=document.getElementById('toast');
-  function say(t){toast.textContent=t;toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},2200);}
-  document.getElementById('share').addEventListener('click',function(){
-    var url=location.href;
-    try{
-      navigator.clipboard.writeText(url).then(function(){say('Link copied');},function(){say('Copy the link from the address bar');});
-    }catch(e){say('Copy the link from the address bar');}
-  });
-  var gal=document.getElementById('gal'),dots=document.getElementById('dots'),count=document.getElementById('count'),n=gal.children.length;
-  for(var k=0;k<n;k++){dots.appendChild(document.createElement('i'));}
-  function sync(){
-    var i=Math.min(n-1,Math.max(0,Math.round(gal.scrollLeft/gal.clientWidth)));
-    for(var j=0;j<n;j++){dots.children[j].className=(j===i?'on':'');}
-    count.textContent=(i+1)+' / '+n;
+      </a>`;
   }
-  gal.addEventListener('scroll',function(){requestAnimationFrame(sync);});
-  gal.addEventListener('keydown',function(e){
-    if(e.key==='ArrowRight'){gal.scrollBy({left:gal.clientWidth,behavior:'smooth'});}
-    if(e.key==='ArrowLeft'){gal.scrollBy({left:-gal.clientWidth,behavior:'smooth'});}
-  });
-  sync();
-})();
+
+  Sublet.loadListings().then(listings => {
+    listings.sort((a, b) => a.from.localeCompare(b.from));
+    grid.innerHTML = listings.map(card).join('') || '<p class="msg">No listings yet.</p>';
+  }).catch(() => Sublet.loadError(grid));
 </script>
 </body>
 </html>

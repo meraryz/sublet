@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- BUILD:HEAD  build.js puts each listing's WhatsApp preview tags here -->
+<title>Sublet listing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- One template shows any listing. build.js turns it into a page per listing (florentin/index.html),
+     and listing.html?id=florentin also works. -->
+<div id="app"></div>
+
+<script src="listing.js"></script>
+<script>
+  const app = document.getElementById('app');
+  const id = window.LISTING_ID || new URLSearchParams(location.search).get('id');
+
+  Sublet.loadListings().then(listings => {
+    const listing = listings.find(l => l.id === id);
+    if (!listing) {
+      app.innerHTML = `<p class="msg">This listing doesn't exist (anymore).<br><a href="./">See all listings</a></p>`;
+      return;
+    }
+    document.title = `${listing.title} · ${Sublet.dates(listing)}`;
+    app.innerHTML = Sublet.render(listing, { back: true });
+    // Share the listing's own short link, the one with the WhatsApp preview.
+    Sublet.activate(app, { shareUrl: new URL(encodeURIComponent(id) + '/', document.baseURI).href });
+  }).catch(() => Sublet.loadError(app));
+</script>
+</body>
+</html>
