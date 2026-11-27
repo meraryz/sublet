@@ -309,5 +309,65 @@
       "phone": "972501234567"
     },
     "photos": []
+  },
+  {
+    "id": "old-north-2026-11-28",
+    "title": "Cozy Old North Sublet",
+    "type": "Shared apartment",
+    "address": "Arlozorov 92, Old North, Tel Aviv",
+    "neighborhood": "Old North",
+    "from": "2026-11-28",
+    "to": "2027-01-26",
+    "price": {
+      "total": 5200,
+      "billsIncluded": false
+    },
+    "lookingFor": [
+      "👤 Single",
+      "👥 Couple",
+      "🚭 No smoking"
+    ],
+    "place": [
+      "1 private bedroom",
+      "1 other resident",
+      "📐 60 m²",
+      "🛏️ 2 bedrooms in total"
+    ],
+    "description": [],
+    "included": {
+      "private": [
+        "🛏️ Bedroom",
+        "🅿️ Private parking spot"
+      ],
+      "shared": [
+        "🍳 Kitchen",
+        "🚿 Bathroom",
+        "🛋️ Living room",
+        "🛋️ Furnished",
+        "❄️ AC",
+        "📶 Wi-Fi",
+        "🧺 Washing machine"
+      ]
+    },
+    "notIncluded": [],
+    "nearby": [],
+    "contact": {
+      "name": "Aviad",
+      "phone": "972549202054"
+    },
+    "photos": [
+      {
+        "src": "photos/old-north-2026-11-28/1.jpg",
+        "caption": "Livingroom"
+      },
+      {
+        "src": "photos/old-north-2026-11-28/2.jpg",
+        "caption": "Balcony"
+      },
+      {
+        "src": "photos/old-north-2026-11-28/3.jpg",
+        "caption": "Bedroom"
+      }
+    ]
   }
 ]
