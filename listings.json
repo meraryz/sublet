@@ -258,5 +258,56 @@
         "caption": "Living room"
       }
     ]
+  },
+  {
+    "id": "old-north-2027-01-06",
+    "title": "My apartment",
+    "type": "Shared apartment",
+    "address": "Arlozorov, Old North, Tel Aviv",
+    "neighborhood": "Old North",
+    "from": "2027-01-06",
+    "to": "2027-01-28",
+    "price": {
+      "total": 2683,
+      "perMonth": 3500,
+      "billsIncluded": true
+    },
+    "lookingFor": [
+      "👤 Single",
+      "👥 Couple",
+      "🚭 No smoking",
+      "🚫 No pets"
+    ],
+    "place": [
+      "1 private bedroom",
+      "1 other resident",
+      "📐 60 m²",
+      "🛏️ 2 bedrooms in total"
+    ],
+    "description": [],
+    "included": {
+      "private": [
+        "🛏️ Bedroom",
+        "🅿️ Private parking spot"
+      ],
+      "shared": [
+        "🍳 Kitchen",
+        "🚿 2 bathrooms",
+        "🚽 Separate toilet",
+        "🛋️ Living room",
+        "🛋️ Furnished",
+        "❄️ AC",
+        "📶 Wi-Fi"
+      ]
+    },
+    "notIncluded": [],
+    "nearby": [
+      "🛡️ Public shelter"
+    ],
+    "contact": {
+      "name": "Avi",
+      "phone": "972501234567"
+    },
+    "photos": []
   }
 ]
