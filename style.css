@@ -138,6 +138,11 @@ form legend{font:700 17px/1 var(--f-display);padding:0 6px}
 .done ol{margin:0 0 12px;padding-left:20px}
 .done code{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:1px 5px;font-size:13px}
 .done pre{background:var(--ink);color:#e4f0f4;border-radius:10px;padding:12px;font-size:12px;max-height:260px;overflow:auto;margin:0}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.pubmsg{margin:0 0 12px;padding:12px 14px;border-radius:12px;background:#fbe8e4;color:var(--no);font-weight:700}
+.done .link{margin:0 0 14px;font-weight:700;word-break:break-all}
+.done .link a{color:var(--sea)}
+.btn[disabled]{opacity:.6;cursor:progress}
 .pv{position:sticky;top:16px}
 .pv .gl{margin-bottom:8px}
 .frame{border:1px solid var(--line);border-radius:18px;overflow:auto;max-height:calc(100vh - 60px);background:#fff}
@@ -158,6 +163,13 @@ form legend small{font:400 13px var(--f-body);color:var(--muted)}
 .opt span:hover{border-color:var(--sea)}
 .opt input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
 .opt input:focus-visible+span{outline:3px solid var(--sun);outline-offset:2px}
+.optw{display:inline-flex;align-items:center;gap:6px}
+.ps{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.ps label{position:relative;display:flex}
+.ps input{position:absolute;opacity:0;width:1px;height:1px}
+.ps span{padding:7px 11px;font-size:13px;font-weight:700;cursor:pointer;user-select:none}
+.ps input:checked+span{background:var(--sea);color:#fff}
+.ps input:focus-visible+span{outline:3px solid var(--sun);outline-offset:-3px}
 .opts.big .opt{flex:1 1 170px}
 .opts.big span{flex:1;text-align:center;padding:14px 10px;border-radius:12px;font-size:16px}
 .steps{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px 28px}

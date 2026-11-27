@@ -89,13 +89,28 @@
         </div>
       </details>
 
+      <!-- Spam trap: hidden from people; bots fill it in and their post is ignored. -->
+      <label class="hp" aria-hidden="true">Leave empty<input name="trap" tabindex="-1" autocomplete="off"></label>
+
+      <p class="pubmsg" id="pubError" role="alert" hidden></p>
       <div class="actions">
-        <button class="btn main" type="submit">Create listing</button>
+        <button class="btn main" type="submit" id="submitBtn">Publish listing</button>
         <button class="btn alt" type="button" id="clear">Start over</button>
       </div>
     </form>
 
-    <!-- Shown after "Create listing". For now, publishing = adding the data to listings.json. -->
+    <!-- Shown after publishing -->
+    <section class="done" id="published" hidden>
+      <h2 id="pubTitle">🎉 Published!</h2>
+      <p id="pubText"></p>
+      <p class="link"><a id="pubLink" href="#"></a></p>
+      <div class="actions">
+        <a class="btn main" id="pubShare" target="_blank" rel="noopener">Share on WhatsApp</a>
+        <button class="btn alt" type="button" id="another">Post another</button>
+      </div>
+    </section>
+
+    <!-- Fallback when PUBLISH_URL isn't set: add the data to listings.json by hand. -->
     <section class="done" id="done" hidden>
       <h2>Your listing is ready 🎉</h2>
       <ol>
@@ -117,6 +132,13 @@
 
 <script src="listing.js"></script>
 <script>
+  // ================= Where "Publish listing" sends the listing =================
+  // The Google Apps Script web app URL (see server/README.md). Leave empty to get the
+  // listing data to add to listings.json by hand instead.
+  const PUBLISH_URL = 'https://script.google.com/macros/s/AKfycbyuyI9QACnovoRlmm1iOliIgiqKlm_RTUQBHvfSdH8WHLM7fY_v-adi4t1x-R-HEQlz1g/exec';
+  const SITE_URL = 'https://meraryz.github.io/sublet/';
+  const MAX_PHOTOS = 10;
+
   // ================= Options people tap. Edit these lists to change the form. =================
   const OPTIONS = {
     type: [
@@ -131,7 +153,16 @@
       { value: 'night', label: 'Night' },
       { value: 'total', label: 'Whole stay' },
     ],
-    amen: ['🛋️ Furnished', '❄️ AC', '📶 Wi-Fi', '🧺 Washing machine', '🌿 Balcony', '🛗 Elevator', '🚿 Private bathroom'],
+    // split: in a shared apartment, picking it asks "Private or Shared?"
+    amen: [
+      { value: '🛋️ Furnished', split: true },
+      { value: '❄️ AC', split: true },
+      '📶 Wi-Fi',
+      { value: '🧺 Washing machine', split: true },
+      { value: '🌿 Balcony', split: true },
+      '🛗 Elevator',
+      '🚿 Private bathroom',
+    ],
     parking: [
       { value: 'private', label: '🅿️ Private spot' },
       { value: 'street', label: 'Street parking' },
@@ -154,9 +185,15 @@
   // ================= Draw the tap buttons =================
   // single: radio buttons (pick one). Otherwise checkboxes (pick many). Both look like chips.
   function drawOptions(name, list, { single = false, required = false } = {}) {
-    document.getElementById('o-' + name).innerHTML = list.map(o => {
-      const value = o.value ?? o, label = o.label ?? o;
-      return `<label class="opt"><input type="${single ? 'radio' : 'checkbox'}" name="${name}" value="${Sublet.esc(value)}"${required ? ' required' : ''}><span>${Sublet.esc(label)}</span></label>`;
+    document.getElementById('o-' + name).innerHTML = list.map((o, i) => {
+      const value = o.value ?? o, label = o.label ?? value;
+      const chip = `<label class="opt"><input type="${single ? 'radio' : 'checkbox'}" name="${name}" value="${Sublet.esc(value)}"${required ? ' required' : ''}><span>${Sublet.esc(label)}</span></label>`;
+      if (o.split !== true) return chip;
+      // Private / Shared switch, shown next to the chip once it's picked (shared apartments only)
+      const where = `where-${name}-${i}`;
+      return `<span class="optw">${chip}<span class="ps" role="group" aria-label="${Sublet.esc(label)}: private or shared" hidden>
+        <label><input type="radio" name="${where}" value="private"><span>Private</span></label>
+        <label><input type="radio" name="${where}" value="shared" checked><span>Shared</span></label></span></span>`;
     }).join('');
   }
   drawOptions('type', OPTIONS.type, { single: true, required: true });
@@ -216,6 +253,9 @@
     const baths = studio ? 1 : Number(f.baths.value) || 1;
     const toilets = studio ? 0 : Number(f.toilets.value) || 0;
     const amen = checked('amen').filter(a => shared || !SHARED_ONLY.includes(a));
+    // In a shared apartment: is this amenity private (just for you) or shared?
+    const isPrivate = a => shared && form.querySelector(`input[name=amen][value="${a}"]`)
+      ?.closest('.optw')?.querySelector('.ps input:checked')?.value === 'private';
 
     // Price: whatever unit they chose, work out the total.
     const price = { billsIncluded: f.bills.checked };
@@ -248,9 +288,13 @@
     const bathrooms = [...(sharedBaths > 0 ? [bathText(sharedBaths)] : []), ...(toilets > 0 ? [toiletText(toilets)] : [])];
 
     const parking = one('parking'), shelter = one('shelter');
-    const inPlace = [   // things that come with the place
-      ...amen.filter(a => !SHARED_ONLY.includes(a)),
-      ...(parking === 'private' ? ['🅿️ Private parking spot'] : []),
+    const yours = [   // in a shared apartment: only for the person renting
+      ...amen.filter(isPrivate),
+      ...(shared && parking === 'private' ? ['🅿️ Private parking spot'] : []),
+    ];
+    const inPlace = [   // things that come with the place (shared, in a shared apartment)
+      ...amen.filter(a => !SHARED_ONLY.includes(a) && !isPrivate(a)),
+      ...(!shared && parking === 'private' ? ['🅿️ Private parking spot'] : []),
       ...({ mamad: ['🛡️ Safe room (Mamad)'], building: ['🛡️ Shelter in the building'] }[shelter] || []),
     ];
     const nearby = [
@@ -263,7 +307,7 @@
     ];
     const included =
       shared ? {
-        private: ['🛏️ Bedroom', ...(privateBath ? ['🚿 Private bathroom'] : [])],
+        private: ['🛏️ Bedroom', ...(privateBath ? ['🚿 Private bathroom'] : []), ...yours],
         shared: ['🍳 Kitchen', ...bathrooms, '🛋️ Living room', ...inPlace],
       } :
       studio ? { private: ['🛏️ Bed', '🍳 Kitchenette', '🚿 Bathroom', ...inPlace], shared: [] } :
@@ -298,6 +342,8 @@
     document.getElementById('q-others').hidden = type !== 'Shared apartment';
     document.getElementById('otherHood').hidden = one('hood') !== 'Other';
     for (const a of SHARED_ONLY) form.querySelector(`input[name=amen][value="${a}"]`).closest('.opt').hidden = type !== 'Shared apartment';
+    // Private / Shared switches: only in a shared apartment, only next to picked chips
+    for (const w of form.querySelectorAll('.optw')) w.querySelector('.ps').hidden = !(type === 'Shared apartment' && w.querySelector('.opt input').checked);
     document.getElementById('q-baths').hidden = type === 'Studio';
     document.getElementById('q-toilets').hidden = type === 'Studio';
     if (f.from.value) f.to.min = f.from.value;
@@ -333,7 +379,7 @@
       </li>`).join('');
   }
   document.getElementById('pick').addEventListener('change', e => {
-    for (const file of e.target.files) photos.push({ file, url: URL.createObjectURL(file), caption: captionFromName(file.name) });
+    for (const file of [...e.target.files].slice(0, MAX_PHOTOS - photos.length)) photos.push({ file, url: URL.createObjectURL(file), caption: captionFromName(file.name) });
     e.target.value = '';
     drawPhotos(); update();
   });
@@ -439,10 +485,87 @@
     return true;
   }
 
+  // ================= Publishing =================
+  const submitBtn = document.getElementById('submitBtn');
+  const published = document.getElementById('published');
+  const pubError = document.getElementById('pubError');
+
+  // Phone photos are big (3-5 MB). Shrink each to max 1600px wide as a JPEG (~300 KB) before sending.
+  async function shrink(file) {
+    const img = await createImageBitmap(file);
+    const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(img.width * scale);
+    canvas.height = Math.round(img.height * scale);
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', 0.82);
+  }
+
+  async function publish(listing) {
+    submitBtn.disabled = true;
+    pubError.hidden = true;
+    try {
+      submitBtn.textContent = photos.length ? 'Preparing photos…' : 'Publishing…';
+      const photoData = [];
+      for (const p of photos) photoData.push({ data: await shrink(p.file), caption: p.caption });
+      submitBtn.textContent = 'Publishing…';
+      // Sent as plain text so the browser sends it straight to Google (no extra permission check).
+      const res = await fetch(PUBLISH_URL, {
+        method: 'POST',
+        body: JSON.stringify({ listing, photos: photoData, trap: f.trap.value }),
+      });
+      const result = await res.json();
+      if (!result.ok) throw new Error(result.error);
+      showPublished(result.id);
+    } catch (err) {
+      pubError.textContent = `Couldn't publish: ${err.message || 'no connection'}. Your details are saved, try again.`;
+      pubError.hidden = false;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Publish listing';
+    }
+  }
+
+  // After publishing: show the link, then check every 10 s until the page is up (about 2 minutes).
+  function showPublished(id) {
+    const url = `${SITE_URL}${id}/`;
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    form.hidden = true;
+    published.hidden = false;
+    document.getElementById('pubTitle').textContent = '🎉 Published!';
+    document.getElementById('pubText').textContent = 'Your listing will be online in about 2 minutes at:';
+    const link = document.getElementById('pubLink');
+    link.href = url; link.textContent = url.replace('https://', '');
+    document.getElementById('pubShare').href = `https://wa.me/?text=${encodeURIComponent(url)}`;
+    published.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    let tries = 0;
+    const check = async () => {
+      try {
+        const r = await fetch(`${id}/`, { method: 'HEAD', cache: 'no-store' });
+        if (r.ok) {
+          document.getElementById('pubTitle').textContent = "✅ It's live!";
+          document.getElementById('pubText').textContent = 'Your listing is online. Share it:';
+          return;
+        }
+      } catch (e) {}
+      if (++tries < 40) setTimeout(check, 10000);
+    };
+    setTimeout(check, 30000);
+  }
+
+  document.getElementById('another').addEventListener('click', () => {
+    published.hidden = true;
+    form.hidden = false;
+    document.getElementById('clear').click();
+  });
+
   form.addEventListener('submit', e => {
     e.preventDefault();
-    if (!check()) return;
+    if (submitBtn.disabled || !check()) return;
     const listing = readForm();
+    if (PUBLISH_URL) return publish(listing);
+    // No server yet: show the data to add to listings.json by hand.
     document.getElementById('json').textContent = JSON.stringify(listing, null, 2);
     document.getElementById('liveUrl').textContent = `meraryz.github.io/sublet/${listing.id}/`;
     const photoStep = document.getElementById('photoStep');

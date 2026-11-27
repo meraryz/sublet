@@ -15,6 +15,7 @@ A small site for sublet listings. Plain HTML, CSS and JavaScript: no frameworks,
 | `style.css` | All styles |
 | `photos/` | Listing photos. Put a new listing's photos in `photos/<listing-id>/` |
 | `build.js` | Builds the site into `_site/` (see below) |
+| `server/publish.gs` | The publishing server (Google Apps Script). Setup: `server/README.md` |
 
 To change the design of every listing, edit `render()` in `listing.js` and/or `style.css`.
 
@@ -42,7 +43,11 @@ Then open http://localhost:8000. Run it again after you change something.
 
 ## Add a listing
 
-1. Open `create.html`, fill in the form, and click **Create listing**.
-2. Copy the data it gives you into `listings.json`.
-3. Put the photos in `photos/<listing-id>/`.
-4. Commit and push. GitHub builds and publishes it within a minute or two.
+Anyone can open `create.html`, fill in the form and tap **Publish listing**. No login.
+The listing is saved to this repo (`listings.json` + `photos/<id>/`) by the publishing server,
+and is live about 2 minutes later.
+
+Before the server is set up (`PUBLISH_URL` empty in `create.html`), the form instead shows the data
+to paste into `listings.json` by hand.
+
+To remove a listing: delete it from `listings.json` (and its photos folder) and commit.

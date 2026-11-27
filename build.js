@@ -21,7 +21,7 @@ const run = require('util').promisify(execFile);
 const SITE_URL = 'https://meraryz.github.io/sublet/';   // where the site is published (ends with /)
 const ROOT = __dirname;
 const OUT = path.join(ROOT, '_site');
-const SKIP = new Set(['_site', '.git', '.github', 'build.js', 'README.md', 'preview.png', '.DS_Store', '.gitignore']);
+const SKIP = new Set(['_site', '.git', '.github', 'server', 'build.js', 'README.md', 'preview.png', '.DS_Store', '.gitignore']);
 
 // ---------- helpers ----------
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -109,13 +109,19 @@ async function build() {
   // the image gets a new URL and WhatsApp can't show an old cached one.
   const shots = [];
   const ids = new Set();
+  const valid = [];
   // What the image depends on: the card design, the listing's data and its cover photo file.
   const card = fs.readFileSync(path.join(ROOT, 'card.html'), 'utf8');
   const fileBytes = src => { try { return fs.readFileSync(path.join(ROOT, src)).toString('base64'); } catch (e) { return ''; } };
   for (const l of listings) {
-    if (!/^[a-z0-9-]+$/.test(l.id)) throw new Error(`Listing id "${l.id}" must use only a-z, 0-9 and -`);
-    if (ids.has(l.id)) throw new Error(`Two listings have the id "${l.id}"`);
+    // A broken listing is skipped (with a warning) instead of stopping the whole site from publishing.
+    const problem =
+      !/^[a-z0-9-]+$/.test(l.id || '') ? `id "${l.id}" must use only a-z, 0-9 and -` :
+      ids.has(l.id) ? `two listings have the id "${l.id}"` :
+      !l.title || !/^\d{4}-\d{2}-\d{2}$/.test(l.from || '') || !/^\d{4}-\d{2}-\d{2}$/.test(l.to || '') || !l.price?.total ? 'missing title, dates or price' : '';
+    if (problem) { console.warn(`  ⚠ skipped listing "${l.id}": ${problem}`); continue; }
     ids.add(l.id);
+    valid.push(l);
 
     const image = `og/${l.id}-${hash([card, l, fileBytes(l.photos?.[0]?.src || '')])}.jpg`;
     shots.push({ page: `card.html?id=${l.id}`, file: image });
@@ -135,8 +141,11 @@ async function build() {
     fs.writeFileSync(path.join(OUT, l.id, 'index.html'), html);
   }
 
+  // The published listings.json only has the listings that built fine.
+  fs.writeFileSync(path.join(OUT, 'listings.json'), JSON.stringify(valid, null, 2));
+
   // Home page image (changes when listings change).
-  const homeImage = `og/home-${hash([card, listings.length])}.jpg`;
+  const homeImage = `og/home-${hash([card, valid.length])}.jpg`;
   shots.push({ page: 'card.html', file: homeImage });
   const indexFile = path.join(OUT, 'index.html');
   fs.writeFileSync(indexFile, fs.readFileSync(indexFile, 'utf8').replace(SITE_URL + 'og/home.jpg', SITE_URL + homeImage));
@@ -166,7 +175,7 @@ async function build() {
     }
   }
 
-  console.log(`Built ${listings.length} listings into _site/ (${todo.length} new preview images)`);
+  console.log(`Built ${valid.length} listings into _site/ (${todo.length} new preview images)`);
 }
 
 build().then(async () => {
