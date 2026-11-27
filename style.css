@@ -160,6 +160,8 @@ form legend small{font:400 13px var(--f-body);color:var(--muted)}
 .opt input:focus-visible+span{outline:3px solid var(--sun);outline-offset:2px}
 .opts.big .opt{flex:1 1 170px}
 .opts.big span{flex:1;text-align:center;padding:14px 10px;border-radius:12px;font-size:16px}
+.steps{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px 28px}
+@media (max-width:520px){.steps{gap:12px 16px}.step{gap:4px}.step button{width:40px;height:42px}.step input{width:44px}}
 .step{display:flex;align-items:center;gap:6px}
 .step button{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font:700 22px/1 var(--f-body);cursor:pointer}
 .step button:active{background:var(--sea-soft)}

@@ -49,44 +49,34 @@
       </fieldset>
 
       <fieldset>
-        <legend>3. Inside <small>tap everything you have</small></legend>
-        <div class="q" id="q-baths"><span class="ql">Bathrooms (with shower)</span>
+        <legend>3. What's there</legend>
+        <div class="steps full">
+        <div class="q" id="q-baths"><span class="ql">Bathrooms</span>
           <div class="step"><button type="button" data-step="baths" data-d="-1" aria-label="Fewer bathrooms">−</button><input name="baths" type="number" min="1" max="9" value="1" inputmode="numeric" aria-label="Bathrooms"><button type="button" data-step="baths" data-d="1" aria-label="More bathrooms">+</button></div></div>
         <div class="q" id="q-toilets"><span class="ql">Separate toilets</span>
           <div class="step"><button type="button" data-step="toilets" data-d="-1" aria-label="Fewer toilets">−</button><input name="toilets" type="number" min="0" max="9" value="0" inputmode="numeric" aria-label="Separate toilets"><button type="button" data-step="toilets" data-d="1" aria-label="More toilets">+</button></div></div>
-        <div class="q full" id="q-room"><span class="ql" id="l-room">In the room</span>
-          <div class="opts" id="o-room" role="group" aria-labelledby="l-room"></div></div>
-        <div class="q full"><span class="ql" id="l-amen">In the apartment</span>
+        </div>
+        <div class="q full"><span class="ql" id="l-amen">Tap what you have</span>
           <div class="opts" id="o-amen" role="group" aria-labelledby="l-amen"></div></div>
-        <div class="q full"><span class="ql" id="l-kitchen">Kitchen</span>
-          <div class="opts" id="o-kitchen" role="group" aria-labelledby="l-kitchen"></div></div>
-      </fieldset>
-
-      <fieldset>
-        <legend>4. Building and area</legend>
-        <div class="q full"><span class="ql" id="l-building">Building</span>
-          <div class="opts" id="o-building" role="group" aria-labelledby="l-building"></div></div>
         <div class="q full"><span class="ql" id="l-parking">Parking</span>
           <div class="opts" id="o-parking" role="group" aria-labelledby="l-parking"></div></div>
         <div class="q full"><span class="ql" id="l-shelter">Safe room / shelter</span>
           <div class="opts" id="o-shelter" role="group" aria-labelledby="l-shelter"></div></div>
-        <div class="q full"><span class="ql" id="l-near">Close by</span>
-          <div class="opts" id="o-near" role="group" aria-labelledby="l-near"></div></div>
       </fieldset>
 
       <fieldset>
-        <legend>5. Who can rent it <small>optional</small></legend>
+        <legend>4. Who can rent it <small>optional</small></legend>
         <div class="q full"><div class="opts" id="o-who" role="group" aria-label="Who can rent it"></div></div>
       </fieldset>
 
       <fieldset>
-        <legend>6. Photos <small>optional</small></legend>
+        <legend>5. Photos <small>optional</small></legend>
         <label class="pickbtn full"><input id="pick" type="file" accept="image/*" multiple>📷 Add photos</label>
         <ul class="pics" id="pics"></ul>
       </fieldset>
 
       <fieldset>
-        <legend>7. Your details</legend>
+        <legend>6. Your details</legend>
         <label class="f">Your name<input name="name" required placeholder="e.g. Michal" autocomplete="given-name"></label>
         <label class="f">WhatsApp number<input name="phone" type="tel" required placeholder="e.g. 050-1234567" autocomplete="tel"></label>
       </fieldset>
@@ -141,17 +131,11 @@
       { value: 'night', label: 'Night' },
       { value: 'total', label: 'Whole stay' },
     ],
-    // "In the room" is asked only for a room in a shared apartment.
-    room: ['🛏️ Double bed', '❄️ AC in the room', '🚪 Closet', '🪑 Desk', '📺 TV in the room',
-           '🌿 Private balcony', '🚿 Private bathroom'],
-    amen: ['🛋️ Fully furnished', '❄️ AC', '🔥 Heating', '📶 Wi-Fi', '📺 TV', '🧺 Washing machine', '🌀 Dryer',
-           '☀️ Solar water heater', '🛁 Bathtub', '💻 Workspace', '🧴 Towels and linens', '🌿 Balcony'],
-    kitchen: ['🧊 Fridge', '🍳 Stove', '♨️ Oven', '⏲️ Microwave', '🍽️ Dishwasher', '☕ Coffee machine', '✡️ Kosher kitchen'],
-    building: ['🛗 Elevator', '♿ No stairs to the door', '🏙️ Rooftop', '🌳 Garden / yard', '📦 Storage room', '🚲 Bike storage'],
+    amen: ['🛋️ Furnished', '❄️ AC', '📶 Wi-Fi', '🧺 Washing machine', '🌿 Balcony', '🛗 Elevator', '🚿 Private bathroom'],
     parking: [
-      { value: 'private', label: '🅿️ Private parking spot' },
-      { value: 'street', label: 'Free street parking nearby' },
-      { value: 'paid', label: 'Paid parking lot nearby' },
+      { value: 'private', label: '🅿️ Private spot' },
+      { value: 'street', label: 'Street parking' },
+      { value: 'paid', label: 'Paid lot nearby' },
       { value: 'none', label: 'Hard to park' },
     ],
     shelter: [
@@ -160,12 +144,12 @@
       { value: 'nearby', label: 'Public shelter nearby' },
       { value: 'none', label: 'None' },
     ],
-    near: ['🏖️ Beach', '🏞️ Park', '🛒 Supermarket', '🚌 Bus stop', '🚆 Train station', '🚊 Light rail',
-           '🏋️ Gym', '☕ Cafés and restaurants', '🎓 University'],
     who: ['👤 Single', '👥 Couple', '🚺 Women only', '🚹 Men only', '🎓 Students', '🚭 No smoking', '🐾 Pets welcome', '🚫 No pets'],
   };
   // Picking one of these un-picks the other.
   const OPPOSITES = [['🚺 Women only', '🚹 Men only'], ['🐾 Pets welcome', '🚫 No pets']];
+  // Shown only for "a room in my apartment".
+  const SHARED_ONLY = ['🚿 Private bathroom'];
 
   // ================= Draw the tap buttons =================
   // single: radio buttons (pick one). Otherwise checkboxes (pick many). Both look like chips.
@@ -178,13 +162,9 @@
   drawOptions('type', OPTIONS.type, { single: true, required: true });
   drawOptions('hood', OPTIONS.hood, { single: true, required: true });
   drawOptions('unit', OPTIONS.unit, { single: true });
-  drawOptions('room', OPTIONS.room);
   drawOptions('amen', OPTIONS.amen);
-  drawOptions('kitchen', OPTIONS.kitchen);
-  drawOptions('building', OPTIONS.building);
   drawOptions('parking', OPTIONS.parking, { single: true });
   drawOptions('shelter', OPTIONS.shelter, { single: true });
-  drawOptions('near', OPTIONS.near);
   drawOptions('who', OPTIONS.who);
   document.querySelector('input[name=unit][value=month]').checked = true;
 
@@ -235,7 +215,7 @@
     const studio = type === 'Studio';
     const baths = studio ? 1 : Number(f.baths.value) || 1;
     const toilets = studio ? 0 : Number(f.toilets.value) || 0;
-    const room = shared ? checked('room') : [];
+    const amen = checked('amen').filter(a => shared || !SHARED_ONLY.includes(a));
 
     // Price: whatever unit they chose, work out the total.
     const price = { billsIncluded: f.bills.checked };
@@ -261,7 +241,7 @@
     // ---- Included / Not included / Nearby ----
     // Bathrooms and toilets: "🚿 Bathroom" or "🚿 2 bathrooms". In a shared apartment,
     // a private bathroom counts as one of the bathrooms; the others are shared.
-    const privateBath = room.includes('🚿 Private bathroom');
+    const privateBath = amen.includes('🚿 Private bathroom');
     const sharedBaths = privateBath ? baths - 1 : baths;
     const bathText = n => n === 1 ? '🚿 Bathroom' : `🚿 ${n} bathrooms`;
     const toiletText = n => n === 1 ? '🚽 Separate toilet' : `🚽 ${n} separate toilets`;
@@ -269,16 +249,13 @@
 
     const parking = one('parking'), shelter = one('shelter');
     const inPlace = [   // things that come with the place
-      ...checked('amen'),
-      ...checked('kitchen'),
-      ...checked('building'),
+      ...amen.filter(a => !SHARED_ONLY.includes(a)),
       ...(parking === 'private' ? ['🅿️ Private parking spot'] : []),
       ...({ mamad: ['🛡️ Safe room (Mamad)'], building: ['🛡️ Shelter in the building'] }[shelter] || []),
     ];
     const nearby = [
       ...({ street: ['🅿️ Free street parking'], paid: ['🅿️ Paid parking lot'] }[parking] || []),
       ...(shelter === 'nearby' ? ['🛡️ Public shelter'] : []),
-      ...checked('near'),
     ];
     const notIncluded = [
       ...(parking === 'none' ? ['🅿️ Parking'] : []),
@@ -286,7 +263,7 @@
     ];
     const included =
       shared ? {
-        private: ['🛏️ Bedroom', ...room],
+        private: ['🛏️ Bedroom', ...(privateBath ? ['🚿 Private bathroom'] : [])],
         shared: ['🍳 Kitchen', ...bathrooms, '🛋️ Living room', ...inPlace],
       } :
       studio ? { private: ['🛏️ Bed', '🍳 Kitchenette', '🚿 Bathroom', ...inPlace], shared: [] } :
@@ -320,7 +297,7 @@
     document.getElementById('q-bedrooms').hidden = type === 'Studio';
     document.getElementById('q-others').hidden = type !== 'Shared apartment';
     document.getElementById('otherHood').hidden = one('hood') !== 'Other';
-    document.getElementById('q-room').hidden = type !== 'Shared apartment';
+    for (const a of SHARED_ONLY) form.querySelector(`input[name=amen][value="${a}"]`).closest('.opt').hidden = type !== 'Shared apartment';
     document.getElementById('q-baths').hidden = type === 'Studio';
     document.getElementById('q-toilets').hidden = type === 'Studio';
     if (f.from.value) f.to.min = f.from.value;
@@ -369,6 +346,21 @@
     URL.revokeObjectURL(photos[i].url);
     photos.splice(i, 1);
     drawPhotos(); update();
+  });
+
+  // ================= Tap a picked option again to un-pick it =================
+  // Checkboxes do this by themselves; single-choice buttons (radios) don't, so we add it.
+  // "Per month / night / whole stay" always keeps one choice.
+  form.addEventListener('pointerdown', e => {
+    const input = e.target.closest('.opt')?.querySelector('input[type=radio]');
+    if (input) input.dataset.wasChecked = input.checked ? '1' : '';
+  });
+  form.addEventListener('click', e => {
+    const input = e.target;
+    if (input.type !== 'radio' || input.name === 'unit' || input.dataset.wasChecked !== '1') return;
+    input.checked = false;
+    input.dataset.wasChecked = '';
+    form.dispatchEvent(new Event('input'));
   });
 
   // ================= − / + buttons =================
