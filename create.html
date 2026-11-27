@@ -26,8 +26,7 @@
         <legend>1. The place</legend>
         <div class="q full"><span class="ql" id="q-type">What are you renting out?</span>
           <div class="opts big" id="o-type" role="group" aria-labelledby="q-type"></div></div>
-        <div class="q full"><span class="ql" id="q-hood">Neighborhood</span>
-          <div class="opts" id="o-hood" role="group" aria-labelledby="q-hood"></div></div>
+        <label class="f full">Neighborhood<select name="hood" id="o-hood" required></select></label>
         <label class="f full" id="otherHood" hidden>Which neighborhood?<input name="otherHood" placeholder="e.g. Bavli"></label>
         <label class="f full">Street <small>optional</small><input name="street" placeholder="e.g. Ben Yehuda St"></label>
         <div class="q" id="q-bedrooms"><span class="ql">Bedrooms in the apartment</span>
@@ -101,11 +100,11 @@
 
     <!-- Shown after publishing -->
     <section class="done" id="published" hidden>
-      <h2 id="pubTitle">🎉 Published!</h2>
+      <h2 id="pubTitle"></h2>
       <p id="pubText"></p>
-      <p class="link"><a id="pubLink" href="#"></a></p>
+      <p class="link" id="pubLinkRow" hidden><a id="pubLink" href="#"></a></p>
       <div class="actions">
-        <a class="btn main" id="pubShare" target="_blank" rel="noopener">Share on WhatsApp</a>
+        <a class="btn main" id="pubShare" target="_blank" rel="noopener" hidden>Share on WhatsApp</a>
         <button class="btn alt" type="button" id="another">Post another</button>
       </div>
     </section>
@@ -137,6 +136,7 @@
   // listing data to add to listings.json by hand instead.
   const PUBLISH_URL = 'https://script.google.com/macros/s/AKfycbyuyI9QACnovoRlmm1iOliIgiqKlm_RTUQBHvfSdH8WHLM7fY_v-adi4t1x-R-HEQlz1g/exec';
   const SITE_URL = 'https://meraryz.github.io/sublet/';
+  const GITHUB_REPO = 'meraryz/sublet';   // used to see when the new listing has finished publishing
   const MAX_PHOTOS = 10;
 
   // ================= Options people tap. Edit these lists to change the form. =================
@@ -197,7 +197,8 @@
     }).join('');
   }
   drawOptions('type', OPTIONS.type, { single: true, required: true });
-  drawOptions('hood', OPTIONS.hood, { single: true, required: true });
+  document.getElementById('o-hood').innerHTML = '<option value="">Choose a neighborhood…</option>' +
+    OPTIONS.hood.map(h => `<option>${Sublet.esc(h)}</option>`).join('');
   drawOptions('unit', OPTIONS.unit, { single: true });
   drawOptions('amen', OPTIONS.amen);
   drawOptions('parking', OPTIONS.parking, { single: true });
@@ -245,7 +246,7 @@
   function readForm() {
     const type = one('type');
     const shared = type === 'Shared apartment';
-    const hood = one('hood') === 'Other' ? f.otherHood.value.trim() : one('hood');
+    const hood = f.hood.value === 'Other' ? f.otherHood.value.trim() : f.hood.value;
     const bedrooms = Number(f.bedrooms.value) || 1;
     const others = Number(f.others.value) || 0;
     const size = Number(f.size.value) || 0;
@@ -340,7 +341,7 @@
     // Show only the questions that fit what they're renting out.
     document.getElementById('q-bedrooms').hidden = type === 'Studio';
     document.getElementById('q-others').hidden = type !== 'Shared apartment';
-    document.getElementById('otherHood').hidden = one('hood') !== 'Other';
+    document.getElementById('otherHood').hidden = f.hood.value !== 'Other';
     for (const a of SHARED_ONLY) form.querySelector(`input[name=amen][value="${a}"]`).closest('.opt').hidden = type !== 'Shared apartment';
     // Private / Shared switches: only in a shared apartment, only next to picked chips
     for (const w of form.querySelectorAll('.optw')) w.querySelector('.ps').hidden = !(type === 'Shared apartment' && w.querySelector('.opt input').checked);
@@ -474,8 +475,8 @@
   }
   function check() {
     if (!one('type')) return problem(f.type[0], 'Pick what you are renting out');
-    if (!one('hood')) return problem(f.hood[0], 'Pick a neighborhood');
-    if (one('hood') === 'Other' && !f.otherHood.value.trim()) return problem(f.otherHood, 'Write the neighborhood');
+    if (!f.hood.value) return problem(f.hood, 'Pick a neighborhood');
+    if (f.hood.value === 'Other' && !f.otherHood.value.trim()) return problem(f.otherHood, 'Write the neighborhood');
     if (!f.from.value) return problem(f.from, 'Pick the start date');
     if (!f.to.value) return problem(f.to, 'Pick the end date');
     if (!datesOk()) return problem(f.to, 'The end date must be after the start date');
@@ -516,7 +517,7 @@
       });
       const result = await res.json();
       if (!result.ok) throw new Error(result.error);
-      showPublished(result.id);
+      showPublished(result.id, listing.title);
     } catch (err) {
       pubError.textContent = `Couldn't publish: ${err.message || 'no connection'}. Your details are saved, try again.`;
       pubError.hidden = false;
@@ -526,32 +527,50 @@
     }
   }
 
-  // After publishing: show the link, then check every 10 s until the page is up (about 2 minutes).
-  function showPublished(id) {
+  // After publishing, the site needs ~1 minute to rebuild. We show the link only once it's live:
+  // if the link is opened (or pasted in WhatsApp) too early, GitHub remembers "page not found"
+  // for up to 10 minutes, and WhatsApp shows no preview.
+  // To know when it's live without touching the link, we ask GitHub whether the build finished.
+  function showPublished(id, title) {
     const url = `${SITE_URL}${id}/`;
+    const $ = s => document.getElementById(s);
     try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
     form.hidden = true;
     published.hidden = false;
-    document.getElementById('pubTitle').textContent = '🎉 Published!';
-    document.getElementById('pubText').textContent = 'Your listing will be online in about 2 minutes at:';
-    const link = document.getElementById('pubLink');
-    link.href = url; link.textContent = url.replace('https://', '');
-    document.getElementById('pubShare').href = `https://wa.me/?text=${encodeURIComponent(url)}`;
+    $('pubTitle').textContent = '⏳ Publishing your listing…';
+    $('pubText').textContent = 'Your link will be ready in about a minute. Keep this page open.';
+    $('pubLinkRow').hidden = true;
+    $('pubShare').hidden = true;
     published.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    let tries = 0;
-    const check = async () => {
+    const started = Date.now();
+    const commitMessage = `Add listing: ${title}`;   // the server commits with this message
+    function ready() {
+      $('pubTitle').textContent = '✅ Your listing is live!';
+      $('pubText').textContent = 'Share it on WhatsApp, the preview with photo and price will show up:';
+      $('pubLink').href = url;
+      $('pubLink').textContent = url.replace('https://', '');
+      $('pubShare').href = `https://wa.me/?text=${encodeURIComponent(url)}`;
+      $('pubLinkRow').hidden = false;
+      $('pubShare').hidden = false;
+    }
+    async function check() {
       try {
-        const r = await fetch(`${id}/`, { method: 'HEAD', cache: 'no-store' });
+        const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/runs?branch=main&event=push&per_page=10`, { cache: 'no-store' });
         if (r.ok) {
-          document.getElementById('pubTitle').textContent = "✅ It's live!";
-          document.getElementById('pubText').textContent = 'Your listing is online. Share it:';
-          return;
+          const runs = (await r.json()).workflow_runs;   // newest first
+          const mine = runs.findIndex(run => (run.head_commit?.message || '').startsWith(commitMessage));
+          // Live when our build, or a newer one (which includes our listing), finished successfully.
+          if (mine >= 0 && runs.slice(0, mine + 1).some(run => run.status === 'completed' && run.conclusion === 'success')) {
+            return setTimeout(ready, 3000);
+          }
         }
       } catch (e) {}
-      if (++tries < 40) setTimeout(check, 10000);
-    };
-    setTimeout(check, 30000);
+      // Give up waiting after 4 minutes and show the link anyway.
+      if (Date.now() - started > 4 * 60 * 1000) return ready();
+      setTimeout(check, 6000);
+    }
+    setTimeout(check, 20000);
   }
 
   document.getElementById('another').addEventListener('click', () => {

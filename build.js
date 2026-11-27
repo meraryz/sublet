@@ -132,7 +132,10 @@ async function build() {
       url: `${SITE_URL}${l.id}/`,
       image: SITE_URL + image,
       alt: `${l.title}, ${l.neighborhood}`,
-    }) + `\n<script>window.LISTING_ID = ${JSON.stringify(l.id)};</script>`;
+    }) + `\n<script>window.LISTING_ID = ${JSON.stringify(l.id)};\n` +
+      // The listing's data goes inside its own page, so a new page works the moment it's published
+      // (listings.json can be served from GitHub's cache for up to 10 minutes).
+      `window.LISTING = ${JSON.stringify(l).replace(/</g, '\\u003c')};</script>`;
 
     const html = template
       .replace(/<!-- BUILD:HEAD[^>]*-->/, head)

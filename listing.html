@@ -20,7 +20,8 @@
   const app = document.getElementById('app');
   const id = window.LISTING_ID || new URLSearchParams(location.search).get('id');
 
-  Sublet.loadListings().then(listings => {
+  // Pages made by build.js carry their own data (window.LISTING); otherwise load listings.json.
+  (window.LISTING ? Promise.resolve([window.LISTING]) : Sublet.loadListings()).then(listings => {
     const listing = listings.find(l => l.id === id);
     if (!listing) {
       app.innerHTML = `<p class="msg">This listing doesn't exist (anymore).<br><a href="./">See all listings</a></p>`;
