@@ -7,24 +7,68 @@
     "neighborhood": "Old North",
     "from": "2027-03-01",
     "to": "2027-04-15",
-    "price": { "total": 2400, "perMonth": 1600, "billsIncluded": true },
-    "lookingFor": ["👥 Single or couple", "🚻 Women", "🎂 Age 25–35", "🚭 No smoking", "🚫 No animals"],
-    "place": ["1 private bedroom", "1 other resident", "📐 60 m²", "🛏️ 2 bedrooms in total"],
+    "price": {
+      "total": 2400,
+      "perMonth": 1600,
+      "billsIncluded": true
+    },
+    "lookingFor": [
+      "👥 Single or couple",
+      "🚻 Women",
+      "🎂 Age 25–35",
+      "🚭 No smoking",
+      "🚫 No animals"
+    ],
+    "place": [
+      "1 private bedroom",
+      "1 other resident",
+      "📐 60 m²",
+      "🛏️ 2 bedrooms in total"
+    ],
     "description": [
       "A quiet private room with a double bed in a bright 2-bedroom apartment, a few minutes' walk from the beach and Dizengoff Square. Fully furnished, with a sunny balcony and a spacious living room.",
       "You will share the apartment with one other person who lives there during the same period. The kitchen, bathroom and living areas are shared."
     ],
     "included": {
-      "private": ["🛏️ Bedroom", "📺 TV"],
-      "shared": ["🍳 Kitchen", "🚿 Bathroom", "🚽 Toilet", "🛋️ Living room", "🌿 Balcony", "🧺 Washing machine", "📶 Fast Wi-Fi", "📺 TV"]
+      "private": [
+        "🛏️ Bedroom",
+        "📺 TV"
+      ],
+      "shared": [
+        "🍳 Kitchen",
+        "🚿 Bathroom",
+        "🚽 Toilet",
+        "🛋️ Living room",
+        "🌿 Balcony",
+        "🧺 Washing machine",
+        "📶 Fast Wi-Fi",
+        "📺 TV"
+      ]
     },
-    "notIncluded": ["🛡️ Bomb shelter"],
-    "contact": { "name": "Michal Cohen", "phone": "972500000000" },
+    "notIncluded": [
+      "🛡️ Bomb shelter"
+    ],
+    "contact": {
+      "name": "Michal Cohen",
+      "phone": "972500000000"
+    },
     "photos": [
-      { "src": "photos/building.svg", "caption": "Building" },
-      { "src": "photos/living-room.svg", "caption": "Living room" },
-      { "src": "photos/bedroom.svg", "caption": "Bedroom" },
-      { "src": "photos/balcony.svg", "caption": "Balcony" }
+      {
+        "src": "photos/building.svg",
+        "caption": "Building"
+      },
+      {
+        "src": "photos/living-room.svg",
+        "caption": "Living room"
+      },
+      {
+        "src": "photos/bedroom.svg",
+        "caption": "Bedroom"
+      },
+      {
+        "src": "photos/balcony.svg",
+        "caption": "Balcony"
+      }
     ]
   },
   {
@@ -35,24 +79,63 @@
     "neighborhood": "Florentin",
     "from": "2026-12-05",
     "to": "2026-12-20",
-    "price": { "total": 5250, "perNight": 350, "billsIncluded": true },
-    "lookingFor": ["👥 Single or couple", "🚭 No smoking", "🐾 Pets welcome"],
-    "place": ["1 bedroom", "📐 45 m²", "🛗 Elevator", "🌿 Balcony"],
+    "price": {
+      "total": 5250,
+      "perNight": 350,
+      "billsIncluded": true
+    },
+    "lookingFor": [
+      "👥 Single or couple",
+      "🚭 No smoking",
+      "🐾 Pets welcome"
+    ],
+    "place": [
+      "1 bedroom",
+      "📐 45 m²",
+      "🛗 Elevator",
+      "🌿 Balcony"
+    ],
     "description": [
       "A cozy, fully equipped apartment in the heart of Florentin, surrounded by cafés, bars and street art. Five minutes to the Levinsky market.",
       "The whole place is yours while I'm abroad. My cat-friendly neighbors will say hi on the stairs."
     ],
     "included": {
-      "private": ["🛏️ Bedroom", "🍳 Kitchen", "🚿 Bathroom", "🛋️ Living room", "🌿 Balcony", "🧺 Washing machine", "📶 Wi-Fi", "❄️ AC"],
+      "private": [
+        "🛏️ Bedroom",
+        "🍳 Kitchen",
+        "🚿 Bathroom",
+        "🛋️ Living room",
+        "🌿 Balcony",
+        "🧺 Washing machine",
+        "📶 Wi-Fi",
+        "❄️ AC"
+      ],
       "shared": []
     },
-    "notIncluded": ["🅿️ Parking"],
-    "contact": { "name": "Yoni Levi", "phone": "972500000001" },
+    "notIncluded": [
+      "🅿️ Parking"
+    ],
+    "contact": {
+      "name": "Yoni Levi",
+      "phone": "972500000001"
+    },
     "photos": [
-      { "src": "photos/living-room.svg", "caption": "Living room" },
-      { "src": "photos/bedroom.svg", "caption": "Bedroom" },
-      { "src": "photos/balcony.svg", "caption": "Balcony" },
-      { "src": "photos/building.svg", "caption": "Street" }
+      {
+        "src": "photos/living-room.svg",
+        "caption": "Living room"
+      },
+      {
+        "src": "photos/bedroom.svg",
+        "caption": "Bedroom"
+      },
+      {
+        "src": "photos/balcony.svg",
+        "caption": "Balcony"
+      },
+      {
+        "src": "photos/building.svg",
+        "caption": "Street"
+      }
     ]
   },
   {
@@ -63,21 +146,51 @@
     "neighborhood": "Jaffa",
     "from": "2027-01-01",
     "to": "2027-01-31",
-    "price": { "total": 5500, "perMonth": 5500, "billsIncluded": false },
-    "lookingFor": ["👤 Single", "🚭 No smoking", "🚫 No animals"],
-    "place": ["📐 30 m²", "🌊 Sea view", "3rd floor, no elevator"],
+    "price": {
+      "total": 5500,
+      "perMonth": 5500,
+      "billsIncluded": false
+    },
+    "lookingFor": [
+      "👤 Single",
+      "🚭 No smoking",
+      "🚫 No animals"
+    ],
+    "place": [
+      "📐 30 m²",
+      "🌊 Sea view",
+      "3rd floor, no elevator"
+    ],
     "description": [
       "A bright studio with a sea view, two minutes from the Jaffa flea market and the promenade. Perfect for one person who wants quiet mornings and great sunsets."
     ],
     "included": {
-      "private": ["🛏️ Double bed", "🍳 Kitchenette", "🚿 Bathroom", "📶 Wi-Fi", "❄️ AC"],
+      "private": [
+        "🛏️ Double bed",
+        "🍳 Kitchenette",
+        "🚿 Bathroom",
+        "📶 Wi-Fi",
+        "❄️ AC"
+      ],
       "shared": []
     },
-    "notIncluded": ["🧺 Washing machine", "🛡️ Bomb shelter"],
-    "contact": { "name": "Noa Shapiro", "phone": "972500000002" },
+    "notIncluded": [
+      "🧺 Washing machine",
+      "🛡️ Bomb shelter"
+    ],
+    "contact": {
+      "name": "Noa Shapiro",
+      "phone": "972500000002"
+    },
     "photos": [
-      { "src": "photos/balcony.svg", "caption": "View" },
-      { "src": "photos/bedroom.svg", "caption": "Studio" }
+      {
+        "src": "photos/balcony.svg",
+        "caption": "View"
+      },
+      {
+        "src": "photos/bedroom.svg",
+        "caption": "Studio"
+      }
     ]
   },
   {
@@ -88,23 +201,114 @@
     "neighborhood": "Ramat Aviv",
     "from": "2027-02-01",
     "to": "2027-03-31",
-    "price": { "total": 5600, "perMonth": 2800, "billsIncluded": true },
-    "lookingFor": ["🎓 Students", "👤 Single", "🎂 Age 20–30", "🚭 No smoking"],
-    "place": ["1 private bedroom", "2 other residents", "📐 85 m²", "🛏️ 3 bedrooms in total"],
+    "price": {
+      "total": 5600,
+      "perMonth": 2800,
+      "billsIncluded": true
+    },
+    "lookingFor": [
+      "🎓 Students",
+      "👤 Single",
+      "🎂 Age 20–30",
+      "🚭 No smoking"
+    ],
+    "place": [
+      "1 private bedroom",
+      "2 other residents",
+      "📐 85 m²",
+      "🛏️ 3 bedrooms in total"
+    ],
     "description": [
       "A furnished room with a desk in a friendly student apartment, a 7-minute walk from campus.",
       "Two flatmates (both master's students) stay during this period. Quiet during exams, social on weekends."
     ],
     "included": {
-      "private": ["🛏️ Bedroom", "🪑 Desk", "❄️ AC"],
-      "shared": ["🍳 Kitchen", "🚿 Bathroom", "🛋️ Living room", "🧺 Washing machine", "🌀 Dryer", "📶 Wi-Fi"]
+      "private": [
+        "🛏️ Bedroom",
+        "🪑 Desk",
+        "❄️ AC"
+      ],
+      "shared": [
+        "🍳 Kitchen",
+        "🚿 Bathroom",
+        "🛋️ Living room",
+        "🧺 Washing machine",
+        "🌀 Dryer",
+        "📶 Wi-Fi"
+      ]
     },
-    "notIncluded": ["🌿 Balcony"],
-    "contact": { "name": "Dan Mizrahi", "phone": "972500000003" },
+    "notIncluded": [
+      "🌿 Balcony"
+    ],
+    "contact": {
+      "name": "Dan Mizrahi",
+      "phone": "972500000003"
+    },
     "photos": [
-      { "src": "photos/building.svg", "caption": "Building" },
-      { "src": "photos/bedroom.svg", "caption": "Bedroom" },
-      { "src": "photos/living-room.svg", "caption": "Living room" }
+      {
+        "src": "photos/building.svg",
+        "caption": "Building"
+      },
+      {
+        "src": "photos/bedroom.svg",
+        "caption": "Bedroom"
+      },
+      {
+        "src": "photos/living-room.svg",
+        "caption": "Living room"
+      }
+    ]
+  },
+  {
+    "id": "shapira-2028-01-01",
+    "title": "Private room in a shared apartment in Shapira",
+    "type": "Shared apartment",
+    "address": "Shapira, Tel Aviv",
+    "neighborhood": "Shapira",
+    "from": "2028-01-01",
+    "to": "2028-01-31",
+    "price": {
+      "total": 3500,
+      "perMonth": 3500,
+      "billsIncluded": true
+    },
+    "lookingFor": [],
+    "place": [
+      "1 private bedroom",
+      "1 other resident",
+      "🛏️ 2 bedrooms in total"
+    ],
+    "description": [],
+    "included": {
+      "private": [
+        "🛏️ Bedroom",
+        "❄️ AC"
+      ],
+      "shared": [
+        "🍳 Kitchen",
+        "🚿 Bathroom",
+        "🛋️ Living room",
+        "📶 Wi-Fi",
+        "🛡️ Shelter in the building"
+      ]
+    },
+    "notIncluded": [],
+    "nearby": [
+      "🅿️ Free street parking"
+    ],
+    "contact": {
+      "name": "TEST",
+      "phone": "972527654321"
+    },
+    "photos": [
+      {
+        "src": "photos/shapira-2028-01-01/1.jpg",
+        "caption": ""
+      },
+      {
+        "src": "photos/shapira-2028-01-01/2.jpg",
+        "caption": "My kitchen"
+      }
     ]
   }
 ]
