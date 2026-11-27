@@ -258,57 +258,5 @@
         "caption": "Living room"
       }
     ]
-  },
-  {
-    "id": "shapira-2028-01-01",
-    "title": "Private room in a shared apartment in Shapira",
-    "type": "Shared apartment",
-    "address": "Shapira, Tel Aviv",
-    "neighborhood": "Shapira",
-    "from": "2028-01-01",
-    "to": "2028-01-31",
-    "price": {
-      "total": 3500,
-      "perMonth": 3500,
-      "billsIncluded": true
-    },
-    "lookingFor": [],
-    "place": [
-      "1 private bedroom",
-      "1 other resident",
-      "🛏️ 2 bedrooms in total"
-    ],
-    "description": [],
-    "included": {
-      "private": [
-        "🛏️ Bedroom",
-        "❄️ AC"
-      ],
-      "shared": [
-        "🍳 Kitchen",
-        "🚿 Bathroom",
-        "🛋️ Living room",
-        "📶 Wi-Fi",
-        "🛡️ Shelter in the building"
-      ]
-    },
-    "notIncluded": [],
-    "nearby": [
-      "🅿️ Free street parking"
-    ],
-    "contact": {
-      "name": "TEST",
-      "phone": "972527654321"
-    },
-    "photos": [
-      {
-        "src": "photos/shapira-2028-01-01/1.jpg",
-        "caption": ""
-      },
-      {
-        "src": "photos/shapira-2028-01-01/2.jpg",
-        "caption": "My kitchen"
-      }
-    ]
   }
 ]
