@@ -1,4 +1,5 @@
-# On every push to main: run build.js (pages + WhatsApp preview images) and publish _site/ to GitHub Pages.
+# On every push to main (including each new listing posted from the site):
+# run build.js (pages + WhatsApp preview images) and publish _site/ to GitHub Pages.
 # One-time setup: repo Settings -> Pages -> Source: "GitHub Actions".
 name: Build and publish
 
@@ -12,16 +13,15 @@ permissions:
   pages: write
   id-token: write
 
+# If several listings are posted close together, only the newest run needs to finish
+# (it includes all of them).
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -33,5 +33,22 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+
+  # A separate job, as in GitHub's own template: publishing in the same job as the upload
+  # sometimes failed with "No artifacts named github-pages were found".
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.retry.outputs.page_url || steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Wait before retrying
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+      - id: retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v5
