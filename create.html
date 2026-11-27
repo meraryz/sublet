@@ -17,60 +17,73 @@
   </header>
 
   <div>
+    <h1 class="ctitle">Post your sublet</h1>
+    <p class="lead">Mostly tapping. About 2 minutes.</p>
+
+    <!-- The tap options (neighborhoods, amenities...) are lists in the script below: edit them there. -->
     <form id="form" novalidate>
       <fieldset>
-        <legend>The basics</legend>
-        <label class="f full">Title<input name="title" required placeholder="Private room in a shared apartment in the Old North"></label>
-        <label class="f">Type
-          <select name="type">
-            <option>Shared apartment</option>
-            <option>Entire apartment</option>
-            <option>Studio</option>
-          </select>
-        </label>
-        <label class="f">Neighborhood<input name="neighborhood" required placeholder="Old North"></label>
-        <label class="f full">Address<input name="address" placeholder="Ben Yehuda St, Old North, Tel Aviv"></label>
+        <legend>1. The place</legend>
+        <div class="q full"><span class="ql" id="q-type">What are you renting out?</span>
+          <div class="opts big" id="o-type" role="group" aria-labelledby="q-type"></div></div>
+        <div class="q full"><span class="ql" id="q-hood">Neighborhood</span>
+          <div class="opts" id="o-hood" role="group" aria-labelledby="q-hood"></div></div>
+        <label class="f full" id="otherHood" hidden>Which neighborhood?<input name="otherHood" placeholder="e.g. Bavli"></label>
+        <label class="f full">Street <small>optional</small><input name="street" placeholder="e.g. Ben Yehuda St"></label>
+        <div class="q" id="q-bedrooms"><span class="ql">Bedrooms in the apartment</span>
+          <div class="step"><button type="button" data-step="bedrooms" data-d="-1" aria-label="Fewer bedrooms">−</button><input name="bedrooms" type="number" min="1" max="9" value="2" inputmode="numeric" aria-label="Bedrooms"><button type="button" data-step="bedrooms" data-d="1" aria-label="More bedrooms">+</button></div></div>
+        <div class="q" id="q-others"><span class="ql">Other people living there</span>
+          <div class="step"><button type="button" data-step="others" data-d="-1" aria-label="Fewer people">−</button><input name="others" type="number" min="0" max="9" value="1" inputmode="numeric" aria-label="Other people"><button type="button" data-step="others" data-d="1" aria-label="More people">+</button></div></div>
+        <label class="f">Size in m² <small>optional</small><input name="size" type="number" min="0" inputmode="numeric" placeholder="e.g. 60"></label>
       </fieldset>
 
       <fieldset>
-        <legend>Dates and price</legend>
+        <legend>2. Dates and price</legend>
         <label class="f">From<input name="from" type="date" required></label>
-        <label class="f">To<input name="to" type="date" required></label>
-        <label class="f">Total price (₪)<input name="total" type="number" min="0" inputmode="numeric" required placeholder="2400"></label>
-        <label class="check"><input name="bills" type="checkbox" checked> Bills included</label>
-        <label class="f">Per month (₪) <small>optional</small><input name="perMonth" type="number" min="0" inputmode="numeric" placeholder="1600"></label>
-        <label class="f">Per night (₪) <small>optional</small><input name="perNight" type="number" min="0" inputmode="numeric"></label>
+        <label class="f">Until<input name="to" type="date" required></label>
+        <label class="f">Price (₪)<input name="price" type="number" min="1" inputmode="numeric" required placeholder="e.g. 4500"></label>
+        <div class="q"><span class="ql" id="q-unit">Per</span>
+          <div class="opts" id="o-unit" role="group" aria-labelledby="q-unit"></div></div>
+        <p class="total full" id="total" aria-live="polite"></p>
+        <label class="check full"><input name="bills" type="checkbox" value="yes" checked> Bills included (electricity, water, internet…)</label>
       </fieldset>
 
       <fieldset>
-        <legend>Who and what</legend>
-        <label class="f">Looking for <small>one per line</small><textarea name="lookingFor" placeholder="👥 Single or couple&#10;🚭 No smoking"></textarea></label>
-        <label class="f">The place <small>one per line</small><textarea name="place" placeholder="1 private bedroom&#10;📐 60 m²"></textarea></label>
-        <label class="f full">Description <small>leave an empty line between paragraphs</small><textarea name="description" rows="5" placeholder="A quiet private room with a double bed…"></textarea></label>
+        <legend>3. What's there</legend>
+        <div class="q full"><span class="ql" id="q-amen">Tap everything you have</span>
+          <div class="opts" id="o-amen" role="group" aria-labelledby="q-amen"></div></div>
+        <div class="q full"><span class="ql" id="q-shelter">Safe room / shelter</span>
+          <div class="opts" id="o-shelter" role="group" aria-labelledby="q-shelter"></div></div>
       </fieldset>
 
       <fieldset>
-        <legend>What's included</legend>
-        <label class="f">Private <small>one per line</small><textarea name="private" placeholder="🛏️ Bedroom"></textarea></label>
-        <label class="f">Shared <small>one per line</small><textarea name="shared" placeholder="🍳 Kitchen&#10;🚿 Bathroom"></textarea></label>
-        <label class="f full">Not included <small>one per line</small><textarea name="notIncluded" placeholder="🛡️ Bomb shelter"></textarea></label>
+        <legend>4. Who can rent it <small>optional</small></legend>
+        <div class="q full"><div class="opts" id="o-who" role="group" aria-label="Who can rent it"></div></div>
       </fieldset>
 
       <fieldset>
-        <legend>Photos</legend>
-        <label class="f full">Add photos <small>landscape photos look best; the first one is the cover</small><input id="pick" type="file" accept="image/*" multiple></label>
+        <legend>5. Photos <small>optional</small></legend>
+        <label class="pickbtn full"><input id="pick" type="file" accept="image/*" multiple>📷 Add photos</label>
         <ul class="pics" id="pics"></ul>
       </fieldset>
 
       <fieldset>
-        <legend>Contact</legend>
-        <label class="f">Your name<input name="name" required placeholder="Michal Cohen" autocomplete="name"></label>
-        <label class="f">WhatsApp number<input name="phone" type="tel" required placeholder="972501234567" autocomplete="tel"></label>
+        <legend>6. Your details</legend>
+        <label class="f">Your name<input name="name" required placeholder="e.g. Michal" autocomplete="given-name"></label>
+        <label class="f">WhatsApp number<input name="phone" type="tel" required placeholder="e.g. 050-1234567" autocomplete="tel"></label>
       </fieldset>
+
+      <details class="more">
+        <summary>Add a description or change the title <small>(optional)</small></summary>
+        <div class="moreb">
+          <label class="f">Title<input name="title" id="titleInput"></label>
+          <label class="f">Description<textarea name="description" rows="4" placeholder="e.g. Quiet room, 5 minutes from the beach. My flatmate is a nice guy who works from home."></textarea></label>
+        </div>
+      </details>
 
       <div class="actions">
         <button class="btn main" type="submit">Create listing</button>
-        <button class="btn alt" type="button" id="reset">Clear form</button>
+        <button class="btn alt" type="button" id="clear">Start over</button>
       </div>
     </form>
 
@@ -96,95 +109,224 @@
 
 <script src="listing.js"></script>
 <script>
+  // ================= Options people tap. Edit these lists to change the form. =================
+  const OPTIONS = {
+    type: [
+      { value: 'Shared apartment', label: '🚪 A room in my apartment' },
+      { value: 'Entire apartment', label: '🏠 The whole apartment' },
+      { value: 'Studio', label: '🛋️ A studio' },
+    ],
+    hood: ['Old North', 'New North', 'City Center', 'Florentin', 'Neve Tzedek', 'Kerem HaTeimanim',
+           'Jaffa', 'Ramat Aviv', 'Montefiore', 'Shapira', 'Yad Eliyahu', 'Other'],
+    unit: [
+      { value: 'month', label: 'Month' },
+      { value: 'night', label: 'Night' },
+      { value: 'total', label: 'Whole stay' },
+    ],
+    amen: ['🛋️ Furnished', '❄️ AC', '📶 Wi-Fi', '🧺 Washing machine', '🌀 Dryer', '🍽️ Dishwasher',
+           '📺 TV', '🌿 Balcony', '🛗 Elevator', '🅿️ Parking', '🚿 Private bathroom'],
+    shelter: [
+      { value: 'mamad', label: 'In the apartment (Mamad)' },
+      { value: 'building', label: 'In the building' },
+      { value: 'nearby', label: 'Public shelter nearby' },
+      { value: 'none', label: 'None' },
+    ],
+    who: ['👤 Single', '👥 Couple', '🚺 Women only', '🚹 Men only', '🎓 Students', '🚭 No smoking', '🐾 Pets welcome', '🚫 No pets'],
+  };
+  // Picking one of these un-picks the other.
+  const OPPOSITES = [['🚺 Women only', '🚹 Men only'], ['🐾 Pets welcome', '🚫 No pets']];
+  // Shown only for "a room in my apartment".
+  const SHARED_ONLY = ['🚿 Private bathroom'];
+
+  // ================= Draw the tap buttons =================
+  // single: radio buttons (pick one). Otherwise checkboxes (pick many). Both look like chips.
+  function drawOptions(name, list, { single = false, required = false } = {}) {
+    document.getElementById('o-' + name).innerHTML = list.map(o => {
+      const value = o.value ?? o, label = o.label ?? o;
+      return `<label class="opt"><input type="${single ? 'radio' : 'checkbox'}" name="${name}" value="${Sublet.esc(value)}"${required ? ' required' : ''}><span>${Sublet.esc(label)}</span></label>`;
+    }).join('');
+  }
+  drawOptions('type', OPTIONS.type, { single: true, required: true });
+  drawOptions('hood', OPTIONS.hood, { single: true, required: true });
+  drawOptions('unit', OPTIONS.unit, { single: true });
+  drawOptions('amen', OPTIONS.amen);
+  drawOptions('shelter', OPTIONS.shelter, { single: true });
+  drawOptions('who', OPTIONS.who);
+  document.querySelector('input[name=unit][value=month]').checked = true;
+
   const form = document.getElementById('form');
+  const f = form.elements;
   const preview = document.getElementById('preview');
   const picsList = document.getElementById('pics');
   const done = document.getElementById('done');
   const SAVE_KEY = 'sublet-draft';
 
-  // Photos picked from this device: { file, url (temporary, for the preview), caption }
-  let photos = [];
+  let photos = [];   // photos picked from this device: { file, url (temporary, for the preview), caption }
 
-  // ---- Small helpers for turning form text into data ----
-  const lines = text => text.split('\n').map(s => s.trim()).filter(Boolean);
-  const paragraphs = text => text.split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, ' ').trim()).filter(Boolean);
+  // ================= Small helpers =================
+  const checked = name => [...form.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
+  const one = name => checked(name)[0] || '';
   const slug = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const number = v => v === '' ? undefined : Number(v);
+  const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
-  // Read the whole form into a listing object, in the same shape as listings.json.
+  // 050-123 4567 -> 972501234567 (WhatsApp needs the country code)
+  function phoneDigits(text) {
+    let d = text.replace(/\D/g, '');
+    if (d.startsWith('00')) d = d.slice(2);
+    if (d.startsWith('0')) d = '972' + d.slice(1);
+    return d;
+  }
+
+  // Length of the stay. The "until" day counts as a day of the stay.
+  const DAY = 864e5;
+  const utc = iso => new Date(iso + 'T00:00:00Z');
+  const nights = (from, to) => Math.round((utc(to) - utc(from)) / DAY);
+  function months(from, to) {
+    const a = utc(from), end = new Date(utc(to).getTime() + DAY);
+    let m = (end.getUTCFullYear() - a.getUTCFullYear()) * 12 + end.getUTCMonth() - a.getUTCMonth();
+    const at = k => new Date(Date.UTC(a.getUTCFullYear(), a.getUTCMonth() + k, a.getUTCDate()));
+    if (at(m) > end) m--;
+    return m + (end - at(m)) / DAY / 30;
+  }
+  const datesOk = () => f.from.value && f.to.value && f.to.value > f.from.value;
+
+  // ================= Turn the taps into a listing (same shape as listings.json) =================
   function readForm() {
-    const f = form.elements;
-    const id = slug(`${f.neighborhood.value || 'listing'} ${f.from.value}`);
+    const type = one('type');
+    const shared = type === 'Shared apartment';
+    const hood = one('hood') === 'Other' ? f.otherHood.value.trim() : one('hood');
+    const bedrooms = Number(f.bedrooms.value) || 1;
+    const others = Number(f.others.value) || 0;
+    const size = Number(f.size.value) || 0;
+    const amen = checked('amen').filter(a => shared || !SHARED_ONLY.includes(a));
+
+    // Price: whatever unit they chose, work out the total.
+    const price = { billsIncluded: f.bills.checked };
+    const amount = Number(f.price.value) || 0;
+    const unit = one('unit');
+    if (unit === 'total') price.total = amount;
+    if (unit === 'month') { price.perMonth = amount; if (datesOk()) price.total = Math.round(amount * months(f.from.value, f.to.value)); }
+    if (unit === 'night') { price.perNight = amount; if (datesOk()) price.total = amount * nights(f.from.value, f.to.value); }
+
+    // Title, written for them (they can change it under "optional").
+    const autoTitle = !type ? '' :
+      type === 'Studio' ? `Studio in ${hood || 'Tel Aviv'}` :
+      type === 'Entire apartment' ? `Entire ${bedrooms}-bedroom apartment in ${hood || 'Tel Aviv'}` :
+      `Private room in a shared apartment in ${hood || 'Tel Aviv'}`;
+    document.getElementById('titleInput').placeholder = autoTitle;
+
+    // "The place" chips
+    const sizeChip = size ? [`📐 ${size} m²`] : [];
+    const place =
+      shared ? ['1 private bedroom', plural(others, 'other resident'), ...sizeChip, `🛏️ ${bedrooms} bedrooms in total`] :
+      type === 'Entire apartment' ? [`🛏️ ${plural(bedrooms, 'bedroom')}`, ...sizeChip] : sizeChip;
+
+    // Included: the basics every place has, plus what they tapped.
+    const privateBath = amen.includes('🚿 Private bathroom');
+    const extras = amen.filter(a => a !== '🚿 Private bathroom');
+    const shelterText = { mamad: '🛡️ Safe room (Mamad)', building: '🛡️ Shelter in the building', nearby: '🛡️ Public shelter nearby' }[one('shelter')];
+    if (shelterText) extras.push(shelterText);
+    const included =
+      shared ? {
+        private: ['🛏️ Bedroom', ...(privateBath ? ['🚿 Private bathroom'] : [])],
+        shared: ['🍳 Kitchen', ...(privateBath ? [] : ['🚿 Bathroom']), '🛋️ Living room', ...extras],
+      } :
+      type === 'Studio' ? { private: ['🛏️ Bed', '🍳 Kitchenette', '🚿 Bathroom', ...extras], shared: [] } :
+      { private: ['🛏️ Bedroom', '🍳 Kitchen', '🚿 Bathroom', '🛋️ Living room', ...extras], shared: [] };
+
+    const id = slug(`${hood || 'listing'} ${f.from.value}`);
     return {
       id,
-      title: f.title.value.trim(),
-      type: f.type.value,
-      address: f.address.value.trim(),
-      neighborhood: f.neighborhood.value.trim(),
+      title: f.title.value.trim() || autoTitle,
+      type,
+      address: [f.street.value.trim(), hood, 'Tel Aviv'].filter(Boolean).join(', '),
+      neighborhood: hood,
       from: f.from.value,
       to: f.to.value,
-      price: {
-        total: number(f.total.value),
-        perMonth: number(f.perMonth.value),
-        perNight: number(f.perNight.value),
-        billsIncluded: f.bills.checked,
-      },
-      lookingFor: lines(f.lookingFor.value),
-      place: lines(f.place.value),
-      description: paragraphs(f.description.value),
-      included: { private: lines(f.private.value), shared: lines(f.shared.value) },
-      notIncluded: lines(f.notIncluded.value),
-      contact: { name: f.name.value.trim(), phone: f.phone.value.replace(/\D/g, '') },
+      price,
+      lookingFor: checked('who'),
+      place,
+      description: f.description.value.split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, ' ').trim()).filter(Boolean),
+      included,
+      notIncluded: one('shelter') === 'none' ? ['🛡️ Bomb shelter'] : [],
+      contact: { name: f.name.value.trim(), phone: phoneDigits(f.phone.value) },
       photos: photos.map(p => ({ src: `photos/${id}/${p.file.name}`, caption: p.caption })),
     };
   }
 
-  // ---- Live preview: redraw the real listing design on every change ----
-  function updatePreview() {
+  // ================= Keep the form and preview in sync =================
+  function update() {
+    const type = one('type');
+    // Show only the questions that fit what they're renting out.
+    document.getElementById('q-bedrooms').hidden = type === 'Studio';
+    document.getElementById('q-others').hidden = type !== 'Shared apartment';
+    document.getElementById('otherHood').hidden = one('hood') !== 'Other';
+    for (const a of SHARED_ONLY) form.querySelector(`input[name=amen][value="${a}"]`).closest('.opt').hidden = type !== 'Shared apartment';
+    if (f.from.value) f.to.min = f.from.value;
+
     const listing = readForm();
-    // In the preview, show the photos straight from this device.
+
+    // Price summary under the price field
+    const p = listing.price, unit = one('unit');
+    const total = document.getElementById('total');
+    if (!p.total || unit === 'total') total.textContent = '';
+    else total.textContent = unit === 'night'
+      ? `= ${Sublet.money(p.total)} total for ${plural(nights(f.from.value, f.to.value), 'night')}`
+      : `= ${Sublet.money(p.total)} total for ${Math.round(months(f.from.value, f.to.value) * 10) / 10} months`;
+
+    // The preview shows photos straight from this device.
     listing.photos = photos.map(p => ({ src: p.url, caption: p.caption }));
     preview.innerHTML = Sublet.render(listing, { preview: true });
     Sublet.activate(preview, { preview: true });
   }
 
-  // ---- Photos ----
-  function captionFromName(name) {
+  // ================= Photos =================
+  // Captions are optional. Use the file name only if it's a real word (not IMG_1234).
+  const captionFromName = name => {
     const base = name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim();
-    return base.charAt(0).toUpperCase() + base.slice(1);
-  }
+    return /^[a-z ]+$/i.test(base) ? base.charAt(0).toUpperCase() + base.slice(1) : '';
+  };
   function drawPhotos() {
     picsList.innerHTML = photos.map((p, i) => `
       <li>
         <img src="${p.url}" alt="">
-        <input value="${Sublet.esc(p.caption)}" data-i="${i}" aria-label="Caption for photo ${i + 1}" placeholder="Caption">
-        <button type="button" data-remove="${i}">Remove</button>
+        <input value="${Sublet.esc(p.caption)}" data-i="${i}" aria-label="Caption for photo ${i + 1}" placeholder="${i === 0 ? 'Cover photo · caption (optional)' : 'Caption (optional)'}">
+        <button type="button" data-remove="${i}" aria-label="Remove photo ${i + 1}">✕</button>
       </li>`).join('');
   }
   document.getElementById('pick').addEventListener('change', e => {
-    for (const file of e.target.files) {
-      photos.push({ file, url: URL.createObjectURL(file), caption: captionFromName(file.name) });
-    }
+    for (const file of e.target.files) photos.push({ file, url: URL.createObjectURL(file), caption: captionFromName(file.name) });
     e.target.value = '';
-    drawPhotos();
-    updatePreview();
+    drawPhotos(); update();
   });
   picsList.addEventListener('input', e => {
-    if (e.target.dataset.i) { photos[e.target.dataset.i].caption = e.target.value; updatePreview(); }
+    if (e.target.dataset.i) { photos[e.target.dataset.i].caption = e.target.value; update(); }
   });
   picsList.addEventListener('click', e => {
     const i = e.target.dataset.remove;
     if (i === undefined) return;
     URL.revokeObjectURL(photos[i].url);
     photos.splice(i, 1);
-    drawPhotos();
-    updatePreview();
+    drawPhotos(); update();
   });
 
-  // ---- Keep a draft in this browser, so a refresh doesn't lose your work (photos aren't saved) ----
+  // ================= − / + buttons =================
+  form.addEventListener('click', e => {
+    const b = e.target.closest('[data-step]');
+    if (!b) return;
+    const input = f[b.dataset.step];
+    input.value = Math.min(+input.max, Math.max(+input.min, (Number(input.value) || 0) + Number(b.dataset.d)));
+    form.dispatchEvent(new Event('input'));
+  });
+
+  // ================= Save a draft in this browser (photos aren't saved) =================
   function saveDraft() {
     const data = {};
-    for (const el of form.elements) if (el.name) data[el.name] = el.type === 'checkbox' ? el.checked : el.value;
+    for (const el of form.elements) {
+      if (!el.name) continue;
+      if (el.type === 'checkbox' || el.type === 'radio') { if (el.checked) (data[el.name] ||= []).push(el.value); }
+      else data[el.name] = el.value;
+    }
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (e) {}
   }
   function loadDraft() {
@@ -192,33 +334,59 @@
     try { data = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) {}
     if (!data) return;
     for (const el of form.elements) {
-      if (!el.name || !(el.name in data)) continue;
-      if (el.type === 'checkbox') el.checked = data[el.name]; else el.value = data[el.name];
+      if (!el.name) continue;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = (data[el.name] || []).includes(el.value);
+      else if (el.name in data) el.value = data[el.name];
     }
   }
 
-  form.addEventListener('input', () => { saveDraft(); updatePreview(); done.hidden = true; });
-
-  document.getElementById('reset').addEventListener('click', () => {
-    form.reset();
-    photos.forEach(p => URL.revokeObjectURL(p.url));
-    photos = [];
-    drawPhotos();
-    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-    done.hidden = true;
-    updatePreview();
+  form.addEventListener('input', e => {
+    // Picking "Women only" un-picks "Men only", etc.
+    const t = e.target;
+    if (t && t.checked) for (const pair of OPPOSITES) if (pair.includes(t.value)) {
+      const other = form.querySelector(`input[value="${pair.find(v => v !== t.value)}"]`);
+      if (other) other.checked = false;
+    }
+    saveDraft(); update(); done.hidden = true;
   });
 
-  // ---- "Create listing": check the form, then show the data to add to listings.json ----
+  // "Start over" keeps your name and number.
+  document.getElementById('clear').addEventListener('click', () => {
+    const name = f.name.value, phone = f.phone.value;
+    form.reset();
+    document.querySelector('input[name=unit][value=month]').checked = true;
+    f.name.value = name; f.phone.value = phone;
+    photos.forEach(p => URL.revokeObjectURL(p.url));
+    photos = [];
+    drawPhotos(); saveDraft(); update();
+    done.hidden = true;
+    scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ================= "Create listing" =================
+  function problem(el, message) {
+    el.setCustomValidity(message);
+    el.reportValidity();
+    el.addEventListener('input', () => el.setCustomValidity(''), { once: true });
+    if (el.type === 'radio') el.closest('.q').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+  }
+  function check() {
+    if (!one('type')) return problem(f.type[0], 'Pick what you are renting out');
+    if (!one('hood')) return problem(f.hood[0], 'Pick a neighborhood');
+    if (one('hood') === 'Other' && !f.otherHood.value.trim()) return problem(f.otherHood, 'Write the neighborhood');
+    if (!f.from.value) return problem(f.from, 'Pick the start date');
+    if (!f.to.value) return problem(f.to, 'Pick the end date');
+    if (!datesOk()) return problem(f.to, 'The end date must be after the start date');
+    if (!(Number(f.price.value) > 0)) return problem(f.price, 'Write the price');
+    if (!f.name.value.trim()) return problem(f.name, 'Write your name');
+    if (phoneDigits(f.phone.value).length < 11) return problem(f.phone, 'Write your WhatsApp number, e.g. 050-1234567');
+    return true;
+  }
+
   form.addEventListener('submit', e => {
     e.preventDefault();
-    if (!form.reportValidity()) return;
-    if (form.elements.to.value < form.elements.from.value) {
-      form.elements.to.setCustomValidity('The end date must be after the start date');
-      form.reportValidity();
-      form.elements.to.setCustomValidity('');
-      return;
-    }
+    if (!check()) return;
     const listing = readForm();
     document.getElementById('json').textContent = JSON.stringify(listing, null, 2);
     document.getElementById('liveUrl').textContent = `meraryz.github.io/sublet/${listing.id}/`;
@@ -240,7 +408,7 @@
   });
 
   loadDraft();
-  updatePreview();
+  update();
 </script>
 </body>
 </html>
