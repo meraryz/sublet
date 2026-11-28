@@ -38,7 +38,7 @@ a{color:var(--sea)}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 
 /* ---------- 2. Listing page (also used by the create-page preview) ---------- */
-/* One column, 480px max: photos, title + key facts, description, included / not included, sticky action bar. */
+/* One column, 480px max: photos, title + key facts, description, included, sticky action bar. */
 .wrap{max-width:480px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:96px;box-shadow:0 0 0 1px var(--line)}
 .hero{position:relative;aspect-ratio:1200/630;background:var(--sea-soft);overflow:hidden}
 .gal{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -85,9 +85,7 @@ a{color:var(--sea)}
 .cols.one{grid-template-columns:1fr}
 .col h4{margin:0 0 6px;font:700 13px/1.2 var(--f-body);color:var(--muted)}
 .col+.col{border-left:1px solid var(--line);padding-left:14px}
-.out{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.out h3{color:var(--no)}
-.out ul,.near ul{margin-top:10px;flex-direction:row;flex-wrap:wrap;gap:6px 16px}
+.near ul{margin-top:10px;flex-direction:row;flex-wrap:wrap;gap:6px 16px}
 .near{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
 .near h3{color:var(--sea)}
 .near h3 i{font-style:normal}
@@ -121,7 +119,7 @@ form legend{font:700 17px/1 var(--f-display);padding:0 6px}
 .f{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:700}
 .f.full{grid-column:1/-1}
 @media (max-width:520px){form fieldset{grid-template-columns:1fr}}
-.f small{font-weight:400;color:var(--muted)}
+.f small,.ql small{font-weight:400;color:var(--muted)}
 .f input,.f select,.f textarea{font:400 15px/1.4 var(--f-body);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%}
 .f textarea{resize:vertical;min-height:84px}
 .f input:focus,.f select:focus,.f textarea:focus{outline:2px solid var(--sea);outline-offset:0;border-color:var(--sea)}
@@ -151,7 +149,7 @@ form legend{font:700 17px/1 var(--f-display);padding:0 6px}
 @media (max-width:900px){.pv{position:static}.frame{max-height:none}}
 
 /* Tap-to-pick chips (radio buttons / checkboxes dressed as buttons) */
-.ctitle{font:700 30px/1.1 var(--f-display);margin:0 0 4px}
+.ctitle{font:700 30px/1.1 var(--f-display);margin:0 0 16px}
 form legend small{font:400 13px var(--f-body);color:var(--muted)}
 .q{display:flex;flex-direction:column;gap:8px}
 .q.full,.pickbtn.full,.check.full,.total.full{grid-column:1/-1}
@@ -163,13 +161,6 @@ form legend small{font:400 13px var(--f-body);color:var(--muted)}
 .opt span:hover{border-color:var(--sea)}
 .opt input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
 .opt input:focus-visible+span{outline:3px solid var(--sun);outline-offset:2px}
-.optw{display:inline-flex;align-items:center;gap:6px}
-.ps{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
-.ps label{position:relative;display:flex}
-.ps input{position:absolute;opacity:0;width:1px;height:1px}
-.ps span{padding:7px 11px;font-size:13px;font-weight:700;cursor:pointer;user-select:none}
-.ps input:checked+span{background:var(--sea);color:#fff}
-.ps input:focus-visible+span{outline:3px solid var(--sun);outline-offset:-3px}
 .opts.big .opt{flex:1 1 170px}
 .opts.big span{flex:1;text-align:center;padding:14px 10px;border-radius:12px;font-size:16px}
 .steps{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:12px 28px}

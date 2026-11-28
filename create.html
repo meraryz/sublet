@@ -18,22 +18,22 @@
 
   <div>
     <h1 class="ctitle">Post your sublet</h1>
-    <p class="lead">Mostly tapping. About 2 minutes.</p>
 
-    <!-- The tap options (neighborhoods, amenities...) are lists in the script below: edit them there. -->
+    <!-- The tap options (amenities, parking...) are lists in the script below: edit them there. -->
     <form id="form" novalidate>
       <fieldset>
         <legend>1. The place</legend>
         <div class="q full"><span class="ql" id="q-type">What are you renting out?</span>
           <div class="opts big" id="o-type" role="group" aria-labelledby="q-type"></div></div>
-        <label class="f full">Neighborhood<select name="hood" id="o-hood" required></select></label>
-        <label class="f full" id="otherHood" hidden>Which neighborhood?<input name="otherHood" placeholder="e.g. Bavli"></label>
-        <label class="f full">Street <small>optional</small><input name="street" placeholder="e.g. Ben Yehuda St"></label>
-        <div class="q" id="q-bedrooms"><span class="ql">Bedrooms in the apartment</span>
-          <div class="step"><button type="button" data-step="bedrooms" data-d="-1" aria-label="Fewer bedrooms">−</button><input name="bedrooms" type="number" min="1" max="9" value="2" inputmode="numeric" aria-label="Bedrooms"><button type="button" data-step="bedrooms" data-d="1" aria-label="More bedrooms">+</button></div></div>
+        <label class="f">City<input name="city" value="Tel Aviv" placeholder="e.g. Tel Aviv"></label>
+        <label class="f">Neighborhood <small>optional</small><input name="hood" placeholder="e.g. Florentin"></label>
+        <label class="f">Street <small>optional</small><input name="street" placeholder="e.g. Ben Yehuda St"></label>
+        <div class="q" id="q-rooms"><span class="ql">Rooms in the apartment</span>
+          <div class="step"><button type="button" data-step="rooms" data-d="-0.5" aria-label="Fewer rooms">−</button><input name="rooms" type="number" min="1" max="9" step="0.5" value="3" inputmode="decimal" aria-label="Rooms"><button type="button" data-step="rooms" data-d="0.5" aria-label="More rooms">+</button></div></div>
         <div class="q" id="q-others"><span class="ql">Other people living there</span>
           <div class="step"><button type="button" data-step="others" data-d="-1" aria-label="Fewer people">−</button><input name="others" type="number" min="0" max="9" value="1" inputmode="numeric" aria-label="Other people"><button type="button" data-step="others" data-d="1" aria-label="More people">+</button></div></div>
-        <label class="f">Size in m² <small>optional</small><input name="size" type="number" min="0" inputmode="numeric" placeholder="e.g. 60"></label>
+        <label class="f" id="q-roomSize">Room size in m² <small>optional</small><input name="roomSize" type="number" min="0" inputmode="numeric" placeholder="e.g. 12"></label>
+        <label class="f">Apartment size in m² <small>optional</small><input name="size" type="number" min="0" inputmode="numeric" placeholder="e.g. 60"></label>
       </fieldset>
 
       <fieldset>
@@ -44,19 +44,19 @@
         <div class="q"><span class="ql" id="q-unit">Per</span>
           <div class="opts" id="o-unit" role="group" aria-labelledby="q-unit"></div></div>
         <p class="total full" id="total" aria-live="polite"></p>
-        <label class="check full"><input name="bills" type="checkbox" value="yes" checked> Bills included (electricity, water, internet…)</label>
+        <label class="check full"><input name="bills" type="checkbox" value="yes"> Bills included (electricity, water, internet…)</label>
       </fieldset>
 
       <fieldset>
         <legend>3. What's there</legend>
-        <div class="steps full">
-        <div class="q" id="q-baths"><span class="ql">Bathrooms</span>
-          <div class="step"><button type="button" data-step="baths" data-d="-1" aria-label="Fewer bathrooms">−</button><input name="baths" type="number" min="1" max="9" value="1" inputmode="numeric" aria-label="Bathrooms"><button type="button" data-step="baths" data-d="1" aria-label="More bathrooms">+</button></div></div>
-        <div class="q" id="q-toilets"><span class="ql">Separate toilets</span>
-          <div class="step"><button type="button" data-step="toilets" data-d="-1" aria-label="Fewer toilets">−</button><input name="toilets" type="number" min="0" max="9" value="0" inputmode="numeric" aria-label="Separate toilets"><button type="button" data-step="toilets" data-d="1" aria-label="More toilets">+</button></div></div>
-        </div>
+        <div class="q" id="q-bath"><span class="ql" id="l-bath">Bathroom</span>
+          <div class="opts" id="o-bath" role="group" aria-labelledby="l-bath"></div></div>
+        <div class="q" id="q-toilet"><span class="ql" id="l-toilet">Toilet</span>
+          <div class="opts" id="o-toilet" role="group" aria-labelledby="l-toilet"></div></div>
         <div class="q full"><span class="ql" id="l-amen">Tap what you have</span>
           <div class="opts" id="o-amen" role="group" aria-labelledby="l-amen"></div></div>
+        <div class="q full" id="q-mine" hidden><span class="ql" id="l-mine">Which of these are just for the renter?</span>
+          <div class="opts" id="o-mine" role="group" aria-labelledby="l-mine"></div></div>
         <div class="q full"><span class="ql" id="l-parking">Parking</span>
           <div class="opts" id="o-parking" role="group" aria-labelledby="l-parking"></div></div>
         <div class="q full"><span class="ql" id="l-shelter">Safe room / shelter</span>
@@ -144,16 +144,16 @@
     type: [
       { value: 'Shared apartment', label: '🚪 A room in my apartment' },
       { value: 'Entire apartment', label: '🏠 The whole apartment' },
-      { value: 'Studio', label: '🛋️ A studio' },
     ],
-    hood: ['Old North', 'New North', 'City Center', 'Florentin', 'Neve Tzedek', 'Kerem HaTeimanim',
-           'Jaffa', 'Ramat Aviv', 'Montefiore', 'Shapira', 'Yad Eliyahu', 'Other'],
+    // Room in a shared apartment only: is it just for the renter, or shared with flatmates?
+    bath: [{ value: 'private', label: 'Private' }, { value: 'shared', label: 'Shared' }],
+    toilet: [{ value: 'private', label: 'Private' }, { value: 'shared', label: 'Shared' }],
     unit: [
       { value: 'month', label: 'Month' },
       { value: 'night', label: 'Night' },
       { value: 'total', label: 'Whole stay' },
     ],
-    // split: in a shared apartment, picking it asks "Private or Shared?"
+    // split: in a shared apartment, picking it asks "Which of these are just for the renter?"
     amen: [
       { value: '🛋️ Furnished', split: true },
       { value: '❄️ AC', split: true },
@@ -161,50 +161,46 @@
       { value: '🧺 Washing machine', split: true },
       { value: '🌿 Balcony', split: true },
       '🛗 Elevator',
-      '🚿 Private bathroom',
     ],
     parking: [
       { value: 'private', label: '🅿️ Private spot' },
       { value: 'street', label: 'Street parking' },
       { value: 'paid', label: 'Paid lot nearby' },
-      { value: 'none', label: 'Hard to park' },
     ],
     shelter: [
       { value: 'mamad', label: 'In the apartment (Mamad)' },
       { value: 'building', label: 'In the building' },
       { value: 'nearby', label: 'Public shelter nearby' },
-      { value: 'none', label: 'None' },
     ],
     who: ['👤 Single', '👥 Couple', '🚺 Women only', '🚹 Men only', '🎓 Students', '🚭 No smoking', '🐾 Pets welcome', '🚫 No pets'],
   };
   // Picking one of these un-picks the other.
   const OPPOSITES = [['🚺 Women only', '🚹 Men only'], ['🐾 Pets welcome', '🚫 No pets']];
-  // Shown only for "a room in my apartment".
-  const SHARED_ONLY = ['🚿 Private bathroom'];
 
   // ================= Draw the tap buttons =================
   // single: radio buttons (pick one). Otherwise checkboxes (pick many). Both look like chips.
   function drawOptions(name, list, { single = false, required = false } = {}) {
-    document.getElementById('o-' + name).innerHTML = list.map((o, i) => {
+    document.getElementById('o-' + name).innerHTML = list.map(o => {
       const value = o.value ?? o, label = o.label ?? value;
-      const chip = `<label class="opt"><input type="${single ? 'radio' : 'checkbox'}" name="${name}" value="${Sublet.esc(value)}"${required ? ' required' : ''}><span>${Sublet.esc(label)}</span></label>`;
-      if (o.split !== true) return chip;
-      // Private / Shared switch, shown next to the chip once it's picked (shared apartments only)
-      const where = `where-${name}-${i}`;
-      return `<span class="optw">${chip}<span class="ps" role="group" aria-label="${Sublet.esc(label)}: private or shared" hidden>
-        <label><input type="radio" name="${where}" value="private"><span>Private</span></label>
-        <label><input type="radio" name="${where}" value="shared" checked><span>Shared</span></label></span></span>`;
+      return `<label class="opt"><input type="${single ? 'radio' : 'checkbox'}" name="${name}" value="${Sublet.esc(value)}"${required ? ' required' : ''}><span>${Sublet.esc(label)}</span></label>`;
     }).join('');
   }
   drawOptions('type', OPTIONS.type, { single: true, required: true });
-  document.getElementById('o-hood').innerHTML = '<option value="">Choose a neighborhood…</option>' +
-    OPTIONS.hood.map(h => `<option>${Sublet.esc(h)}</option>`).join('');
   drawOptions('unit', OPTIONS.unit, { single: true });
+  drawOptions('bath', OPTIONS.bath, { single: true });
+  drawOptions('toilet', OPTIONS.toilet, { single: true });
   drawOptions('amen', OPTIONS.amen);
+  drawOptions('mine', OPTIONS.amen.filter(o => o.split));
   drawOptions('parking', OPTIONS.parking, { single: true });
   drawOptions('shelter', OPTIONS.shelter, { single: true });
   drawOptions('who', OPTIONS.who);
-  document.querySelector('input[name=unit][value=month]').checked = true;
+  // These always keep one choice (tapping the picked one again doesn't un-pick it).
+  const KEEP_ONE = { unit: 'month', bath: 'shared', toilet: 'shared' };
+  const setDefaults = () => {   // pick the default wherever nothing is picked
+    for (const [name, value] of Object.entries(KEEP_ONE))
+      if (!document.querySelector(`input[name=${name}]:checked`)) document.querySelector(`input[name=${name}][value=${value}]`).checked = true;
+  };
+  setDefaults();
 
   const form = document.getElementById('form');
   const f = form.elements;
@@ -244,19 +240,19 @@
 
   // ================= Turn the taps into a listing (same shape as listings.json) =================
   function readForm() {
-    const type = one('type');
-    const shared = type === 'Shared apartment';
-    const hood = f.hood.value === 'Other' ? f.otherHood.value.trim() : f.hood.value;
-    const bedrooms = Number(f.bedrooms.value) || 1;
+    const shared = one('type') === 'Shared apartment';
+    const hood = f.hood.value.trim();
+    const city = f.city.value.trim();
+    const where = hood || city || 'Tel Aviv';
+    const rooms = Number(f.rooms.value) || 1;   // Israeli count: bedrooms + living room, halves allowed
+    const studio = !shared && rooms < 1.5;      // a studio is a 1-room apartment
+    const type = !one('type') ? '' : shared ? 'Shared apartment' : studio ? 'Studio' : 'Entire apartment';
     const others = Number(f.others.value) || 0;
     const size = Number(f.size.value) || 0;
-    const studio = type === 'Studio';
-    const baths = studio ? 1 : Number(f.baths.value) || 1;
-    const toilets = studio ? 0 : Number(f.toilets.value) || 0;
-    const amen = checked('amen').filter(a => shared || !SHARED_ONLY.includes(a));
-    // In a shared apartment: is this amenity private (just for you) or shared?
-    const isPrivate = a => shared && form.querySelector(`input[name=amen][value="${a}"]`)
-      ?.closest('.optw')?.querySelector('.ps input:checked')?.value === 'private';
+    const roomSize = shared ? Number(f.roomSize.value) || 0 : 0;
+    const amen = checked('amen');
+    // In a shared apartment: is this amenity just for the renter (picked in "Which of these...")?
+    const isPrivate = a => shared && checked('mine').includes(a);
 
     // Price: whatever unit they chose, work out the total.
     const price = { billsIncluded: f.bills.checked };
@@ -268,25 +264,23 @@
 
     // Title, written for them (they can change it under "optional").
     const autoTitle = !type ? '' :
-      type === 'Studio' ? `Studio in ${hood || 'Tel Aviv'}` :
-      type === 'Entire apartment' ? `Entire ${bedrooms}-bedroom apartment in ${hood || 'Tel Aviv'}` :
-      `Private room in a shared apartment in ${hood || 'Tel Aviv'}`;
+      studio ? `Studio in ${where}` :
+      !shared ? `Entire ${rooms}-room apartment in ${where}` :
+      `Private room in a shared apartment in ${where}`;
     document.getElementById('titleInput').placeholder = autoTitle;
 
     // "The place" chips
-    const sizeChip = size ? [`📐 ${size} m²`] : [];
     const place =
-      shared ? ['1 private bedroom', plural(others, 'other resident'), ...sizeChip, `🛏️ ${bedrooms} bedrooms in total`] :
-      type === 'Entire apartment' ? [`🛏️ ${plural(bedrooms, 'bedroom')}`, ...sizeChip] : sizeChip;
+      shared ? ['1 private bedroom' + (roomSize ? `, ${roomSize} m²` : ''), plural(others, 'other resident'),
+                `🚪 ${rooms} rooms in total`, ...(size ? [`📐 Apartment ${size} m²`] : [])] :
+      [...(studio ? [] : [`🚪 ${plural(rooms, 'room')}`]), ...(size ? [`📐 ${size} m²`] : [])];
 
-    // ---- Included / Not included / Nearby ----
-    // Bathrooms and toilets: "🚿 Bathroom" or "🚿 2 bathrooms". In a shared apartment,
-    // a private bathroom counts as one of the bathrooms; the others are shared.
-    const privateBath = amen.includes('🚿 Private bathroom');
-    const sharedBaths = privateBath ? baths - 1 : baths;
-    const bathText = n => n === 1 ? '🚿 Bathroom' : `🚿 ${n} bathrooms`;
-    const toiletText = n => n === 1 ? '🚽 Separate toilet' : `🚽 ${n} separate toilets`;
-    const bathrooms = [...(sharedBaths > 0 ? [bathText(sharedBaths)] : []), ...(toilets > 0 ? [toiletText(toilets)] : [])];
+    // ---- Included / Nearby ----
+    // In a shared apartment the bathroom and toilet are each private or shared.
+    const wash = side => [
+      ...(one('bath') === side ? ['🚿 Bathroom'] : []),
+      ...(one('toilet') === side ? ['🚽 Toilet'] : []),
+    ];
 
     const parking = one('parking'), shelter = one('shelter');
     const yours = [   // in a shared apartment: only for the person renting
@@ -294,7 +288,7 @@
       ...(shared && parking === 'private' ? ['🅿️ Private parking spot'] : []),
     ];
     const inPlace = [   // things that come with the place (shared, in a shared apartment)
-      ...amen.filter(a => !SHARED_ONLY.includes(a) && !isPrivate(a)),
+      ...amen.filter(a => !isPrivate(a)),
       ...(!shared && parking === 'private' ? ['🅿️ Private parking spot'] : []),
       ...({ mamad: ['🛡️ Safe room (Mamad)'], building: ['🛡️ Shelter in the building'] }[shelter] || []),
     ];
@@ -302,25 +296,21 @@
       ...({ street: ['🅿️ Free street parking'], paid: ['🅿️ Paid parking lot'] }[parking] || []),
       ...(shelter === 'nearby' ? ['🛡️ Public shelter'] : []),
     ];
-    const notIncluded = [
-      ...(parking === 'none' ? ['🅿️ Parking'] : []),
-      ...(shelter === 'none' ? ['🛡️ Bomb shelter'] : []),
-    ];
     const included =
       shared ? {
-        private: ['🛏️ Bedroom', ...(privateBath ? ['🚿 Private bathroom'] : []), ...yours],
-        shared: ['🍳 Kitchen', ...bathrooms, '🛋️ Living room', ...inPlace],
+        private: ['🛏️ Bedroom', ...wash('private'), ...yours],
+        shared: ['🍳 Kitchen', ...wash('shared'), '🛋️ Living room', ...inPlace],
       } :
       studio ? { private: ['🛏️ Bed', '🍳 Kitchenette', '🚿 Bathroom', ...inPlace], shared: [] } :
-      { private: ['🛏️ Bedroom' + (bedrooms > 1 ? 's' : ''), '🍳 Kitchen', ...bathrooms, '🛋️ Living room', ...inPlace], shared: [] };
+      { private: ['🛏️ Bedroom' + (rooms > 2 ? 's' : ''), '🍳 Kitchen', '🚿 Bathroom', '🛋️ Living room', ...inPlace], shared: [] };
 
-    const id = slug(`${hood || 'listing'} ${f.from.value}`);
+    const id = slug(`${hood || 'tel-aviv'} ${f.from.value}`);
     return {
       id,
       title: f.title.value.trim() || autoTitle,
       type,
-      address: [f.street.value.trim(), hood, 'Tel Aviv'].filter(Boolean).join(', '),
-      neighborhood: hood,
+      address: [f.street.value.trim(), hood, city].filter(Boolean).join(', '),
+      neighborhood: where,
       from: f.from.value,
       to: f.to.value,
       price,
@@ -328,7 +318,6 @@
       place,
       description: f.description.value.split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, ' ').trim()).filter(Boolean),
       included,
-      notIncluded,
       nearby,
       contact: { name: f.name.value.trim(), phone: phoneDigits(f.phone.value) },
       photos: photos.map(p => ({ src: `photos/${id}/${p.file.name}`, caption: p.caption })),
@@ -337,16 +326,17 @@
 
   // ================= Keep the form and preview in sync =================
   function update() {
-    const type = one('type');
+    const shared = one('type') === 'Shared apartment';
     // Show only the questions that fit what they're renting out.
-    document.getElementById('q-bedrooms').hidden = type === 'Studio';
-    document.getElementById('q-others').hidden = type !== 'Shared apartment';
-    document.getElementById('otherHood').hidden = f.hood.value !== 'Other';
-    for (const a of SHARED_ONLY) form.querySelector(`input[name=amen][value="${a}"]`).closest('.opt').hidden = type !== 'Shared apartment';
-    // Private / Shared switches: only in a shared apartment, only next to picked chips
-    for (const w of form.querySelectorAll('.optw')) w.querySelector('.ps').hidden = !(type === 'Shared apartment' && w.querySelector('.opt input').checked);
-    document.getElementById('q-baths').hidden = type === 'Studio';
-    document.getElementById('q-toilets').hidden = type === 'Studio';
+    for (const q of ['q-others', 'q-roomSize', 'q-bath', 'q-toilet']) document.getElementById(q).hidden = !shared;
+    // "Which of these are just for the renter?": shared apartment only, showing only the amenities picked above
+    let anyMine = false;
+    for (const i of form.querySelectorAll('input[name=mine]')) {
+      const show = form.querySelector(`input[name=amen][value="${i.value}"]`).checked;
+      i.closest('.opt').hidden = !show;
+      anyMine ||= show;
+    }
+    document.getElementById('q-mine').hidden = !(shared && anyMine);
     if (f.from.value) f.to.min = f.from.value;
 
     const listing = readForm();
@@ -397,14 +387,14 @@
 
   // ================= Tap a picked option again to un-pick it =================
   // Checkboxes do this by themselves; single-choice buttons (radios) don't, so we add it.
-  // "Per month / night / whole stay" always keeps one choice.
+  // The KEEP_ONE questions (per month / night..., bathroom, toilet) always keep one choice.
   form.addEventListener('pointerdown', e => {
     const input = e.target.closest('.opt')?.querySelector('input[type=radio]');
     if (input) input.dataset.wasChecked = input.checked ? '1' : '';
   });
   form.addEventListener('click', e => {
     const input = e.target;
-    if (input.type !== 'radio' || input.name === 'unit' || input.dataset.wasChecked !== '1') return;
+    if (input.type !== 'radio' || input.name in KEEP_ONE || input.dataset.wasChecked !== '1') return;
     input.checked = false;
     input.dataset.wasChecked = '';
     form.dispatchEvent(new Event('input'));
@@ -447,8 +437,6 @@
       const other = form.querySelector(`input[value="${pair.find(v => v !== t.value)}"]`);
       if (other) other.checked = false;
     }
-    // A private bathroom means the apartment has at least 2 (the flatmates need one too).
-    if (t && t.checked && t.value === '🚿 Private bathroom' && Number(f.baths.value) < 2) f.baths.value = 2;
     saveDraft(); update(); done.hidden = true;
   });
 
@@ -456,7 +444,7 @@
   document.getElementById('clear').addEventListener('click', () => {
     const name = f.name.value, phone = f.phone.value;
     form.reset();
-    document.querySelector('input[name=unit][value=month]').checked = true;
+    setDefaults();
     f.name.value = name; f.phone.value = phone;
     photos.forEach(p => URL.revokeObjectURL(p.url));
     photos = [];
@@ -475,8 +463,6 @@
   }
   function check() {
     if (!one('type')) return problem(f.type[0], 'Pick what you are renting out');
-    if (!f.hood.value) return problem(f.hood, 'Pick a neighborhood');
-    if (f.hood.value === 'Other' && !f.otherHood.value.trim()) return problem(f.otherHood, 'Write the neighborhood');
     if (!f.from.value) return problem(f.from, 'Pick the start date');
     if (!f.to.value) return problem(f.to, 'Pick the end date');
     if (!datesOk()) return problem(f.to, 'The end date must be after the start date');
@@ -605,6 +591,7 @@
   });
 
   loadDraft();
+  setDefaults();
   update();
 </script>
 </body>

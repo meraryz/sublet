@@ -52,7 +52,6 @@ const Sublet = (() => {
     const priv = l.included?.private || [];
     const shared = l.included?.shared || [];
     const cols = [['Private', priv], ['Shared', shared]].filter(c => c[1].length);
-    const notIncluded = l.notIncluded || [];
     const nearby = l.nearby || [];
 
     const slides = photos.map(p => `
@@ -104,11 +103,6 @@ const Sublet = (() => {
             <div class="cols ${cols.length === 1 ? 'one' : ''}">
               ${cols.map(([name, items]) => `<div class="col"><h4>${name}</h4><ul>${list(items)}</ul></div>`).join('')}
             </div>
-          </section>` : ''}
-          ${notIncluded.length ? `
-          <section class="out">
-            <h3><svg aria-hidden="true"><use href="#nope"/></svg> Not included</h3>
-            <ul>${list(notIncluded)}</ul>
           </section>` : ''}
           ${nearby.length ? `
           <section class="near">
