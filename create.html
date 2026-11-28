@@ -17,7 +17,10 @@
   </header>
 
   <div>
-    <h1 class="ctitle">Post your sublet</h1>
+    <div class="ctop">
+      <h1 class="ctitle">Post your sublet</h1>
+      <button class="btn alt small" type="button" id="clear">Clear form</button>
+    </div>
 
     <!-- The tap options (amenities, parking...) are lists in the script below: edit them there. -->
     <form id="form" novalidate>
@@ -26,14 +29,14 @@
         <div class="q full"><span class="ql" id="q-type">What are you renting out?</span>
           <div class="opts big" id="o-type" role="group" aria-labelledby="q-type"></div></div>
         <label class="f">City<input name="city" value="Tel Aviv" placeholder="e.g. Tel Aviv"></label>
-        <label class="f">Neighborhood <small>optional</small><input name="hood" placeholder="e.g. Florentin"></label>
-        <label class="f">Street <small>optional</small><input name="street" placeholder="e.g. Ben Yehuda St"></label>
+        <label class="f"><span>Neighborhood <small>optional</small></span><input name="hood" placeholder="e.g. Florentin"></label>
+        <label class="f"><span>Street <small>optional</small></span><input name="street" placeholder="e.g. Ben Yehuda St"></label>
+        <label class="f"><span>Apartment size in m² <small>optional</small></span><input name="size" type="number" min="0" inputmode="numeric" placeholder="e.g. 60"></label>
         <div class="q" id="q-rooms"><span class="ql">Rooms in the apartment</span>
           <div class="step"><button type="button" data-step="rooms" data-d="-0.5" aria-label="Fewer rooms">−</button><input name="rooms" type="number" min="1" max="9" step="0.5" value="3" inputmode="decimal" aria-label="Rooms"><button type="button" data-step="rooms" data-d="0.5" aria-label="More rooms">+</button></div></div>
         <div class="q" id="q-others"><span class="ql">Other people living there</span>
           <div class="step"><button type="button" data-step="others" data-d="-1" aria-label="Fewer people">−</button><input name="others" type="number" min="0" max="9" value="1" inputmode="numeric" aria-label="Other people"><button type="button" data-step="others" data-d="1" aria-label="More people">+</button></div></div>
-        <label class="f" id="q-roomSize">Room size in m² <small>optional</small><input name="roomSize" type="number" min="0" inputmode="numeric" placeholder="e.g. 12"></label>
-        <label class="f">Apartment size in m² <small>optional</small><input name="size" type="number" min="0" inputmode="numeric" placeholder="e.g. 60"></label>
+        <label class="f" id="q-roomSize"><span>Room size in m² <small>optional</small></span><input name="roomSize" type="number" min="0" inputmode="numeric" placeholder="e.g. 12"></label>
       </fieldset>
 
       <fieldset>
@@ -49,10 +52,8 @@
 
       <fieldset>
         <legend>3. What's there</legend>
-        <div class="q" id="q-bath"><span class="ql" id="l-bath">Bathroom</span>
+        <div class="q full" id="q-bath"><span class="ql" id="l-bath">Bathroom</span>
           <div class="opts" id="o-bath" role="group" aria-labelledby="l-bath"></div></div>
-        <div class="q" id="q-toilet"><span class="ql" id="l-toilet">Toilet</span>
-          <div class="opts" id="o-toilet" role="group" aria-labelledby="l-toilet"></div></div>
         <div class="q full"><span class="ql" id="l-amen">Tap what you have</span>
           <div class="opts" id="o-amen" role="group" aria-labelledby="l-amen"></div></div>
         <div class="q full" id="q-mine" hidden><span class="ql" id="l-mine">Which of these are just for the renter?</span>
@@ -76,8 +77,9 @@
 
       <fieldset>
         <legend>6. Your details</legend>
-        <label class="f">Your name<input name="name" required placeholder="e.g. Michal" autocomplete="given-name"></label>
-        <label class="f">WhatsApp number<input name="phone" type="tel" required placeholder="e.g. 050-1234567" autocomplete="tel"></label>
+        <label class="f full">Your name<input name="name" required placeholder="e.g. Michal" autocomplete="given-name"></label>
+        <label class="f">WhatsApp number<input name="phone" type="tel" placeholder="e.g. 050-1234567" autocomplete="tel"></label>
+        <label class="f">Facebook username<input name="messenger" placeholder="e.g. michal.cohen" autocapitalize="off" autocorrect="off" spellcheck="false"></label>
       </fieldset>
 
       <details class="more">
@@ -94,7 +96,6 @@
       <p class="pubmsg" id="pubError" role="alert" hidden></p>
       <div class="actions">
         <button class="btn main" type="submit" id="submitBtn">Publish listing</button>
-        <button class="btn alt" type="button" id="clear">Start over</button>
       </div>
     </form>
 
@@ -147,7 +148,6 @@
     ],
     // Room in a shared apartment only: is it just for the renter, or shared with flatmates?
     bath: [{ value: 'private', label: 'Private' }, { value: 'shared', label: 'Shared' }],
-    toilet: [{ value: 'private', label: 'Private' }, { value: 'shared', label: 'Shared' }],
     unit: [
       { value: 'month', label: 'Month' },
       { value: 'night', label: 'Night' },
@@ -188,14 +188,13 @@
   drawOptions('type', OPTIONS.type, { single: true, required: true });
   drawOptions('unit', OPTIONS.unit, { single: true });
   drawOptions('bath', OPTIONS.bath, { single: true });
-  drawOptions('toilet', OPTIONS.toilet, { single: true });
   drawOptions('amen', OPTIONS.amen);
   drawOptions('mine', OPTIONS.amen.filter(o => o.split));
   drawOptions('parking', OPTIONS.parking, { single: true });
   drawOptions('shelter', OPTIONS.shelter, { single: true });
   drawOptions('who', OPTIONS.who);
   // These always keep one choice (tapping the picked one again doesn't un-pick it).
-  const KEEP_ONE = { unit: 'month', bath: 'shared', toilet: 'shared' };
+  const KEEP_ONE = { unit: 'month', bath: 'shared' };
   const setDefaults = () => {   // pick the default wherever nothing is picked
     for (const [name, value] of Object.entries(KEEP_ONE))
       if (!document.querySelector(`input[name=${name}]:checked`)) document.querySelector(`input[name=${name}][value=${value}]`).checked = true;
@@ -223,6 +222,14 @@
     if (d.startsWith('00')) d = d.slice(2);
     if (d.startsWith('0')) d = '972' + d.slice(1);
     return d;
+  }
+
+  // "facebook.com/michal.cohen", "m.me/michal.cohen", "@michal.cohen" -> "michal.cohen" (for an m.me/ Messenger link)
+  function fbUsername(text) {
+    const t = text.trim();
+    const id = t.match(/[?&]id=(\d+)/);   // facebook.com/profile.php?id=123...
+    if (id) return id[1];
+    return t.replace(/^(https?:\/\/)?(www\.|m\.)?(facebook\.com|fb\.com|m\.me)\//i, '').replace(/^@/, '').split(/[/?#]/)[0].replace(/[^A-Za-z0-9.]/g, '');
   }
 
   // Length of the stay. The "until" day counts as a day of the stay.
@@ -271,16 +278,13 @@
 
     // "The place" chips
     const place =
-      shared ? ['1 private bedroom' + (roomSize ? `, ${roomSize} m²` : ''), plural(others, 'other resident'),
-                `🚪 ${rooms} rooms in total`, ...(size ? [`📐 Apartment ${size} m²`] : [])] :
+      shared ? ['🛏️ 1 private bedroom' + (roomSize ? `, ${roomSize} m²` : ''), '👥 ' + plural(others, 'other resident'),
+                `🚪 ${rooms} rooms in total`, ...(size ? [`📐 ${size} m²`] : [])] :
       [...(studio ? [] : [`🚪 ${plural(rooms, 'room')}`]), ...(size ? [`📐 ${size} m²`] : [])];
 
     // ---- Included / Nearby ----
-    // In a shared apartment the bathroom and toilet are each private or shared.
-    const wash = side => [
-      ...(one('bath') === side ? ['🚿 Bathroom'] : []),
-      ...(one('toilet') === side ? ['🚽 Toilet'] : []),
-    ];
+    // In a shared apartment the bathroom is private or shared.
+    const wash = side => one('bath') === side ? ['🚿 Bathroom'] : [];
 
     const parking = one('parking'), shelter = one('shelter');
     const yours = [   // in a shared apartment: only for the person renting
@@ -319,7 +323,7 @@
       description: f.description.value.split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, ' ').trim()).filter(Boolean),
       included,
       nearby,
-      contact: { name: f.name.value.trim(), phone: phoneDigits(f.phone.value) },
+      contact: { name: f.name.value.trim(), phone: phoneDigits(f.phone.value), messenger: fbUsername(f.messenger.value) },
       photos: photos.map(p => ({ src: `photos/${id}/${p.file.name}`, caption: p.caption })),
     };
   }
@@ -328,7 +332,7 @@
   function update() {
     const shared = one('type') === 'Shared apartment';
     // Show only the questions that fit what they're renting out.
-    for (const q of ['q-others', 'q-roomSize', 'q-bath', 'q-toilet']) document.getElementById(q).hidden = !shared;
+    for (const q of ['q-others', 'q-roomSize', 'q-bath']) document.getElementById(q).hidden = !shared;
     // "Which of these are just for the renter?": shared apartment only, showing only the amenities picked above
     let anyMine = false;
     for (const i of form.querySelectorAll('input[name=mine]')) {
@@ -387,7 +391,7 @@
 
   // ================= Tap a picked option again to un-pick it =================
   // Checkboxes do this by themselves; single-choice buttons (radios) don't, so we add it.
-  // The KEEP_ONE questions (per month / night..., bathroom, toilet) always keep one choice.
+  // The KEEP_ONE questions (per month / night..., bathroom) always keep one choice.
   form.addEventListener('pointerdown', e => {
     const input = e.target.closest('.opt')?.querySelector('input[type=radio]');
     if (input) input.dataset.wasChecked = input.checked ? '1' : '';
@@ -440,17 +444,29 @@
     saveDraft(); update(); done.hidden = true;
   });
 
-  // "Start over" keeps your name and number.
-  document.getElementById('clear').addEventListener('click', () => {
-    const name = f.name.value, phone = f.phone.value;
+  // "Clear form" empties everything except your name and contact details.
+  const clearBtn = document.getElementById('clear');
+  function clearForm() {
+    const name = f.name.value, phone = f.phone.value, messenger = f.messenger.value;
     form.reset();
     setDefaults();
-    f.name.value = name; f.phone.value = phone;
+    f.name.value = name; f.phone.value = phone; f.messenger.value = messenger;
     photos.forEach(p => URL.revokeObjectURL(p.url));
     photos = [];
     drawPhotos(); saveDraft(); update();
     done.hidden = true;
     scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  // Tap twice to clear, so one stray tap doesn't wipe the form.
+  let clearTimer;
+  clearBtn.addEventListener('click', () => {
+    if (!clearTimer) {
+      clearBtn.textContent = 'Tap again to clear';
+      clearTimer = setTimeout(() => { clearTimer = null; clearBtn.textContent = 'Clear form'; }, 3000);
+      return;
+    }
+    clearTimeout(clearTimer); clearTimer = null; clearBtn.textContent = 'Clear form';
+    clearForm();
   });
 
   // ================= "Create listing" =================
@@ -468,7 +484,11 @@
     if (!datesOk()) return problem(f.to, 'The end date must be after the start date');
     if (!(Number(f.price.value) > 0)) return problem(f.price, 'Write the price');
     if (!f.name.value.trim()) return problem(f.name, 'Write your name');
-    if (phoneDigits(f.phone.value).length < 11) return problem(f.phone, 'Write your WhatsApp number, e.g. 050-1234567');
+    const phone = phoneDigits(f.phone.value), fb = fbUsername(f.messenger.value);
+    if (!phone && !fb) return problem(f.phone, 'Add a WhatsApp number or a Facebook username, so renters can reach you');
+    if (phone && phone.length < 11) return problem(f.phone, 'Check the WhatsApp number, e.g. 050-1234567');
+    if (/\s/.test(f.messenger.value.trim()) || (f.messenger.value.trim() && fb.length < 3))
+      return problem(f.messenger, 'Write your Facebook username (from your profile link), not your name. E.g. michal.cohen');
     return true;
   }
 
@@ -522,6 +542,7 @@
     const $ = s => document.getElementById(s);
     try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
     form.hidden = true;
+    clearBtn.hidden = true;
     published.hidden = false;
     $('pubTitle').textContent = '⏳ Publishing your listing…';
     $('pubText').textContent = 'Your link will be ready in about a minute. Keep this page open.';
@@ -562,7 +583,8 @@
   document.getElementById('another').addEventListener('click', () => {
     published.hidden = true;
     form.hidden = false;
-    document.getElementById('clear').click();
+    clearBtn.hidden = false;
+    clearForm();
   });
 
   form.addEventListener('submit', e => {

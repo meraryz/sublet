@@ -88,13 +88,20 @@ function clean(l) {
     included: { private: list(included.private), shared: list(included.shared) },
     notIncluded: list(l.notIncluded),
     nearby: list(l.nearby),
-    contact: { name: str(contact.name, 60), phone: String(contact.phone || '').replace(/\D/g, '').slice(0, 15) },
+    contact: {
+      name: str(contact.name, 60),
+      phone: String(contact.phone || '').replace(/\D/g, '').slice(0, 15),
+      messenger: String(contact.messenger || '').replace(/[^A-Za-z0-9.]/g, '').slice(0, 60),
+    },
     photos: [],
   };
   if (!out.title || !out.neighborhood) throw userError('Please pick what you are renting out and the neighborhood.');
   if (!out.from || !out.to || out.to <= out.from) throw userError('Please check the dates.');
   if (!out.price.total) throw userError('Please add the price.');
-  if (!out.contact.name || out.contact.phone.length < 11) throw userError('Please add your name and WhatsApp number.');
+  if (!out.contact.name) throw userError('Please add your name.');
+  const { phone, messenger } = out.contact;
+  if (phone && phone.length < 11) throw userError('Please check the WhatsApp number.');
+  if (!phone && messenger.length < 3) throw userError('Please add a WhatsApp number or a Facebook username.');
   return out;
 }
 

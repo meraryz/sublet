@@ -33,7 +33,18 @@ const Sublet = (() => {
   function whatsappLink(l) {
     const text = `Hi, I saw your listing in ${l.neighborhood} for ${dates(l)}`;
     const phone = String(l.contact?.phone || '').replace(/\D/g, '');
-    return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    return phone ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : '';
+  }
+  function messengerLink(l) {
+    const user = String(l.contact?.messenger || '').replace(/[^A-Za-z0-9.]/g, '');
+    return user ? `https://m.me/${user}` : '';
+  }
+  // WhatsApp and/or Messenger buttons. With both, the labels get shorter so they fit side by side.
+  function contactButtons(l) {
+    const wa = whatsappLink(l), ms = messengerLink(l);
+    const who = esc(firstName(l.contact?.name)) || 'host';
+    const btn = (href, cls, app) => `<a class="btn ${cls}" href="${href}" target="_blank" rel="noopener">${wa && ms ? app : `Message ${who} on ${app}`}</a>`;
+    return (wa ? btn(wa, 'main', 'WhatsApp') : '') + (ms ? btn(ms, 'main ms', 'Messenger') : '');
   }
 
   // Check / cross icons used by the price card and the included sections.
@@ -80,8 +91,6 @@ const Sublet = (() => {
               ${l.address ? `<span>📍 ${esc(l.address)}</span>` : ''}
               ${l.from || l.to ? `<strong>📅 ${dates(l)}</strong>` : ''}
             </p>
-            ${l.lookingFor?.length ? `<div><h3 class="gl">Looking for</h3><div class="cl">${chips(l.lookingFor)}</div></div>` : ''}
-            <div><h3 class="gl">The place</h3><div class="cl">${l.type ? chips([l.type], 'dark') : ''}${chips(l.place)}</div></div>
             ${l.contact?.name ? `<p class="contact">👤 ${esc(l.contact.name)}<span class="sr"> (contact person)</span></p>` : ''}
           </div>
           <div class="side">
@@ -91,6 +100,10 @@ const Sublet = (() => {
               ${rates ? `<small>${rates}</small>` : ''}
               <small class="incl ${bills ? 'yes' : 'no'}"><svg aria-hidden="true"><use href="#${bills ? 'ok' : 'nope'}"/></svg>Bills ${bills ? 'included' : 'not included'}</small>
             </div>
+          </div>
+          <div class="tags">
+            ${l.lookingFor?.length ? `<div><h3 class="gl">Looking for</h3><div class="cl">${chips(l.lookingFor)}</div></div>` : ''}
+            <div><h3 class="gl">The place</h3><div class="cl">${l.type ? chips([l.type], 'dark') : ''}${chips(l.place)}</div></div>
           </div>
         </div>
 
@@ -114,7 +127,7 @@ const Sublet = (() => {
 
       <div class="bar">
         <div>
-          <a class="btn main" href="${whatsappLink(l)}" target="_blank" rel="noopener">Message ${esc(firstName(l.contact?.name)) || 'host'} on WhatsApp</a>
+          ${contactButtons(l)}
           <button class="btn alt share" type="button">Share</button>
         </div>
       </div>
