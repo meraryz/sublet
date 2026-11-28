@@ -26,6 +26,9 @@ GitHub then builds the site, and the listing is live ~2 minutes later.
 2. Scroll to **Script Properties** → **Add script property**
 3. Property: `GITHUB_TOKEN`, Value: the token from step 1 → **Save script properties**
 
+Add a second property: `ADMIN_PASSWORD`, Value: a password of your choice.
+It unlocks the **Admin** view on the home page (edit and delete listings).
+
 ## 4. Check it works
 
 1. Back in the **Editor** (`< >` in the sidebar), pick `testSetup` in the function dropdown at the top and click **Run**
@@ -40,7 +43,7 @@ GitHub then builds the site, and the listing is live ~2 minutes later.
 2. Click ⚙️ next to "Select type" → **Web app**
 3. **Execute as:** *Me* · **Who has access:** *Anyone*
 4. Click **Deploy** and copy the **Web app URL** (ends with `/exec`)
-5. Put that URL in `create.html`: `const PUBLISH_URL = 'https://script.google.com/macros/s/.../exec';`
+5. Put that URL in `listing.js`: `const PUBLISH_URL = 'https://script.google.com/macros/s/.../exec';`
    then commit and push.
 
 ## Changing the script later
@@ -50,8 +53,8 @@ The URL stays the same.
 
 ## Good to know
 
-- Listings go live immediately, there's no approval. To remove one, delete it from `listings.json`
-  (and its `photos/<id>/` folder) on GitHub and commit.
+- Listings go live immediately, there's no approval. To edit or remove one, tap **Admin** at the bottom
+  of the home page and enter the `ADMIN_PASSWORD`. Changes are live ~2 minutes later.
 - Limits: 10 photos per listing (shrunk to ~300 KB each in the browser), 30 listings per hour in total.
 - A hidden "trap" field catches simple spam bots: their posts are silently ignored.
 - Testing `create.html` on your computer with `PUBLISH_URL` set publishes **for real**.

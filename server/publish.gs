@@ -4,8 +4,10 @@
 // in one commit: the listing goes into listings.json and its photos into photos/<id>/.
 // GitHub then builds and publishes the site (about 2 minutes).
 //
-// Setup: see server/README.md. The GitHub token lives in this script's settings
-// (Project Settings -> Script properties -> GITHUB_TOKEN), never in the code.
+// The admin view on the home page also comes here, to edit or delete a listing (with the admin password).
+//
+// Setup: see server/README.md. The GitHub token and the admin password live in this script's settings
+// (Project Settings -> Script properties -> GITHUB_TOKEN, ADMIN_PASSWORD), never in the code.
 
 const REPO = 'meraryz/sublet';
 const BRANCH = 'main';
@@ -20,6 +22,7 @@ function doPost(e) {
     const body = JSON.parse(e.postData.contents);
     // Spam trap: people never see the "trap" field, bots fill it in. Pretend it worked.
     if (body.trap) return reply({ ok: true, id: '' });
+    if (body.action) return reply(admin(body));
 
     const listing = clean(body.listing);
     const photos = (Array.isArray(body.photos) ? body.photos : []).slice(0, MAX_PHOTOS);
@@ -113,7 +116,99 @@ function rateLimit() {
   cache.put(key, String(n + 1), 3700);
 }
 
+// ---------- Admin: edit or delete a listing ----------
+
+const MAX_WRONG_PASSWORDS_PER_HOUR = 20;
+
+function checkPassword(password) {
+  const cache = CacheService.getScriptCache();
+  const key = 'wrong-' + Math.floor(Date.now() / 3600000);
+  if (Number(cache.get(key) || 0) >= MAX_WRONG_PASSWORDS_PER_HOUR) throw userError('Too many wrong passwords. Try again in an hour.');
+  const real = PropertiesService.getScriptProperties().getProperty('ADMIN_PASSWORD');
+  if (!real) throw userError('ADMIN_PASSWORD is not set in the script settings.');
+  if (String(password || '') !== real) {
+    cache.put(key, String(Number(cache.get(key) || 0) + 1), 3700);
+    throw userError('Wrong password.');
+  }
+}
+
+function admin(body) {
+  checkPassword(body.password);
+  const id = String(body.id || '');
+  if (body.action === 'login') return { ok: true };
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    if (body.action === 'update') {
+      const changes = clean(body.listing);
+      let saved;
+      commit(head => {
+        const listings = readListings(head);
+        const i = listings.findIndex(l => l.id === id);
+        if (i < 0) throw userError('This listing no longer exists.');
+        // Everything can change except the id (its link) and the photos.
+        saved = Object.assign({}, changes, { id, photos: listings[i].photos || [] });
+        listings[i] = saved;
+        return { message: `Edit listing: ${saved.title}`, tree: [listingsBlob(listings)] };
+      });
+      return { ok: true, listing: saved };
+    }
+    if (body.action === 'delete') {
+      commit(head => {
+        const listings = readListings(head);
+        const entry = listings.find(l => l.id === id);
+        if (!entry) throw userError('This listing no longer exists.');
+        // Its photos folder goes too (a null sha deletes the file).
+        const photos = photoFiles(id, head).map(path => ({ path, mode: '100644', type: 'blob', sha: null }));
+        return { message: `Remove listing: ${entry.title}`, tree: [listingsBlob(listings.filter(l => l.id !== id)), ...photos] };
+      });
+      return { ok: true };
+    }
+    throw userError('Unknown action.');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function photoFiles(id, head) {
+  if (!/^[a-z0-9-]+$/.test(id)) return [];
+  try {
+    return gh('GET', `/contents/photos/${id}?ref=${head}`).filter(f => f.type === 'file').map(f => f.path);
+  } catch (err) {
+    return [];   // no photos folder
+  }
+}
+
 // ---------- Saving to GitHub ----------
+
+function readListings(head) {
+  const file = gh('GET', `/contents/listings.json?ref=${head}`);
+  return JSON.parse(Utilities.newBlob(Utilities.base64Decode(file.content.replace(/\s/g, ''))).getDataAsString('UTF-8'));
+}
+
+function listingsBlob(listings) {
+  const json = JSON.stringify(listings, null, 2) + '\n';
+  return { path: 'listings.json', mode: '100644', type: 'blob', sha: blob(Utilities.base64Encode(json, Utilities.Charset.UTF_8)) };
+}
+
+// Makes one commit. change(head) returns { message, tree }. Retries if someone else committed meanwhile.
+function commit(change) {
+  for (let attempt = 1; ; attempt++) {
+    const head = gh('GET', `/git/ref/heads/${BRANCH}`).object.sha;
+    const baseTree = gh('GET', `/git/commits/${head}`).tree.sha;
+    const { message, tree } = change(head);
+    const newTree = gh('POST', '/git/trees', { base_tree: baseTree, tree }).sha;
+    const sha = gh('POST', '/git/commits', { message, tree: newTree, parents: [head] }).sha;
+    try {
+      gh('PATCH', `/git/refs/heads/${BRANCH}`, { sha });
+      return;
+    } catch (err) {
+      if (attempt >= 3) throw err;
+      Utilities.sleep(1500);   // someone else committed first; start again from the new state
+    }
+  }
+}
 
 const slug = text => String(text).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -125,15 +220,12 @@ function uniqueId(listing, listings) {
   return id;
 }
 
-// Adds the listing and its photos in a single commit (retries if someone else committed meanwhile).
+// Adds the listing and its photos in a single commit.
 function publish(listing, photos) {
-  for (let attempt = 1; ; attempt++) {
-    const head = gh('GET', `/git/ref/heads/${BRANCH}`).object.sha;
-    const baseTree = gh('GET', `/git/commits/${head}`).tree.sha;
-    const file = gh('GET', `/contents/listings.json?ref=${head}`);
-    const listings = JSON.parse(Utilities.newBlob(Utilities.base64Decode(file.content.replace(/\s/g, ''))).getDataAsString('UTF-8'));
-
-    const id = uniqueId(listing, listings);
+  let id;
+  commit(head => {
+    const listings = readListings(head);
+    id = uniqueId(listing, listings);
     const entry = Object.assign({}, listing, { id });
     const tree = [];
 
@@ -147,19 +239,10 @@ function publish(listing, photos) {
     });
 
     listings.push(entry);
-    const json = JSON.stringify(listings, null, 2) + '\n';
-    tree.push({ path: 'listings.json', mode: '100644', type: 'blob', sha: blob(Utilities.base64Encode(json, Utilities.Charset.UTF_8)) });
-
-    const newTree = gh('POST', '/git/trees', { base_tree: baseTree, tree }).sha;
-    const commit = gh('POST', '/git/commits', { message: `Add listing: ${entry.title}`, tree: newTree, parents: [head] }).sha;
-    try {
-      gh('PATCH', `/git/refs/heads/${BRANCH}`, { sha: commit });
-      return id;
-    } catch (err) {
-      if (attempt >= 3) throw err;
-      Utilities.sleep(1500);   // someone else committed first; start again from the new state
-    }
-  }
+    tree.push(listingsBlob(listings));
+    return { message: `Add listing: ${entry.title}`, tree };
+  });
+  return id;
 }
 
 function blob(base64) {

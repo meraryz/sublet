@@ -28,20 +28,87 @@
   </header>
   <p class="lead">Short-term rooms and apartments in Tel Aviv.</p>
 
+  <!-- Admin view: sign in with the ADMIN_PASSWORD (server/publish.gs) to edit or delete listings. -->
+  <form class="adminbar" id="login" hidden>
+    <label class="f">Admin password<input name="password" type="password" autocomplete="current-password" required></label>
+    <button class="btn dark small" type="submit">Sign in</button>
+    <button class="btn alt small" type="button" id="loginCancel">Cancel</button>
+    <p class="err" id="loginErr" role="alert" hidden></p>
+  </form>
+  <div class="adminbar on" id="adminOn" hidden>
+    <strong>Admin view</strong>
+    <span>Changes go live about 2 minutes after saving.</span>
+    <button class="btn alt small" type="button" id="logout">Exit admin</button>
+  </div>
+
   <div class="grid" id="grid"></div>
 
-  <p class="foot">Sample listings. Names, phone numbers and illustrations are for demonstration only.</p>
+  <p class="foot">Sample listings. Names, phone numbers and illustrations are for demonstration only.
+    <button class="linkbtn" type="button" id="adminBtn">Admin</button></p>
 </div>
+
+<!-- Edit a listing (admin). Lists are one item per line. -->
+<dialog class="editor" id="editor">
+  <form id="editForm" method="dialog">
+    <h2 id="editTitle">Edit listing</h2>
+    <fieldset>
+      <legend>Listing</legend>
+      <label class="f full">Title<input name="title" required></label>
+      <label class="f">Type<input name="type" placeholder="e.g. Shared apartment"></label>
+      <label class="f">Neighborhood<input name="neighborhood" required></label>
+      <label class="f full">Address<input name="address"></label>
+      <label class="f">From<input name="from" type="date" required></label>
+      <label class="f">Until<input name="to" type="date" required></label>
+    </fieldset>
+    <fieldset>
+      <legend>Price (₪)</legend>
+      <label class="f">Total<input name="total" type="number" min="1" required></label>
+      <label class="f">Per month<input name="perMonth" type="number" min="0"></label>
+      <label class="f">Per night<input name="perNight" type="number" min="0"></label>
+      <label class="check"><input name="billsIncluded" type="checkbox"> Bills included</label>
+    </fieldset>
+    <fieldset>
+      <legend>Details <small>one per line</small></legend>
+      <label class="f full">Description <small>blank line between paragraphs</small><textarea name="description" rows="4"></textarea></label>
+      <label class="f">The place<textarea name="place" rows="4"></textarea></label>
+      <label class="f">Looking for<textarea name="lookingFor" rows="4"></textarea></label>
+      <label class="f">Private<textarea name="private" rows="4"></textarea></label>
+      <label class="f">Shared<textarea name="shared" rows="4"></textarea></label>
+      <label class="f full">Nearby<textarea name="nearby" rows="3"></textarea></label>
+    </fieldset>
+    <fieldset>
+      <legend>Contact</legend>
+      <label class="f full">Name<input name="name" required></label>
+      <label class="f">WhatsApp number <small>with country code</small><input name="phone" type="tel" placeholder="e.g. 972501234567"></label>
+      <label class="f">Facebook username<input name="messenger" autocapitalize="off" spellcheck="false"></label>
+    </fieldset>
+    <p class="err" id="editErr" role="alert" hidden></p>
+    <div class="actions">
+      <button class="btn dark" type="submit" id="saveBtn">Save</button>
+      <button class="btn alt" type="button" id="editCancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" role="status" id="toast"></div>
 
 <script src="listing.js"></script>
 <script>
   const grid = document.getElementById('grid');
   const { esc, money, dates } = Sublet;
 
-  // One card per listing, soonest move-in first.
+  let listings = [];
+  let password = '';
+  try { password = sessionStorage.getItem('adminPassword') || ''; } catch (e) {}
+
+  // One card per listing, soonest move-in first. In admin view each card gets Edit / Delete.
   function card(l) {
     const photo = l.photos?.[0]?.src || 'photos/building.svg';
-    return `
+    const tools = password ? `
+      <div class="tools">
+        <button class="btn alt small" type="button" data-edit="${esc(l.id)}">Edit</button>
+        <button class="btn alt small del" type="button" data-del="${esc(l.id)}">Delete</button>
+      </div>` : '';
+    return `<div class="cardw">
       <a class="card" href="${encodeURIComponent(l.id)}/">
         <img src="${esc(photo)}" alt="" loading="lazy">
         <div class="cb">
@@ -53,13 +120,119 @@
             <strong>${money(l.price.total)}</strong>
           </div>
         </div>
-      </a>`;
+      </a>${tools}</div>`;
   }
 
-  Sublet.loadListings().then(listings => {
+  function draw() {
     listings.sort((a, b) => a.from.localeCompare(b.from));
     grid.innerHTML = listings.map(card).join('') || '<p class="msg">No listings yet.</p>';
-  }).catch(() => Sublet.loadError(grid));
+    document.getElementById('adminOn').hidden = !password;
+    document.getElementById('adminBtn').hidden = !!password;
+  }
+
+  Sublet.loadListings().then(data => { listings = data; draw(); }).catch(() => Sublet.loadError(grid));
+
+  // ================= Admin view =================
+  const $ = id => document.getElementById(id);
+  const toast = $('toast');
+  const say = text => {
+    toast.textContent = text;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  };
+  const remember = p => { password = p; try { p ? sessionStorage.setItem('adminPassword', p) : sessionStorage.removeItem('adminPassword'); } catch (e) {} };
+  const showErr = (el, err) => { el.textContent = err.message || 'No connection, try again.'; el.hidden = false; };
+
+  $('adminBtn').addEventListener('click', () => { $('login').hidden = false; $('login').password.focus(); });
+  $('loginCancel').addEventListener('click', () => { $('login').hidden = true; });
+  $('login').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target, btn = form.querySelector('[type=submit]');
+    btn.disabled = true; $('loginErr').hidden = true;
+    try {
+      await Sublet.post({ action: 'login', password: form.password.value });
+      remember(form.password.value);
+      form.reset(); form.hidden = true;
+      draw();
+    } catch (err) { showErr($('loginErr'), err); }
+    btn.disabled = false;
+  });
+  $('logout').addEventListener('click', () => { remember(''); draw(); });
+
+  // The server says "Wrong password" if it was changed meanwhile: sign out.
+  async function adminPost(data) {
+    try { return await Sublet.post({ ...data, password }); }
+    catch (err) { if (err.message === 'Wrong password.') { remember(''); draw(); } throw err; }
+  }
+
+  // ---- Delete (tap twice) ----
+  grid.addEventListener('click', async e => {
+    const b = e.target.closest('[data-del]');
+    if (!b) return;
+    if (!b.dataset.sure) {
+      b.dataset.sure = '1'; b.textContent = 'Tap again to delete';
+      setTimeout(() => { if (b.isConnected && !b.disabled) { delete b.dataset.sure; b.textContent = 'Delete'; } }, 3000);
+      return;
+    }
+    b.disabled = true; b.textContent = 'Deleting…';
+    try {
+      await adminPost({ action: 'delete', id: b.dataset.del });
+      listings = listings.filter(l => l.id !== b.dataset.del);
+      draw(); say('Deleted. Gone from the site in about 2 minutes.');
+    } catch (err) {
+      b.disabled = false; delete b.dataset.sure; b.textContent = 'Delete';
+      say(`Couldn't delete: ${err.message || 'no connection'}`);
+    }
+  });
+
+  // ---- Edit ----
+  const ef = $('editForm');
+  const lines = text => text.split('\n').map(s => s.trim()).filter(Boolean);
+  let editing = null;
+
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('[data-edit]');
+    if (!b) return;
+    editing = listings.find(l => l.id === b.dataset.edit);
+    const l = editing, p = l.price || {}, c = l.contact || {};
+    const values = {
+      title: l.title, type: l.type, neighborhood: l.neighborhood, address: l.address, from: l.from, to: l.to,
+      total: p.total, perMonth: p.perMonth, perNight: p.perNight,
+      description: (l.description || []).join('\n\n'), place: (l.place || []).join('\n'), lookingFor: (l.lookingFor || []).join('\n'),
+      private: (l.included?.private || []).join('\n'), shared: (l.included?.shared || []).join('\n'), nearby: (l.nearby || []).join('\n'),
+      name: c.name, phone: c.phone, messenger: c.messenger,
+    };
+    for (const [k, v] of Object.entries(values)) ef[k].value = v ?? '';
+    ef.billsIncluded.checked = !!p.billsIncluded;
+    $('editTitle').textContent = `Edit: ${l.title}`;
+    $('editErr').hidden = true;
+    $('editor').showModal();
+  });
+  $('editCancel').addEventListener('click', () => $('editor').close());
+
+  ef.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = $('saveBtn');
+    const listing = {
+      ...editing,
+      title: ef.title.value, type: ef.type.value, neighborhood: ef.neighborhood.value, address: ef.address.value,
+      from: ef.from.value, to: ef.to.value,
+      price: { total: Number(ef.total.value), perMonth: Number(ef.perMonth.value) || undefined,
+               perNight: Number(ef.perNight.value) || undefined, billsIncluded: ef.billsIncluded.checked },
+      description: ef.description.value.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean),
+      place: lines(ef.place.value), lookingFor: lines(ef.lookingFor.value), nearby: lines(ef.nearby.value),
+      included: { private: lines(ef.private.value), shared: lines(ef.shared.value) },
+      contact: { name: ef.name.value, phone: ef.phone.value.replace(/\D/g, ''), messenger: ef.messenger.value.trim().replace(/^@/, '') },
+    };
+    btn.disabled = true; btn.textContent = 'Saving…'; $('editErr').hidden = true;
+    try {
+      const result = await adminPost({ action: 'update', id: editing.id, listing });
+      listings = listings.map(l => l.id === editing.id ? result.listing : l);
+      $('editor').close(); draw();
+      say('Saved. Live on the site in about 2 minutes.');
+    } catch (err) { showErr($('editErr'), err); }
+    btn.disabled = false; btn.textContent = 'Save';
+  });
 </script>
 </body>
 </html>

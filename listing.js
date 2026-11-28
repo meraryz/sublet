@@ -2,6 +2,17 @@
 // Every page includes this file and uses it as `Sublet.something(...)`.
 const Sublet = (() => {
 
+  // The publishing server (server/publish.gs): new listings, and admin edits / deletes.
+  const PUBLISH_URL = 'https://script.google.com/macros/s/AKfycbyuyI9QACnovoRlmm1iOliIgiqKlm_RTUQBHvfSdH8WHLM7fY_v-adi4t1x-R-HEQlz1g/exec';
+
+  // Sends data to the server. Plain text, so the browser sends it straight to Google (no extra permission check).
+  async function post(data) {
+    const res = await fetch(PUBLISH_URL, { method: 'POST', body: JSON.stringify(data) });
+    const result = await res.json();
+    if (!result.ok) throw new Error(result.error);
+    return result;
+  }
+
   // ---- Loading data ----
   // All listings live in listings.json. To move to a real database later,
   // only this function needs to change.
@@ -174,5 +185,5 @@ const Sublet = (() => {
     sync();
   }
 
-  return { loadListings, loadError, render, activate, esc, money, dates };
+  return { PUBLISH_URL, post, loadListings, loadError, render, activate, esc, money, dates };
 })();
